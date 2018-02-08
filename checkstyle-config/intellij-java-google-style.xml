@@ -248,7 +248,7 @@
                     <rule>
                         <match>
                             <AND>
-                                <NAME>.*:id</NAME>
+                                <NAME>.*:visibleId</NAME>
                                 <XML_ATTRIBUTE />
                                 <XML_NAMESPACE>http://schemas.android.com/apk/res/android</XML_NAMESPACE>
                             </AND>
