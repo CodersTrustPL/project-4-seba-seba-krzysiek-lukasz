@@ -2,6 +2,8 @@ package pl.coderstrust.service;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertTrue;
+
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.NoSuchElementException;
 import org.junit.Before;
@@ -10,6 +12,7 @@ import pl.coderstrust.model.Company;
 import pl.coderstrust.model.Invoice;
 import pl.coderstrust.model.PaymentState;
 import pl.coderstrust.model.Product;
+import pl.coderstrust.model.Vat;
 
 public class InvoiceBookTest {
 
@@ -84,7 +87,7 @@ public class InvoiceBookTest {
     Company seller;
     Product product;
 
-    int invoiceEntriesCount = 10;
+    int invoiceEntriesCount = 1000;
     int invoicesCount = 1_00;
     Invoice invoices[] = new Invoice[invoicesCount];
     String invoiceIds[] = new String[invoicesCount];
@@ -97,39 +100,79 @@ public class InvoiceBookTest {
 
     for (int i = 0; i < invoicesCount; i++) {
       updateInvoice = testBook.findInvoice(invoiceIds[i]);
-      buyer = testBook.findInvoice(invoiceIds[i]).getBuyer();
-      seller = testBook.findInvoice(invoiceIds[i]).getSeller();
-      product = testBook.findInvoice(invoiceIds[i]).getProducts().iterator().next().getProduct();
+      buyer = updateInvoice.getBuyer();
+      seller = updateInvoice.getSeller();
+      product = updateInvoice.getProducts().iterator().next().getProduct();
 
-      String newBuyerAddress = "new_address_" + i;
-      String newBuyerName = "new_buyer_name" + i;
-      String newSellerCity = "new_seller_city" + i;
-      String newProductName = "apple_" + i;
+      String newBuyerName = "new_buyer_name_" + i,
+          newBuyerAddress = "new_buyer_address_" + i,
+          newBuyerCity = "new_buyer_city_" + i,
+          newBuyerZipCode = "new_buyer_zip_code_" + i,
+          newBuyerNip = "new_buyer_nip_" + i,
+          newBuyerBankAcc = "new_buyer_bank_account_" + i;
+
+      buyer.setName(newBuyerName);
+      buyer.setAddress(newBuyerAddress);
+      buyer.setCity(newBuyerCity);
+      buyer.setZipCode(newBuyerZipCode);
+      buyer.setNip(newBuyerNip);
+      buyer.setBankAccoutNumber(newBuyerBankAcc);
+
+      String newSellerName = "new_seller_name_" + i,
+          newSellerAddress = "new_seller_address_" + i,
+          newSellerCity = "new_seller_city_" + i,
+          newSellerZipCode = "new_seller_zip_code_" + i,
+          newSellerNip = "new_seller_nip_" + i,
+          newSellerBankAcc = "new_seller_bank_account_" + i;
+
+      seller.setName(newSellerName);
+      seller.setAddress(newSellerAddress);
+      seller.setCity(newSellerCity);
+      seller.setZipCode(newSellerZipCode);
+      seller.setNip(newSellerNip);
+      seller.setBankAccoutNumber(newSellerBankAcc);
+
+      String newProductName = "new_product_name_" + i,
+          newProductDescription = "new_product_description_" + i;
+
+      product.setName(newProductName);
+      product.setDescription(newProductDescription);
+      product.setNetValue(BigDecimal.valueOf(i));
+      product.setVatRate(Vat.VAT_7);
+
       LocalDate newIssueDate = LocalDate.of(2018, 5, 24);
+      LocalDate newPaymentDate = newIssueDate.plusDays(15);
       PaymentState newPaymentState = PaymentState.PAID;
 
-      buyer.setAddress(newBuyerAddress);
-      buyer.setName(newBuyerName);
-      seller.setCity(newSellerCity);
-      product.setName(newProductName);
-
-      updateInvoice.setPaymentState(newPaymentState);
       updateInvoice.setIssueDate(newIssueDate);
-      updateInvoice.setBuyer(buyer);
-      updateInvoice.setSeller(seller);
+      updateInvoice.setPaymentDate(newPaymentDate);
+      updateInvoice.setPaymentState(newPaymentState);
+
       testBook.updateInovoice(updateInvoice);
 
-      assertTrue(
-          testBook.findInvoice(invoiceIds[i]).getBuyer().getAddress().equals(newBuyerAddress));
-      assertTrue(testBook.findInvoice(invoiceIds[i]).getBuyer().getName().equals(newBuyerName));
-      assertTrue(testBook.findInvoice(invoiceIds[i]).getSeller().getCity().equals(newSellerCity));
-      assertTrue(testBook.findInvoice(invoiceIds[i]).getProducts().iterator().next().getProduct()
-          .getName().equals(newProductName));
-      assertTrue(testBook.findInvoice(invoiceIds[i]).getIssueDate().equals(newIssueDate));
-      assertTrue(testBook.findInvoice(invoiceIds[i]).getPaymentState().equals(newPaymentState));
+      assertTrue(buyer.getName().equals(newBuyerName)
+          && buyer.getAddress().equals(newBuyerAddress)
+          && buyer.getCity().equals(newBuyerCity)
+          && buyer.getZipCode().equals(newBuyerZipCode)
+          && buyer.getNip().equals(newBuyerNip)
+          && buyer.getBankAccoutNumber().equals(newBuyerBankAcc));
+
+      assertTrue(seller.getName().equals(newSellerName)
+          && seller.getAddress().equals(newSellerAddress)
+          && seller.getCity().equals(newSellerCity)
+          && seller.getZipCode().equals(newSellerZipCode)
+          && seller.getNip().equals(newSellerNip)
+          && seller.getBankAccoutNumber().equals(newSellerBankAcc));
+
+      assertTrue(product.getName().equals(newProductName)
+          && product.getDescription().equals(newProductDescription)
+          && product.getNetValue().equals(BigDecimal.valueOf(i))
+          && product.getVatRate().equals(Vat.VAT_7));
+
+      assertTrue(updateInvoice.getIssueDate().equals(newIssueDate)
+          && updateInvoice.getPaymentDate().equals(newPaymentDate)
+          && updateInvoice.getPaymentState().equals(newPaymentState));
     }
-
-
   }
 }
 
