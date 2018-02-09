@@ -2,10 +2,12 @@ package pl.coderstrust.database.inFileDatabase;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import jdk.nashorn.internal.ir.ObjectNode;
 import pl.coderstrust.database.Database;
 import pl.coderstrust.model.Invoice;
 
@@ -37,13 +39,23 @@ public class inFileDatabase implements Database {
       }
 
     } catch (IOException e) {
-      //exception handling left as an exercise for the reader
+
     }
   }
 
   @Override
   public void deleteInvoiceById(long id) {
 
+    try (FileInputStream fis = new FileInputStream("myfile.txt")) {
+      ObjectMapper mapper = new ObjectMapper();
+      JsonNode root = mapper.readTree(fis);
+      ObjectNode object = root.get(1).r
+
+
+
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   @Override
@@ -71,7 +83,28 @@ public class inFileDatabase implements Database {
 
   @Override
   public void updateInvoice(Invoice invoice) {
+    ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
+
+
+
+    try (FileInputStream fis = new FileInputStream("myfile.txt")){
+      JsonFactory jf = new JsonFactory();
+      objectMapper.registerModule(new JavaTimeModule());
+      JsonParser jp = jf.createParser(fis);
+      jp.setCodec(objectMapper);
+      jp.hasCurrentToken();
+      JsonNode test = jp.readValueAsTree();
+      test.
+      int inv = test.size();
+//      while (jp.hasCurrentToken()) {
+//          jp.setCurrentValue(invoice);
+//          jp
+//      }
+    }catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
   @Override
