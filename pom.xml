@@ -7,6 +7,7 @@
   <groupId>pl.coderstrust</groupId>
   <artifactId>project-4-seba-seba-krzysiek-lukasz</artifactId>
   <version>1.0.0</version>
+
   <build>
     <plugins>
       <plugin>
@@ -68,7 +69,7 @@
                   <element>CLASS</element>
                   <limits>
                     <limit>
-                      <counter>LINE</counter>
+                      <counter>BRANCH</counter>
                       <value>COVEREDRATIO</value>
                       <minimum>0.00</minimum>
                     </limit>
@@ -117,6 +118,8 @@
       <version>1.13.1</version>
       <scope>test</scope>
     </dependency>
+
+
     <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
     <dependency>
       <groupId>commons-io</groupId>
@@ -125,6 +128,7 @@
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
+
       <dependency>
         <groupId>com.fasterxml.jackson.core</groupId>
         <artifactId>jackson-databind</artifactId>
@@ -136,5 +140,6 @@
       <artifactId>jackson-datatype-jsr310</artifactId>
       <version>2.7.4</version>
     </dependency>
+
   </dependencies>
 </project>
