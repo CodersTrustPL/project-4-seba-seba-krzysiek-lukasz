@@ -50,7 +50,7 @@ public class inFileDatabase implements Database {
   public void deleteInvoiceById(long id) {
     File file = new File("myfile.txt");
     File temp = new File("_temp_");
-    String key = "\"systemId\":" + String.valueOf(id);
+    String key = "\"systemId\":" + String.valueOf(id)+",";
       try (
           PrintWriter out =
               new PrintWriter(new FileWriter(temp));
@@ -64,13 +64,28 @@ public class inFileDatabase implements Database {
         e.printStackTrace();
       }
       try{
+        while(!file.canWrite()) {
+          Thread.sleep(20);
+        }
         Files.delete(file.toPath());
+
+        while(file.exists()) {Thread.sleep(20);}
         Files.copy(temp.toPath(),file.toPath());
+
+        while(!temp.canWrite()) {Thread.sleep(20);}
         Files.delete(temp.toPath());
       }catch (IOException e) {
         e.printStackTrace();
+    } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+    try {
+      Thread.sleep(100);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
     }
   }
+
   @Override
   public Invoice getInvoiceById(long id) {
     ObjectMapper objectMapper = new ObjectMapper();
@@ -92,7 +107,6 @@ public class inFileDatabase implements Database {
     } catch (IOException e) {
       e.printStackTrace();
     }
-
     return invoice;
   }
 

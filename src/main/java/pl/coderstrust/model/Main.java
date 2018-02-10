@@ -14,19 +14,20 @@ public class Main {
 
     TestCasesGenerator gen = new TestCasesGenerator();
 
-    Invoice invoice = gen.getTestInvoice(13,13);
-////    InvoiceBook ib = new InvoiceBook();
-//
-//    Car  car = new Car(1,1);
-//
     inFileDatabase test  = new inFileDatabase();
 
-    for (int i = 0; i <10 ; i++) {
-      test.addInvoice(gen.getTestInvoice(i,1));
+    for (int i = 0; i <10000 ; i++) {
+      Invoice invoice = gen.getTestInvoice(i,10);
+          invoice.setSystemId(i);
+      test.addInvoice(invoice);
       System.out.println("Done "+i);
     }
     test.getInvoiceById(1);
-    test.deleteInvoiceById(0);
+
+    for (int i = 0; i <9999 ; i++) {
+      test.deleteInvoiceById(i);
+      System.out.println("removing:"+i);
+    }
    // test.updateInvoice(invoice);
 
 
