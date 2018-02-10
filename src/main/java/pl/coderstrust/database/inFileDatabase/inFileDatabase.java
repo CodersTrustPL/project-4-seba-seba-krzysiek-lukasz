@@ -2,7 +2,6 @@ package pl.coderstrust.database.inFileDatabase;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import pl.coderstrust.database.Database;
@@ -10,7 +9,6 @@ import pl.coderstrust.model.Invoice;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Collectors;
 
 public class inFileDatabase implements Database {
@@ -27,10 +25,9 @@ public class inFileDatabase implements Database {
 
   @Override
   public void addInvoice(Invoice invoice) {
-    ObjectWriter ow = mapper.writer();
     String json;
     try {
-      json = ow.writeValueAsString(invoice);
+      json = mapper.writeValueAsString(invoice);
       fileHelper.addLine(json);
     } catch (JsonProcessingException e) {
       e.printStackTrace();
@@ -39,14 +36,12 @@ public class inFileDatabase implements Database {
 
   @Override
   public void deleteInvoiceById(long id) {
-    String key = "\"systemId\":" + String.valueOf(id) + ",";
-    fileHelper.deleteLine(key);
+    fileHelper.deleteLine(idToLineKey(id));
   }
 
   @Override
   public Invoice getInvoiceById(long id) {
-    String key = "\"systemId\":" + String.valueOf(id) + ",";
-    String jsonInvoice = fileHelper.getLine(key);
+    String jsonInvoice = fileHelper.getLine(idToLineKey(id));
     Invoice invoice = null;
     try {
       invoice = mapper.readValue(jsonInvoice, Invoice.class);
@@ -56,27 +51,9 @@ public class inFileDatabase implements Database {
     return invoice;
   }
 
-//    ObjectMapper objectMapper = new ObjectMapper();
-//    objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-//    Invoice invoice = null;
-//    try (FileInputStream fis = new FileInputStream("myfile.txt")) {
-//      JsonFactory jf = new JsonFactory();
-//      objectMapper.registerModule(new JavaTimeModule());
-//      JsonParser jp = jf.createParser(fis);
-//      jp.setCodec(objectMapper);
-//      jp.nextToken();
-//      while (jp.hasCurrentToken()) {
-//        invoice = jp.readValueAs(Invoice.class);
-//        if (invoice.getSystemId() == id) {
-//          break;
-//        }
-//        jp.nextToken();
-//      }
-//    } catch (IOException e) {
-//      e.printStackTrace();
-//    }
-//    return invoice;
-//  }
+  String idToLineKey(long id){
+    return "\"systemId\":" + String.valueOf(id) + ",";
+  }
 
   @Override
   public void updateInvoice(Invoice invoice) {
@@ -85,7 +62,7 @@ public class inFileDatabase implements Database {
   }
 
   @Override
-  public List<Invoice> getInvoices() {
+  public ArrayList<Invoice> getInvoices() {
 
     ArrayList<String> lines = fileHelper.getAllLines();
     return lines.stream()
@@ -96,7 +73,7 @@ public class inFileDatabase implements Database {
   private Invoice jsonToInvoice(String json) {
     Invoice invoice = null;
     try {
-      mapper.readValue(json, Invoice.class);
+      invoice = mapper.readValue(json, Invoice.class);
     } catch (IOException e) {
       e.printStackTrace();
     }

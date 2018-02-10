@@ -39,7 +39,7 @@ public class FileHelper {
       if (Files.exists(dataFile.toPath())) {
         openOption = StandardOpenOption.APPEND;
       } else {
-        openOption = StandardOpenOption.APPEND;
+        openOption = StandardOpenOption.CREATE;
       }
       Files.write(dataPath, lineContent.getBytes(), openOption);
     } catch (IOException e) {
@@ -85,8 +85,8 @@ public class FileHelper {
   public String getLine(String key) {
     try (Stream<String> stream = Files.lines(dataFile.toPath())) {
       return stream
-          .filter(line -> !line.contains(key))
-          .toString();
+          .filter(line -> line.contains(key))
+          .collect(Collectors.joining());
     } catch (Exception e) {
       e.printStackTrace();
     }
