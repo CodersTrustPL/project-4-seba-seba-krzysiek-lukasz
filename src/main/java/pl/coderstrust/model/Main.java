@@ -16,15 +16,15 @@ public class Main {
 
     inFileDatabase test  = new inFileDatabase();
 
-    for (int i = 0; i <10000 ; i++) {
+    for (int i = 0; i <11000 ; i++) {
       Invoice invoice = gen.getTestInvoice(i,10);
           invoice.setSystemId(i);
       test.addInvoice(invoice);
       System.out.println("Done "+i);
     }
-    test.getInvoiceById(1);
+   // test.getInvoiceById(1);
 
-    for (int i = 0; i <9999 ; i++) {
+    for (int i = 0; i <10099 ; i++) {
       test.deleteInvoiceById(i);
       System.out.println("removing:"+i);
     }
