@@ -21,12 +21,13 @@ public class Main {
 //
     inFileDatabase test  = new inFileDatabase();
 
-//    for (int i = 0; i <10000 ; i++) {
-//      test.addInvoice(gen.getTestInvoice(i,1));
-//      System.out.println("Done "+i);
-//    }
+    for (int i = 0; i <10 ; i++) {
+      test.addInvoice(gen.getTestInvoice(i,1));
+      System.out.println("Done "+i);
+    }
     test.getInvoiceById(1);
-    test.updateInvoice(invoice);
+    test.deleteInvoiceById(0);
+   // test.updateInvoice(invoice);
 
 
 //    ib.addInvoice("PP1", new Company("FirmaX"), new Company("FirmaY"),
