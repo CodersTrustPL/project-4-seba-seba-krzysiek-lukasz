@@ -8,14 +8,6 @@
   <artifactId>project-4-seba-seba-krzysiek-lukasz</artifactId>
   <version>1.0.0</version>
 
-  <!--<parent>-->
-    <!--<groupId>org.springframework.boot</groupId>-->
-    <!--<artifactId>spring-boot-starter-parent</artifactId>-->
-    <!--<version>1.5.10.RELEASE</version>-->
-    <!--<relativePath/>-->
-    <!--&lt;!&ndash; lookup parent from repository &ndash;&gt;-->
-  <!--</parent>-->
-
   <build>
     <plugins>
       <plugin>
@@ -97,12 +89,6 @@
         </executions>
       </plugin>
 
-      <!--<plugin>-->
-        <!--<groupId>org.springframework.boot</groupId>-->
-        <!--<artifactId>spring-boot-maven-plugin</artifactId>-->
-      <!--</plugin>-->
-
-
     </plugins>
   </build>
   <dependencies>
@@ -159,23 +145,6 @@
       <artifactId>jackson-datatype-jsr310</artifactId>
       <version>2.7.4</version>
     </dependency>
-    <!--<dependency>-->
-      <!--<groupId>org.springframework.boot</groupId>-->
-      <!--<artifactId>spring-boot-starter-data-rest</artifactId>-->
-    <!--</dependency>-->
-
-    <!--<dependency>-->
-      <!--<groupId>org.springframework.boot</groupId>-->
-      <!--<artifactId>spring-boot-starter-web</artifactId>-->
-    <!--</dependency>-->
-
-
-    <!--<dependency>-->
-      <!--<groupId>org.springframework.boot</groupId>-->
-      <!--<artifactId>spring-boot-starter-test</artifactId>-->
-      <!--<scope>test</scope>-->
-    <!--</dependency>-->
-
 
   </dependencies>
 </project>
