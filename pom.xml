@@ -18,6 +18,7 @@
           <target>1.8</target>
         </configuration>
       </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
@@ -44,6 +45,7 @@
           <consoleOutput>true</consoleOutput>
         </configuration>
       </plugin>
+
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
@@ -67,11 +69,6 @@
                   <limits>
                     <limit>
                       <counter>LINE</counter>
-                      <value>COVEREDRATIO</value>
-                      <minimum>0.00</minimum>
-                    </limit>
-                    <limit>
-                      <counter>BRANCH</counter>
                       <value>COVEREDRATIO</value>
                       <minimum>0.00</minimum>
                     </limit>
@@ -120,7 +117,6 @@
       <version>1.13.1</version>
       <scope>test</scope>
     </dependency>
-
     <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
     <dependency>
       <groupId>commons-io</groupId>
