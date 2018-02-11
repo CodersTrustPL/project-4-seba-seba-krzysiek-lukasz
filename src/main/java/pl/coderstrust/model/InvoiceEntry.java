@@ -6,7 +6,6 @@ public class InvoiceEntry {
   private int amount;
 
   public InvoiceEntry() {
-
   }
 
   /**

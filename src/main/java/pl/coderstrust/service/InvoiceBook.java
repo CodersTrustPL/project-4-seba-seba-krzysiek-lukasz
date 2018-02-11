@@ -13,7 +13,6 @@ import java.util.NoSuchElementException;
 
 public class InvoiceBook {
 
-
   private Database database = new InMemoryDatabase();
   private static long currentInvoiceNumber = 0;
 

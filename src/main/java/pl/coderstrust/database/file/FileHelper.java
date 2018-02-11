@@ -173,5 +173,3 @@ public class FileHelper {
     boolean fileState(File file);
   }
 }
-
-

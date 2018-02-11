@@ -8,6 +8,7 @@ import java.util.List;
 
 public class InMemoryDatabase implements Database {
 
+  private static final int INVALID_INDEX_VALUE = -1;
   private List<Invoice> invoices = new ArrayList<>();
 
   @Override
@@ -42,7 +43,7 @@ public class InMemoryDatabase implements Database {
         return i;
       }
     }
-    return -1;
+    return INVALID_INDEX_VALUE;
   }
 
   @Override
