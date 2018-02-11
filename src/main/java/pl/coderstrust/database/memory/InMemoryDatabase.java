@@ -47,7 +47,7 @@ public class InMemoryDatabase implements Database {
   }
 
   @Override
-  public void cleanDatabase(){
+  public void cleanDatabase() {
     invoices.clear();
   }
 }

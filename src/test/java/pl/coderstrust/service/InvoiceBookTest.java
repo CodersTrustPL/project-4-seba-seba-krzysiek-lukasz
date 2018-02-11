@@ -17,7 +17,7 @@ import pl.coderstrust.model.Invoice;
 import pl.coderstrust.model.PaymentState;
 import pl.coderstrust.model.Product;
 import pl.coderstrust.model.Vat;
-import pl.coderstrust.testHelpers.TestCasesGenerator;
+import pl.coderstrust.testhelpers.TestCasesGenerator;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -29,6 +29,9 @@ public class InvoiceBookTest {
   private TestCasesGenerator generator;
   private ObjectMapper mapper = new ObjectMapper();
 
+  /**
+   * Initializes objects before tests.
+   */
   @Before
   public void initializeInvoiceBook() {
     testBook = new InvoiceBook();

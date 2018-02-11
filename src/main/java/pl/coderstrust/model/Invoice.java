@@ -15,7 +15,7 @@ public class Invoice {
   List<InvoiceEntry> products = new ArrayList<>();
   private PaymentState paymentState;
 
-  public Invoice(){
+  public Invoice() {
   }
 
   /**

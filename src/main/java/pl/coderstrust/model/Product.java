@@ -9,7 +9,7 @@ public class Product {
   private BigDecimal netValue;
   private Vat vatRate;
 
-  public Product(){
+  public Product() {
   }
 
   /**

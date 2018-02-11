@@ -16,6 +16,9 @@ public class InFileDatabase implements Database {
   private ObjectMapper mapper;
   private FileHelper fileHelper;
 
+  /**
+   * Construcor that sets jakson mapper and creates FileHelper objects.
+   */
   public InFileDatabase() {
     mapper = new ObjectMapper();
     mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
@@ -29,7 +32,7 @@ public class InFileDatabase implements Database {
     try {
       json = mapper.writeValueAsString(invoice);
       fileHelper.addLine(json);
-      System.out.println("Adding invoice:"+ invoice.getSystemId());
+      System.out.println("Adding invoice:" + invoice.getSystemId());
     } catch (JsonProcessingException e) {
       e.printStackTrace();
     }
@@ -53,7 +56,7 @@ public class InFileDatabase implements Database {
     return invoice;
   }
 
-  String idToLineKey(long id){
+  String idToLineKey(long id) {
     return "\"systemId\":" + String.valueOf(id) + ",";
   }
 
@@ -73,7 +76,7 @@ public class InFileDatabase implements Database {
   }
 
   @Override
-  public void cleanDatabase(){
+  public void cleanDatabase() {
     fileHelper.cleanDatabase();
   }
 

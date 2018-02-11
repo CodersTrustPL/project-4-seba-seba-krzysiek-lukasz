@@ -10,7 +10,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import pl.coderstrust.model.Invoice;
-import pl.coderstrust.testHelpers.TestCasesGenerator;
+import pl.coderstrust.testhelpers.TestCasesGenerator;
 
 import java.util.NoSuchElementException;
 
@@ -20,10 +20,14 @@ public abstract class DatabaseTest {
   private TestCasesGenerator generator = new TestCasesGenerator();
 
   public abstract Database getDatabase();
+
   Database database = getDatabase();
 
+  /**
+   * Cleaning of database and preparation of mapper before each test.
+   */
   @Before
-  public void prepareDatabase(){
+  public void prepareDatabase() {
     database.cleanDatabase();
     mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
     mapper.registerModule(new JavaTimeModule());
@@ -50,6 +54,7 @@ public abstract class DatabaseTest {
 
   @Rule
   public ExpectedException expectedException = ExpectedException.none();
+
   @Test
   public void shouldDeleteInvoicesById() throws Exception {
 
@@ -70,8 +75,9 @@ public abstract class DatabaseTest {
       database.getInvoiceById(i);
     }
   }
+
   @Test
-  public void shouldUpdateInvoices(){
+  public void shouldUpdateInvoices() {
     int invoiceEntriesCount = 3;
     int invoicesCount = 10;
     Invoice testInvoice;
@@ -82,7 +88,7 @@ public abstract class DatabaseTest {
       testInvoice.setSystemId(i);
       database.addInvoice(testInvoice);
     }
-    try{
+    try {
       for (int i = 0; i < invoicesCount; i++) {
         testInvoice = generator.getTestInvoice(i + 1, invoiceEntriesCount);
         testInvoice.setSystemId(i);
@@ -92,13 +98,14 @@ public abstract class DatabaseTest {
       for (int i = 0; i < invoicesCount; i++) {
         output[i] = mapper.writeValueAsString(database.getInvoiceById(i));
       }
-    }catch(Exception e){
+    } catch (Exception e) {
       e.printStackTrace();
     }
     assertArrayEquals(should, output);
   }
+
   @Test
-  public void shouldCleanDatabase(){
+  public void shouldCleanDatabase() {
     int invoiceEntriesCount = 3;
     int invoicesCount = 10;
     Invoice testInvoice;

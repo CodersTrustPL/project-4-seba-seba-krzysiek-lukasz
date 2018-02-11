@@ -14,16 +14,17 @@ import java.util.stream.Stream;
 
 public class FileHelper {
 
-  int SLEEP_TIME = 20;
-  int DEFAULT_FILE_SYSTEM_WAITING_TIME = 200;
-
-
+  private static final int SLEEP_TIME = 20;
+  private static final int DEFAULT_FILE_SYSTEM_WAITING_TIME = 200;
   private Configuration config;
-  File dataFile;
-  File tempFile;
-  FileStateCheck canWrite = (File file) -> file.canWrite();
-  FileStateCheck isDeleted = (File file) -> !file.exists();
+  private File dataFile;
+  private File tempFile;
+  private FileStateCheck canWrite = (File file) -> file.canWrite();
+  private FileStateCheck isDeleted = (File file) -> !file.exists();
 
+  /**
+   * Default construtor.
+   */
   public FileHelper() {
     config = new Configuration();
     dataFile = new File(config.getJsonFilePath());
@@ -31,6 +32,11 @@ public class FileHelper {
 
   }
 
+  /**
+   * Adds line to database file.
+   *
+   * @param lineContent line to be added.
+   */
   public void addLine(String lineContent) {
     Path dataPath = dataFile.toPath();
     lineContent += System.lineSeparator();
@@ -47,6 +53,11 @@ public class FileHelper {
     }
   }
 
+  /**
+   * Deletes line from database file
+   *
+   * @param key unique key to be present at line.
+   */
   public void deleteLine(String key) {
     try (
         PrintWriter out =
@@ -75,6 +86,12 @@ public class FileHelper {
     }
   }
 
+  /**
+   * Checks if key is present at database file.
+   *
+   * @param key key unique key to be present at line.
+   * @throws Exception if key is not found
+   */
   private void isKeyPresent(String key) throws Exception {
     try (Stream<String> stream = Files.lines(dataFile.toPath())) {
       if ((stream.filter(line -> line.contains(key)).count()) == 0) {
@@ -83,15 +100,28 @@ public class FileHelper {
     }
   }
 
+  /**
+   * Checks and waits for file system response for a predefined time.
+   *
+   * @param file file which state is to be checked.
+   * @param checker lambda returning state of the file  ex. isPresent, isWritable.
+   * @throws Exception if file condition is not satisfied after predefined time.
+   */
   private void waitForFileSystem(File file, FileStateCheck checker) throws Exception {
     int maxChecksCount = DEFAULT_FILE_SYSTEM_WAITING_TIME / SLEEP_TIME;
     int checks = 0;
-    while (checker.FileState(file) && checks < maxChecksCount) {
+    while (checker.fileState(file) && checks < maxChecksCount) {
       Thread.sleep(SLEEP_TIME);
       checks++;
     }
   }
 
+  /**
+   * Gets a line from database file containing the key.
+   *
+   * @param key unique key
+   * @return line content containing key
+   */
   public String getLine(String key) {
 
     try (Stream<String> stream = Files.lines(dataFile.toPath())) {
@@ -105,6 +135,11 @@ public class FileHelper {
     return null;
   }
 
+  /**
+   * Gets all lines from database file.
+   *
+   * @return list with all lines from database file.
+   */
   public ArrayList<String> getAllLines() {
     try (Stream<String> stream = Files.lines(dataFile.toPath())) {
       return stream.collect(Collectors.toCollection(ArrayList::new));
@@ -114,6 +149,9 @@ public class FileHelper {
     return null;
   }
 
+  /**
+   * Removes all lines from database.
+   */
   public void cleanDatabase() {
     try {
       waitForFileSystem(dataFile, canWrite);
@@ -125,7 +163,7 @@ public class FileHelper {
 
   interface FileStateCheck {
 
-    boolean FileState(File file);
+    boolean fileState(File file);
   }
 }
 
