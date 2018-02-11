@@ -13,51 +13,47 @@ import java.util.stream.Collectors;
 
 public class InFileDatabase implements Database {
 
-  private ObjectMapper mapper;
+  private ObjectMapper JsonMapper;
   private FileHelper fileHelper;
 
   /**
-   * Construcor that sets jakson mapper and creates FileHelper objects.
+   * Constructor that sets Jakson mpper and creates FileHelper objects.
    */
   public InFileDatabase() {
-    mapper = new ObjectMapper();
-    mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-    mapper.registerModule(new JavaTimeModule());
+    JsonMapper = new ObjectMapper();
+    JsonMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+    JsonMapper.registerModule(new JavaTimeModule());
     fileHelper = new FileHelper();
   }
 
   @Override
   public void addInvoice(Invoice invoice) {
-    String json;
     try {
-      json = mapper.writeValueAsString(invoice);
-      fileHelper.addLine(json);
-      System.out.println("Adding invoice:" + invoice.getSystemId());
+      fileHelper.addLine(JsonMapper.writeValueAsString(invoice));
     } catch (JsonProcessingException e) {
       e.printStackTrace();
     }
   }
 
   @Override
-  public void deleteInvoiceById(long id) {
-    fileHelper.deleteLine(idToLineKey(id));
+  public void deleteInvoiceById(long systemId) {
+    fileHelper.deleteLine(idToLineKey(systemId));
   }
 
   @Override
-  public Invoice getInvoiceById(long id) {
-    String jsonInvoice = fileHelper.getLine(idToLineKey(id));
+  public Invoice getInvoiceById(long systemId) {
+    String jsonInvoice = fileHelper.getLine(idToLineKey(systemId));
     Invoice invoice = null;
     try {
-      invoice = mapper.readValue(jsonInvoice, Invoice.class);
+      invoice = JsonMapper.readValue(jsonInvoice, Invoice.class);
     } catch (IOException e) {
       e.printStackTrace();
     }
-    System.out.println("Found invoice:" + invoice.getSystemId());
     return invoice;
   }
 
-  String idToLineKey(long id) {
-    return "\"systemId\":" + String.valueOf(id) + ",";
+  String idToLineKey(long systemId) {
+    return "\"systemId\":" + String.valueOf(systemId) + ",";
   }
 
   @Override
@@ -83,7 +79,7 @@ public class InFileDatabase implements Database {
   private Invoice jsonToInvoice(String json) {
     Invoice invoice = null;
     try {
-      invoice = mapper.readValue(json, Invoice.class);
+      invoice = JsonMapper.readValue(json, Invoice.class);
     } catch (IOException e) {
       e.printStackTrace();
     }

@@ -19,7 +19,7 @@ public class Invoice {
   }
 
   /**
-   * Constructor.
+   * Constructor initializing all fields.
    */
   public Invoice(String visibleId, Company buyer, Company seller,
       LocalDate issueDate, LocalDate paymentDate,

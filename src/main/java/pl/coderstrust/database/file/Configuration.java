@@ -10,7 +10,6 @@ public class Configuration {
   private String jsonTempFilePath = DEFAULT_TEMP_JSON_FILE_PATH;
   private int fileSystemWaitTime = DEFAULT_FILE_SYSTEM_WAITING_TIME;
 
-
   public String getJsonFilePath() {
     return jsonFilePath;
   }

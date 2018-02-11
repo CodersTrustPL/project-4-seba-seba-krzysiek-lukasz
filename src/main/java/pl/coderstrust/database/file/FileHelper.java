@@ -14,40 +14,39 @@ import java.util.stream.Stream;
 
 public class FileHelper {
 
-  private static final int SLEEP_TIME = 20;
+  private static final int UNIT_SLEEP_TIME = 20;
   private static final int DEFAULT_FILE_SYSTEM_WAITING_TIME = 200;
-  private Configuration config;
-  private File dataFile;
+  private Configuration dbConfig;
+  private File dbFile;
   private File tempFile;
   private FileStateCheck canWrite = (File file) -> file.canWrite();
   private FileStateCheck isDeleted = (File file) -> !file.exists();
 
   /**
-   * Default construtor.
+   * Default constructor.
    */
   public FileHelper() {
-    config = new Configuration();
-    dataFile = new File(config.getJsonFilePath());
-    tempFile = new File(config.getJsonTempFilePath());
+    dbConfig = new Configuration();
+    dbFile = new File(dbConfig.getJsonFilePath());
+    tempFile = new File(dbConfig.getJsonTempFilePath());
 
   }
 
   /**
    * Adds line to database file.
-   *
    * @param lineContent line to be added.
    */
   public void addLine(String lineContent) {
-    Path dataPath = dataFile.toPath();
+    Path dbFilePath = dbFile.toPath();
     lineContent += System.lineSeparator();
-    OpenOption openOption;
+    OpenOption dbFileOpenOption;
     try {
-      if (Files.exists(dataFile.toPath())) {
-        openOption = StandardOpenOption.APPEND;
+      if (Files.exists(dbFile.toPath())) {
+        dbFileOpenOption = StandardOpenOption.APPEND;
       } else {
-        openOption = StandardOpenOption.CREATE;
+        dbFileOpenOption = StandardOpenOption.CREATE;
       }
-      Files.write(dataPath, lineContent.getBytes(), openOption);
+      Files.write(dbFilePath, lineContent.getBytes(), dbFileOpenOption);
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -55,29 +54,28 @@ public class FileHelper {
 
   /**
    * Deletes line from database file
-   *
-   * @param key unique key to be present at line.
+   * @param lineKey unique key to be present at line.
    */
-  public void deleteLine(String key) {
+  public void deleteLine(String lineKey) {
     try (
-        PrintWriter out =
+        PrintWriter printWriterTempFile =
             new PrintWriter(new FileWriter(tempFile));
         Stream<String> stream =
-            Files.lines(dataFile.toPath())
+            Files.lines(dbFile.toPath())
     ) {
-      isKeyPresent(key);
+      isKeyPresent(lineKey);
       stream
-          .filter(line -> !line.contains(key))
-          .forEach(out::println);
+          .filter(line -> !line.contains(lineKey))
+          .forEach(printWriterTempFile::println);
 
     } catch (Exception e) {
       e.printStackTrace();
     }
     try {
-      waitForFileSystem(dataFile, canWrite);
-      Files.delete(dataFile.toPath());
-      waitForFileSystem(dataFile, isDeleted);
-      Files.copy(tempFile.toPath(), dataFile.toPath());
+      waitForFileSystem(dbFile, canWrite);
+      Files.delete(dbFile.toPath());
+      waitForFileSystem(dbFile, isDeleted);
+      Files.copy(tempFile.toPath(), dbFile.toPath());
       waitForFileSystem(tempFile, canWrite);
       Files.delete(tempFile.toPath());
 
@@ -88,13 +86,12 @@ public class FileHelper {
 
   /**
    * Checks if key is present at database file.
-   *
-   * @param key key unique key to be present at line.
+   * @param lineKey key unique key to be present at line.
    * @throws Exception if key is not found
    */
-  private void isKeyPresent(String key) throws Exception {
-    try (Stream<String> stream = Files.lines(dataFile.toPath())) {
-      if ((stream.filter(line -> line.contains(key)).count()) == 0) {
+  private void isKeyPresent(String lineKey) throws Exception {
+    try (Stream<String> stream = Files.lines(dbFile.toPath())) {
+      if ((stream.filter(line -> line.contains(lineKey)).count()) == 0) {
         throw new IndexOutOfBoundsException();
       }
     }
@@ -102,32 +99,30 @@ public class FileHelper {
 
   /**
    * Checks and waits for file system response for a predefined time.
-   *
-   * @param file file which state is to be checked.
-   * @param checker lambda returning state of the file  ex. isPresent, isWritable.
+   * @param checkedFile file which state is to be checked.
+   * @param stateChecker lambda returning state of the file  ex. isPresent, isWritable.
    * @throws Exception if file condition is not satisfied after predefined time.
    */
-  private void waitForFileSystem(File file, FileStateCheck checker) throws Exception {
-    int maxChecksCount = DEFAULT_FILE_SYSTEM_WAITING_TIME / SLEEP_TIME;
-    int checks = 0;
-    while (checker.fileState(file) && checks < maxChecksCount) {
-      Thread.sleep(SLEEP_TIME);
-      checks++;
+  private void waitForFileSystem(File checkedFile, FileStateCheck stateChecker) throws Exception {
+    int maxChecksCount = DEFAULT_FILE_SYSTEM_WAITING_TIME / UNIT_SLEEP_TIME;
+    int checkNumber = 0;
+    while (stateChecker.fileState(checkedFile) && checkNumber < maxChecksCount) {
+      Thread.sleep(UNIT_SLEEP_TIME);
+      checkNumber++;
     }
   }
 
   /**
    * Gets a line from database file containing the key.
-   *
-   * @param key unique key
+   * @param lineKey unique key
    * @return line content containing key
    */
-  public String getLine(String key) {
+  public String getLine(String lineKey) {
 
-    try (Stream<String> stream = Files.lines(dataFile.toPath())) {
-      isKeyPresent(key);
-      return stream
-          .filter(line -> line.contains(key))
+    try (Stream<String> dbStream = Files.lines(dbFile.toPath())) {
+      isKeyPresent(lineKey);
+      return dbStream
+          .filter(line -> line.contains(lineKey))
           .collect(Collectors.joining());
     } catch (Exception e) {
       e.printStackTrace();
@@ -137,12 +132,11 @@ public class FileHelper {
 
   /**
    * Gets all lines from database file.
-   *
    * @return list with all lines from database file.
    */
   public ArrayList<String> getAllLines() {
-    try (Stream<String> stream = Files.lines(dataFile.toPath())) {
-      return stream.collect(Collectors.toCollection(ArrayList::new));
+    try (Stream<String> dbStream = Files.lines(dbFile.toPath())) {
+      return dbStream.collect(Collectors.toCollection(ArrayList::new));
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -154,8 +148,8 @@ public class FileHelper {
    */
   public void cleanDatabase() {
     try {
-      waitForFileSystem(dataFile, canWrite);
-      Files.delete(dataFile.toPath());
+      waitForFileSystem(dbFile, canWrite);
+      Files.delete(dbFile.toPath());
     } catch (Exception e) {
       e.printStackTrace();
     }
