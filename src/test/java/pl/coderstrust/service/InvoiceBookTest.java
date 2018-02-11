@@ -3,40 +3,47 @@ package pl.coderstrust.service;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-
 import org.junit.rules.ExpectedException;
 import pl.coderstrust.model.Company;
 import pl.coderstrust.model.Invoice;
 import pl.coderstrust.model.PaymentState;
 import pl.coderstrust.model.Product;
 import pl.coderstrust.model.Vat;
+import pl.coderstrust.testHelpers.TestCasesGenerator;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.NoSuchElementException;
 
-public  class  InvoiceBookTest {
+public class InvoiceBookTest {
 
   private InvoiceBook testBook;
   private TestCasesGenerator generator;
+  private ObjectMapper mapper = new ObjectMapper();
 
   @Before
   public void initializeInvoiceBook() {
     testBook = new InvoiceBook();
     generator = new TestCasesGenerator();
+    mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+    mapper.registerModule(new JavaTimeModule());
   }
+
+  @Rule
+  public ExpectedException expectedExceptionFromFind = ExpectedException.none();
 
   @Test
   public void shouldAddLargeNumberOfInvoices() {
-
-    int invoiceEntriesCount = 1;
-    int invoicesCount = 1;
+    int invoiceEntriesCount = 1000;
+    int invoicesCount = 1_000;
 
     Invoice[] invoices = new Invoice[invoicesCount];
     String[] invoiceIds = new String[invoicesCount];
@@ -52,7 +59,7 @@ public  class  InvoiceBookTest {
       output[i] = testBook.findInvoice(invoiceIds[i]);
     }
 
-    assertEquals(output.hashCode(), invoices.hashCode());
+    assertArrayEquals(output, invoices);
   }
 
   @Rule
@@ -182,4 +189,15 @@ public  class  InvoiceBookTest {
       assertThat(updateInvoice.getPaymentState(), is(equalTo(newPaymentState)));
     }
   }
+
+
+  boolean isInvoicesContentEqual(Invoice inv1, Invoice inv2) {
+    try {
+      return mapper.writeValueAsString(inv1).equals(mapper.writeValueAsString(inv2));
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return false;
+  }
+
 }

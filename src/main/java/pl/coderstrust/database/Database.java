@@ -14,6 +14,8 @@ public interface Database {
 
   void updateInvoice(Invoice invoice);
 
+  void cleanDatabase();
+
   List<Invoice> getInvoices();
 
 }

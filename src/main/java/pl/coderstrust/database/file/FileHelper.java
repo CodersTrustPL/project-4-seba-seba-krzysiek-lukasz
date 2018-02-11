@@ -54,9 +54,11 @@ public class FileHelper {
         Stream<String> stream =
             Files.lines(dataFile.toPath())
     ) {
+      isKeyPresent(key);
       stream
           .filter(line -> !line.contains(key))
           .forEach(out::println);
+
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -73,6 +75,14 @@ public class FileHelper {
     }
   }
 
+  private void isKeyPresent(String key) throws Exception {
+    try (Stream<String> stream = Files.lines(dataFile.toPath())) {
+      if ((stream.filter(line -> line.contains(key)).count()) == 0) {
+        throw new IndexOutOfBoundsException();
+      }
+    }
+  }
+
   private void waitForFileSystem(File file, FileStateCheck checker) throws Exception {
     int maxChecksCount = DEFAULT_FILE_SYSTEM_WAITING_TIME / SLEEP_TIME;
     int checks = 0;
@@ -83,7 +93,9 @@ public class FileHelper {
   }
 
   public String getLine(String key) {
+
     try (Stream<String> stream = Files.lines(dataFile.toPath())) {
+      isKeyPresent(key);
       return stream
           .filter(line -> line.contains(key))
           .collect(Collectors.joining());
@@ -102,16 +114,17 @@ public class FileHelper {
     return null;
   }
 
-  public void resetDatabase(){
+  public void cleanDatabase() {
     try {
       waitForFileSystem(dataFile, canWrite);
       Files.delete(dataFile.toPath());
-    }catch(Exception e){
+    } catch (Exception e) {
       e.printStackTrace();
     }
   }
 
   interface FileStateCheck {
+
     boolean FileState(File file);
   }
 }

@@ -72,6 +72,11 @@ public class InFileDatabase implements Database {
         .collect(Collectors.toCollection(ArrayList::new));
   }
 
+  @Override
+  public void cleanDatabase(){
+    fileHelper.cleanDatabase();
+  }
+
   private Invoice jsonToInvoice(String json) {
     Invoice invoice = null;
     try {

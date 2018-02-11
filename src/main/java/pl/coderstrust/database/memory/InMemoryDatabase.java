@@ -46,4 +46,8 @@ public class InMemoryDatabase implements Database {
     throw new NoSuchElementException("There is no invoice with id : " + id);
   }
 
+  @Override
+  public void cleanDatabase(){
+    invoices.clear();
+  }
 }

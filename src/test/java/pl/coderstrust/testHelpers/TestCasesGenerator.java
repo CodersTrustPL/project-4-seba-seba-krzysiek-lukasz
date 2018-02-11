@@ -1,4 +1,4 @@
-package pl.coderstrust.service;
+package pl.coderstrust.testHelpers;
 
 import pl.coderstrust.model.Company;
 import pl.coderstrust.model.Invoice;
