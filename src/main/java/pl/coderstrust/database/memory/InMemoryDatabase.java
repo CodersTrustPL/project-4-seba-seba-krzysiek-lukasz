@@ -5,7 +5,6 @@ import pl.coderstrust.model.Invoice;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 public class InMemoryDatabase implements Database {
 
@@ -43,7 +42,7 @@ public class InMemoryDatabase implements Database {
         return i;
       }
     }
-    throw new NoSuchElementException("There is no invoice with id : " + id);
+    return -1;
   }
 
   @Override

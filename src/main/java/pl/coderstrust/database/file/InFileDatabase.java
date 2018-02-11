@@ -17,7 +17,7 @@ public class InFileDatabase implements Database {
   private FileHelper fileHelper;
 
   /**
-   * Constructor that sets Jakson mpper and creates FileHelper objects.
+   * Constructor that sets Jakson mapper and creates FileHelper objects.
    */
   public InFileDatabase() {
     jsonMapper = new ObjectMapper();

@@ -34,6 +34,7 @@ public class FileHelper {
 
   /**
    * Adds line to database file.
+   *
    * @param lineContent line to be added.
    */
   public void addLine(String lineContent) {
@@ -54,6 +55,7 @@ public class FileHelper {
 
   /**
    * Deletes line from database file
+   *
    * @param lineKey unique key to be present at line.
    */
   public void deleteLine(String lineKey) {
@@ -63,7 +65,9 @@ public class FileHelper {
         Stream<String> stream =
             Files.lines(dbFile.toPath())
     ) {
-      isKeyPresent(lineKey);
+      if (!isKeyPresent(lineKey)) {
+        throw new IndexOutOfBoundsException();
+      }
       stream
           .filter(line -> !line.contains(lineKey))
           .forEach(printWriterTempFile::println);
@@ -86,19 +90,20 @@ public class FileHelper {
 
   /**
    * Checks if key is present at database file.
+   *
    * @param lineKey key unique key to be present at line.
    * @throws Exception if key is not found
    */
-  private void isKeyPresent(String lineKey) throws Exception {
+  private boolean isKeyPresent(String lineKey) throws Exception {
     try (Stream<String> stream = Files.lines(dbFile.toPath())) {
-      if ((stream.filter(line -> line.contains(lineKey)).count()) == 0) {
-        throw new IndexOutOfBoundsException();
-      }
+      return !((stream.filter(line -> line.contains(lineKey)).count()) == 0);
+
     }
   }
 
   /**
    * Checks and waits for file system response for a predefined time.
+   *
    * @param checkedFile file which state is to be checked.
    * @param stateChecker lambda returning state of the file  ex. isPresent, isWritable.
    * @throws Exception if file condition is not satisfied after predefined time.
@@ -114,24 +119,28 @@ public class FileHelper {
 
   /**
    * Gets a line from database file containing the key.
+   *
    * @param lineKey unique key
    * @return line content containing key
    */
   public String getLine(String lineKey) {
 
     try (Stream<String> dbStream = Files.lines(dbFile.toPath())) {
-      isKeyPresent(lineKey);
+      if (!isKeyPresent(lineKey)) {
+        throw new IndexOutOfBoundsException();
+      }
       return dbStream
           .filter(line -> line.contains(lineKey))
           .collect(Collectors.joining());
     } catch (Exception e) {
-      e.printStackTrace();
+        e.printStackTrace();
+      return null;
     }
-    return null;
   }
 
   /**
    * Gets all lines from database file.
+   *
    * @return list with all lines from database file.
    */
   public ArrayList<String> getAllLines() {
@@ -147,11 +156,15 @@ public class FileHelper {
    * Removes all lines from database.
    */
   public void cleanDatabase() {
-    try {
-      waitForFileSystem(dbFile, canWrite);
-      Files.delete(dbFile.toPath());
-    } catch (Exception e) {
-      e.printStackTrace();
+    if (dbFile.exists()) {
+      try {
+        waitForFileSystem(dbFile, canWrite);
+        Files.delete(dbFile.toPath());
+        waitForFileSystem(dbFile, isDeleted);
+        Files.createFile(dbFile.toPath());
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
     }
   }
 

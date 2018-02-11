@@ -192,15 +192,4 @@ public class InvoiceBookTest {
       assertThat(updateInvoice.getPaymentState(), is(equalTo(newPaymentState)));
     }
   }
-
-
-  boolean isInvoicesContentEqual(Invoice inv1, Invoice inv2) {
-    try {
-      return mapper.writeValueAsString(inv1).equals(mapper.writeValueAsString(inv2));
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-    return false;
-  }
-
 }
