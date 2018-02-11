@@ -13,23 +13,23 @@ import java.util.stream.Collectors;
 
 public class InFileDatabase implements Database {
 
-  private ObjectMapper JsonMapper;
+  private ObjectMapper jsonMapper;
   private FileHelper fileHelper;
 
   /**
    * Constructor that sets Jakson mpper and creates FileHelper objects.
    */
   public InFileDatabase() {
-    JsonMapper = new ObjectMapper();
-    JsonMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-    JsonMapper.registerModule(new JavaTimeModule());
+    jsonMapper = new ObjectMapper();
+    jsonMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+    jsonMapper.registerModule(new JavaTimeModule());
     fileHelper = new FileHelper();
   }
 
   @Override
   public void addInvoice(Invoice invoice) {
     try {
-      fileHelper.addLine(JsonMapper.writeValueAsString(invoice));
+      fileHelper.addLine(jsonMapper.writeValueAsString(invoice));
     } catch (JsonProcessingException e) {
       e.printStackTrace();
     }
@@ -45,7 +45,7 @@ public class InFileDatabase implements Database {
     String jsonInvoice = fileHelper.getLine(idToLineKey(systemId));
     Invoice invoice = null;
     try {
-      invoice = JsonMapper.readValue(jsonInvoice, Invoice.class);
+      invoice = jsonMapper.readValue(jsonInvoice, Invoice.class);
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -79,7 +79,7 @@ public class InFileDatabase implements Database {
   private Invoice jsonToInvoice(String json) {
     Invoice invoice = null;
     try {
-      invoice = JsonMapper.readValue(json, Invoice.class);
+      invoice = jsonMapper.readValue(json, Invoice.class);
     } catch (IOException e) {
       e.printStackTrace();
     }
