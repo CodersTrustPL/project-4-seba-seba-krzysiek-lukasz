@@ -1,4 +1,3 @@
-
 package pl.coderstrust.model;
 
 import pl.coderstrust.service.InvoiceBook;
