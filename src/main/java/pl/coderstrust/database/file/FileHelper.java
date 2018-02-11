@@ -1,4 +1,4 @@
-package pl.coderstrust.database.inFileDatabase;
+package pl.coderstrust.database.file;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -102,11 +102,18 @@ public class FileHelper {
     return null;
   }
 
-  interface FileStateCheck {
-
-    boolean FileState(File file);
+  public void resetDatabase(){
+    try {
+      waitForFileSystem(dataFile, canWrite);
+      Files.delete(dataFile.toPath());
+    }catch(Exception e){
+      e.printStackTrace();
+    }
   }
 
+  interface FileStateCheck {
+    boolean FileState(File file);
+  }
 }
 
 

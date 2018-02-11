@@ -1,4 +1,4 @@
-package pl.coderstrust.database.inFileDatabase;
+package pl.coderstrust.database.file;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -29,6 +29,7 @@ public class InFileDatabase implements Database {
     try {
       json = mapper.writeValueAsString(invoice);
       fileHelper.addLine(json);
+      System.out.println("Adding invoice:"+ invoice.getSystemId());
     } catch (JsonProcessingException e) {
       e.printStackTrace();
     }
@@ -48,6 +49,7 @@ public class InFileDatabase implements Database {
     } catch (IOException e) {
       e.printStackTrace();
     }
+    System.out.println("Found invoice:" + invoice.getSystemId());
     return invoice;
   }
 

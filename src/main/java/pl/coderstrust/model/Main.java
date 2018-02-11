@@ -1,7 +1,7 @@
 
 package pl.coderstrust.model;
 
-import pl.coderstrust.database.inFileDatabase.InFileDatabase;
+import pl.coderstrust.database.file.InFileDatabase;
 
 import java.time.LocalDate;
 

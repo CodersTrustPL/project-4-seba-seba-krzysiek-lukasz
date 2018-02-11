@@ -1,6 +1,7 @@
 package pl.coderstrust.service;
 
 import pl.coderstrust.database.Database;
+import pl.coderstrust.database.file.InFileDatabase;
 import pl.coderstrust.model.Company;
 import pl.coderstrust.model.Invoice;
 import pl.coderstrust.model.InvoiceEntry;
@@ -10,10 +11,10 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-public abstract class InvoiceBook {
+public class InvoiceBook {
 
-  abstract Database getDatabase();
-  private Database database = getDatabase();
+
+  private Database database = new InFileDatabase();
   private static long currentInvoiceNumber = 0;
 
   /**
