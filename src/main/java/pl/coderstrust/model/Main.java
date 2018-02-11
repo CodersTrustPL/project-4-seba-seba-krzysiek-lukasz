@@ -1,7 +1,7 @@
 
 package pl.coderstrust.model;
 
-import pl.coderstrust.database.inFileDatabase.inFileDatabase;
+import pl.coderstrust.database.inFileDatabase.InFileDatabase;
 
 import java.time.LocalDate;
 
@@ -14,7 +14,7 @@ public class Main {
 
     TestCasesGenerator gen = new TestCasesGenerator();
 
-    inFileDatabase test  = new inFileDatabase();
+    InFileDatabase test  = new InFileDatabase();
 
     for (int i = 0; i <100 ; i++) {
       Invoice invoice = gen.getTestInvoice(i, 10);

@@ -11,12 +11,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
-public class inFileDatabase implements Database {
+public class InFileDatabase implements Database {
 
   private ObjectMapper mapper;
   private FileHelper fileHelper;
 
-  public inFileDatabase() {
+  public InFileDatabase() {
     mapper = new ObjectMapper();
     mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
     mapper.registerModule(new JavaTimeModule());

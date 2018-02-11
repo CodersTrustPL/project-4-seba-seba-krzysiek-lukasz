@@ -20,14 +20,15 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.NoSuchElementException;
 
-public class InvoiceBookTest {
+public abstract class  InvoiceBookTest {
 
+  abstract InvoiceBook getInvoiceBook();
   private InvoiceBook testBook;
   private TestCasesGenerator generator;
 
   @Before
   public void initializeInvoiceBook() {
-    testBook = new InvoiceBook();
+    testBook = getInvoiceBook();
     generator = new TestCasesGenerator();
   }
 
