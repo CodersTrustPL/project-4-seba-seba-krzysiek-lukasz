@@ -5,6 +5,7 @@ import pl.coderstrust.service.InvoiceBook;
 import java.time.LocalDate;
 
 public class Main {
+  
   /**
    * static Main function for checking basic functionality.
    * @param args application entry parameters.
