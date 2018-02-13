@@ -8,6 +8,7 @@ public class Main {
 
   /**
    * static Main function for checking basic functionality.
+   *
    * @param args application entry parameters.
    */
   public static void main(String[] args) {

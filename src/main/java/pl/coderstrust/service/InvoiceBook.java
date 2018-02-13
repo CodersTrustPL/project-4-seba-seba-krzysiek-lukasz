@@ -1,7 +1,7 @@
 package pl.coderstrust.service;
 
 import pl.coderstrust.database.Database;
-import pl.coderstrust.database.database.memory.InMemoryDatabase;
+import pl.coderstrust.database.memory.InMemoryDatabase;
 import pl.coderstrust.model.Company;
 import pl.coderstrust.model.Invoice;
 import pl.coderstrust.model.InvoiceEntry;
