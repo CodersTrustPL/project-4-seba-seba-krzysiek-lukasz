@@ -1,8 +1,13 @@
 package pl.coderstrust.database;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import pl.coderstrust.database.memory.InvoiceProcessingException;
+import pl.coderstrust.model.Invoice;
+
+import java.io.IOException;
 
 public class ObjectMapperProvider {
 
@@ -18,12 +23,24 @@ public class ObjectMapperProvider {
   }
 
   /**
-   * getter For configure ObjectMapper provider
-   *
-   * @return configured ObjectMapper provider
+   * Wraps wireValueAsString method.
+   * @param value Object ot be converted to Json.
+   * @return Json String representing Object.
    */
-  public ObjectMapper getJsonMapper() {
-    return jsonMapper;
 
+  public String toJson(Object value) {
+    try {
+      return jsonMapper.writeValueAsString(value);
+    } catch (JsonProcessingException e) {
+      throw new InvoiceProcessingException("Internal invoice processing error");
+    }
+  }
+
+  public Invoice toInvoice(String json) {
+    try {
+      return jsonMapper.readValue(json, Invoice.class);
+    } catch (IOException e) {
+      throw new InvoiceProcessingException("Internal invoice processing error");
+    }
   }
 }
