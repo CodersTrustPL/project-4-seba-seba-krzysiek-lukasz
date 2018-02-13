@@ -23,10 +23,15 @@ public class InMemoryDatabase implements Database {
 
   @Override
   public Invoice getInvoiceById(long id) {
-    return invoices.get(findIndexInListByInvoiceId(id));
+    try {
+      return invoices.get(findIndexInListByInvoiceId(id));
+    } catch (Exception e) {
+      throw new InvoiceProcessingException("Required invoice does not exits.");
+      //TODO dfsdfs
+    }
   }
 
-  //discuss this method
+
   @Override
   public void updateInvoice(Invoice invoice) {
     invoices.set(findIndexInListByInvoiceId(invoice.getSystemId()), invoice);
@@ -44,10 +49,5 @@ public class InMemoryDatabase implements Database {
       }
     }
     return INVALID_INDEX_VALUE;
-  }
-
-  @Override
-  public void cleanDatabase() {
-    invoices.clear();
   }
 }

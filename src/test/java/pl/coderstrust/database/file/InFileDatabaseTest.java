@@ -9,6 +9,8 @@ import pl.coderstrust.database.Database;
 import pl.coderstrust.database.DatabaseTest;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 
 public class InFileDatabaseTest extends DatabaseTest {
 
@@ -16,7 +18,16 @@ public class InFileDatabaseTest extends DatabaseTest {
   private Configuration config = new Configuration();
 
   @Override
-  public Database getDatabase() {
+  public Database getCleanDatabase() {
+    File dbFile = new File(config.getJsonFilePath());
+    if (dbFile.exists()) {
+      try {
+        Files.delete(dbFile.toPath());
+        Files.createFile(dbFile.toPath());
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
     return new InFileDatabase();
   }
 
@@ -49,7 +60,7 @@ public class InFileDatabaseTest extends DatabaseTest {
   @Test
   public void shouldReturnEmptyDbFileAfterCleanWasCalled() {
     database.addInvoice(testInvoice);
-    database.cleanDatabase();
+    getCleanDatabase();
     File dataFile = new File(config.getJsonFilePath());
     try {
       Thread.sleep(WAIT_TIME_FOR_FILESYSTEM);

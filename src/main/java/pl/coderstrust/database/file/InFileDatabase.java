@@ -76,9 +76,4 @@ public class InFileDatabase implements Database {
     }
     return invoice;
   }
-
-  @Override
-  public void cleanDatabase() {
-    fileHelper.cleanDatabase();
-  }
 }
