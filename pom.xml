@@ -30,6 +30,12 @@
             <phase>verify</phase>
             <configuration>
               <failsOnError>true</failsOnError>
+              <suppressionsLocation>
+                checkstyle-suppressions.xml
+              </suppressionsLocation>
+              <suppressionsFileExpression>
+                checkstyle.suppressions.file
+              </suppressionsFileExpression>
             </configuration>
             <goals>
               <goal>check</goal>

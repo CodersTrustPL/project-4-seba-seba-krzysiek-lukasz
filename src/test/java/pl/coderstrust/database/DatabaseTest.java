@@ -13,6 +13,8 @@ import org.junit.rules.ExpectedException;
 import pl.coderstrust.model.Invoice;
 import pl.coderstrust.testhelpers.TestCasesGenerator;
 
+import java.util.NoSuchElementException;
+
 public abstract class DatabaseTest {
 
   private static final int INVOICE_ENTRIES_COUNT = 3;
@@ -27,6 +29,7 @@ public abstract class DatabaseTest {
 
   public abstract Database getDatabase();
 
+
   /**
    * Cleaning of database and preparation of mapper before each test.
    */
@@ -37,6 +40,7 @@ public abstract class DatabaseTest {
     mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
     mapper.registerModule(new JavaTimeModule());
     database.cleanDatabase();
+    expectedException = ExpectedException.none();
     for (int i = 0; i < INVOICES_COUNT; i++) {
       testInvoice = generator.getTestInvoice(i, INVOICE_ENTRIES_COUNT);
       testInvoice.setSystemId(i);
@@ -61,19 +65,18 @@ public abstract class DatabaseTest {
   }
 
   @Rule
-  public ExpectedException exceptionAfterDelete = ExpectedException.none();
+  public ExpectedException expectedException;
 
   @Test
   public void shouldDeleteInvoicesById() throws Exception {
     //when
     for (int i = 0; i < INVOICES_COUNT; i++) {
-      exceptionAfterDelete.expect(Exception.class);
       database.deleteInvoiceById(i);
     }
 
     //then
     for (int i = 0; i < INVOICES_COUNT; i++) {
-      //expectedException.expect(NoSuchElementException.class);
+      expectedException.expect(NoSuchElementException.class);
       database.getInvoiceById(i);
     }
   }
@@ -100,16 +103,16 @@ public abstract class DatabaseTest {
   }
 
   @Rule
-  public ExpectedException exceptionAfterClean = ExpectedException.none();
+  public ExpectedException thrown = ExpectedException.none();
 
-  @Test
+  @Test()
   public void shouldCleanDatabase() {
     //when
     database.cleanDatabase();
 
     //then
     for (int i = 0; i < INVOICES_COUNT; i++) {
-      exceptionAfterClean.expect(Exception.class);
+      thrown.expect(NoSuchElementException.class);
       database.getInvoiceById(i);
     }
   }

@@ -22,9 +22,7 @@ public class FileHelper {
   private FileStateCheck canWrite = (File file) -> file.canWrite();
   private FileStateCheck isDeleted = (File file) -> !file.exists();
 
-  /**
-   * Default constructor.
-   */
+
   public FileHelper() {
     dbConfig = new Configuration();
     dbFile = new File(dbConfig.getJsonFilePath());
@@ -34,28 +32,28 @@ public class FileHelper {
 
   /**
    * Adds line to database file.
-   *
    * @param lineContent line to be added.
    */
   public void addLine(String lineContent) {
     Path dbFilePath = dbFile.toPath();
     lineContent += System.lineSeparator();
-    OpenOption dbFileOpenOption;
     try {
-      if (Files.exists(dbFile.toPath())) {
-        dbFileOpenOption = StandardOpenOption.APPEND;
-      } else {
-        dbFileOpenOption = StandardOpenOption.CREATE;
-      }
-      Files.write(dbFilePath, lineContent.getBytes(), dbFileOpenOption);
+      Files.write(dbFilePath, lineContent.getBytes(), getFileOpenOption(dbFile));
     } catch (IOException e) {
       e.printStackTrace();
     }
   }
 
+  private OpenOption getFileOpenOption(File fileToCheck) {
+    if (Files.exists(fileToCheck.toPath())) {
+      return StandardOpenOption.APPEND;
+    } else {
+      return StandardOpenOption.CREATE;
+    }
+  }
+
   /**
    * Deletes line from database file
-   *
    * @param lineKey unique key to be present at line.
    */
   public void deleteLine(String lineKey) {
@@ -90,7 +88,6 @@ public class FileHelper {
 
   /**
    * Checks if key is present at database file.
-   *
    * @param lineKey key unique key to be present at line.
    * @throws Exception if key is not found
    */
@@ -103,7 +100,6 @@ public class FileHelper {
 
   /**
    * Checks and waits for file system response for a predefined time.
-   *
    * @param checkedFile file which state is to be checked.
    * @param stateChecker lambda returning state of the file  ex. isPresent, isWritable.
    * @throws Exception if file condition is not satisfied after predefined time.
@@ -119,7 +115,6 @@ public class FileHelper {
 
   /**
    * Gets a line from database file containing the key.
-   *
    * @param lineKey unique key
    * @return line content containing key
    */
@@ -133,14 +128,13 @@ public class FileHelper {
           .filter(line -> line.contains(lineKey))
           .collect(Collectors.joining());
     } catch (Exception e) {
-        e.printStackTrace();
+      e.printStackTrace();
       return null;
     }
   }
 
   /**
    * Gets all lines from database file.
-   *
    * @return list with all lines from database file.
    */
   public ArrayList<String> getAllLines() {
@@ -149,12 +143,9 @@ public class FileHelper {
     } catch (Exception e) {
       e.printStackTrace();
     }
-    return null;
+    return new ArrayList<String>();
   }
 
-  /**
-   * Removes all lines from database.
-   */
   public void cleanDatabase() {
     if (dbFile.exists()) {
       try {
@@ -167,6 +158,7 @@ public class FileHelper {
       }
     }
   }
+
 
   interface FileStateCheck {
 
