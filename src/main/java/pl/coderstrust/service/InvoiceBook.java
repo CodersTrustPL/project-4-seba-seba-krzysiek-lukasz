@@ -1,7 +1,6 @@
 package pl.coderstrust.service;
 
 import pl.coderstrust.database.Database;
-import pl.coderstrust.database.database.memory.InMemoryDatabase;
 import pl.coderstrust.model.Company;
 import pl.coderstrust.model.Invoice;
 import pl.coderstrust.model.InvoiceEntry;
@@ -11,10 +10,15 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+
 public class InvoiceBook {
 
-  private Database database = new InMemoryDatabase();
+  private Database database;
   private static long currentInvoiceNumber = 0;
+
+  InvoiceBook(Database database) {
+    this.database = database;
+  }
 
   /**
    * Method add Object Invoice to db.
