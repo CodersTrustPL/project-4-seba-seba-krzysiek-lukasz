@@ -29,9 +29,7 @@ public class InvoiceBookTest {
   private TestCasesGenerator generator;
   private ObjectMapper mapper = new ObjectMapper();
 
-  /**
-   * Initializes objects before tests.
-   */
+
   @Before
   public void initializeInvoiceBook() {
     testBook = new InvoiceBook();

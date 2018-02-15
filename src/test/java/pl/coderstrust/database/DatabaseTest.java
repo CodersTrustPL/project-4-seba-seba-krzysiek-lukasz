@@ -7,7 +7,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import pl.coderstrust.database.memory.InvoiceProcessingException;
 import pl.coderstrust.model.Invoice;
 import pl.coderstrust.testhelpers.TestCasesGenerator;
 
@@ -16,7 +15,7 @@ public abstract class DatabaseTest {
   private static final int INVOICE_ENTRIES_COUNT = 3;
   protected static final int INVOICES_COUNT = 10;
 
-  private ObjectMapperProvider mapper = new ObjectMapperProvider();
+  private ObjectMapperHelper mapper = new ObjectMapperHelper();
   protected TestCasesGenerator generator = new TestCasesGenerator();
   private String[] should = new String[INVOICES_COUNT];
   private String[] output = new String[INVOICES_COUNT];
@@ -73,7 +72,7 @@ public abstract class DatabaseTest {
 
     //then
     for (int i = 0; i < INVOICES_COUNT; i++) {
-      atDeletedInvoiceAccess.expect(InvoiceProcessingException.class);
+      atDeletedInvoiceAccess.expect(DbException.class);
       database.getInvoiceById(i);
     }
   }
@@ -109,7 +108,7 @@ public abstract class DatabaseTest {
 
     //then
     for (int i = 0; i < INVOICES_COUNT; i++) {
-      atNonexistantInvoiceAccess.expect(InvoiceProcessingException.class);
+      atNonexistantInvoiceAccess.expect(DbException.class);
       cleanDatabase.getInvoiceById(i);
     }
   }

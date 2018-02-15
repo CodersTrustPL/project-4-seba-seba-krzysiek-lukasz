@@ -1,7 +1,7 @@
 package pl.coderstrust.database.file;
 
 import pl.coderstrust.database.Database;
-import pl.coderstrust.database.ObjectMapperProvider;
+import pl.coderstrust.database.ObjectMapperHelper;
 import pl.coderstrust.model.Invoice;
 
 import java.util.ArrayList;
@@ -10,10 +10,10 @@ import java.util.stream.Collectors;
 public class InFileDatabase implements Database {
 
   private FileHelper fileHelper;
-  private ObjectMapperProvider mapper;
+  private ObjectMapperHelper mapper;
 
   public InFileDatabase() {
-    mapper = new ObjectMapperProvider();
+    mapper = new ObjectMapperHelper();
     fileHelper = new FileHelper();
   }
 
