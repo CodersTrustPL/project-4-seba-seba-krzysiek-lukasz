@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.OpenOption;
-import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -30,7 +29,6 @@ public class FileHelper {
     dbConfig = new Configuration();
     dbFile = new File(dbConfig.getJsonFilePath());
     tempFile = new File(dbConfig.getJsonTempFilePath());
-
   }
 
   /**
@@ -39,10 +37,9 @@ public class FileHelper {
    * @param lineContent line to be added.
    */
   public void addLine(String lineContent) {
-    Path dbFilePath = dbFile.toPath();
     lineContent += System.lineSeparator();
     try {
-      Files.write(dbFilePath, lineContent.getBytes(), getFileOpenOption(dbFile));
+      Files.write(dbFile.toPath(), lineContent.getBytes(), getFileOpenOption(dbFile));
     } catch (IOException e) {
       throw new DbException(
           ExceptionMsg.IO_ERROR_WHILE_ADDING);
@@ -64,25 +61,23 @@ public class FileHelper {
    * @param lineKey unique key to be present at line.
    */
   public void deleteLine(String lineKey) {
-    boolean isLineFound;
     try {
-      isLineFound = delLineAndSaveTempFile(lineKey);
+      boolean isLineFound = deleteLineAndSaveToTempFile(lineKey);
       if (!isLineFound) {
         throw new DbException(ExceptionMsg.INVOICE_NOT_EXIST);
-        //TODO change to logging;;
+        //TODO change to logging;
       }
       updateDatabaseFromTemp();
     } catch (InterruptedException e) {
       throw new DbException(ExceptionMsg.INVOICE_PROCESSING_INTERRUPT);
       //TODO change to logging;
     } catch (IOException e) {
-      throw new DbException(
-          ExceptionMsg.IO_ERROR_WHILE_DELETING);
-      //TODO change to logging;;
+      throw new DbException(ExceptionMsg.IO_ERROR_WHILE_DELETING);
+      //TODO change to logging;
     }
   }
 
-  private boolean delLineAndSaveTempFile(String lineKey) throws IOException {
+  private boolean deleteLineAndSaveToTempFile(String lineKey) throws IOException {
     AtomicBoolean isLineFound = new AtomicBoolean(false);
     try (
         Stream<String> inputStream = Files.lines(dbFile.toPath());
@@ -136,15 +131,15 @@ public class FileHelper {
    */
   public String getLine(String lineKey) {
     try (Stream<String> dbStream = Files.lines(dbFile.toPath())) {
-      String out = dbStream
+      String lineFound = dbStream
           .filter(line -> line.contains(lineKey))
           .collect(Collectors.joining());
 
-      if (out.isEmpty()) {
+      if (lineFound.isEmpty()) {
         throw new DbException(
             ExceptionMsg.INVOICE_NOT_EXIST);
       } else {
-        return out;
+        return lineFound;
       }
     } catch (IOException e) {
       throw new DbException(

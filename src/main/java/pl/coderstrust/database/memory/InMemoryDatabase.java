@@ -2,6 +2,7 @@ package pl.coderstrust.database.memory;
 
 import pl.coderstrust.database.Database;
 import pl.coderstrust.database.DbException;
+import pl.coderstrust.database.ExceptionMsg;
 import pl.coderstrust.model.Invoice;
 
 import java.util.ArrayList;
@@ -27,8 +28,7 @@ public class InMemoryDatabase implements Database {
     try {
       return invoices.get(findIndexInListByInvoiceId(id));
     } catch (Exception e) {
-      throw new DbException("Required invoice does not exits.");
-      //TODO dfsdfs
+      throw new DbException(ExceptionMsg.INVOICE_NOT_EXIST);
     }
   }
 

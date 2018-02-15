@@ -7,9 +7,11 @@ public class ExceptionMsg {
   public static final String IO_ERROR_WHILE_DELETING =
       "Filesystem I/O error during deleting invoice. Please try again later.";
   public static final String INVOICE_PROCESSING_INTERRUPT =
-      "Invoice processing interrupted. Try again later.";
+      "Invoice processing interrupted. Please try again later.";
   public static final String IO_ERROR_WHILE_READING =
       "Filesystem I/O error reading invoice. Please try again later.";
   public static final String IO_ERROR_WHILE_ADDING =
       "Filesystem I/O error adding invoice. Please try again later.";
+  public static final String INTERNAL_PROCESSING_ERROR =
+      "Internal invoice processing error. Please try again later";
 }

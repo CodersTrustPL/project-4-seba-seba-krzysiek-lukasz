@@ -32,7 +32,7 @@ public class ObjectMapperHelper {
     try {
       return jsonMapper.writeValueAsString(value);
     } catch (JsonProcessingException e) {
-      throw new DbException("Internal invoice processing error");
+      throw new DbException(ExceptionMsg.INTERNAL_PROCESSING_ERROR);
     }
   }
 
@@ -46,7 +46,7 @@ public class ObjectMapperHelper {
     try {
       return jsonMapper.readValue(json, Invoice.class);
     } catch (IOException e) {
-      throw new DbException("Internal invoice processing error");
+      throw new DbException(ExceptionMsg.INTERNAL_PROCESSING_ERROR);
     }
   }
 }
