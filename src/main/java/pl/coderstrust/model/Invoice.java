@@ -12,12 +12,17 @@ public class Invoice {
   private Company seller;
   private LocalDate issueDate;
   private LocalDate paymentDate;
-  List<InvoiceEntry> products = new ArrayList<>();
+  private List<InvoiceEntry> products = new ArrayList<>();
   private PaymentState paymentState;
+
+  public Invoice(String visibleId) {
+    this.visibleId = visibleId;
+  }
 
   /**
    * Constructor.
    */
+
   public Invoice(String visibleId, Company buyer, Company seller,
       LocalDate issueDate, LocalDate paymentDate,
       List<InvoiceEntry> products, PaymentState paymentState) {
