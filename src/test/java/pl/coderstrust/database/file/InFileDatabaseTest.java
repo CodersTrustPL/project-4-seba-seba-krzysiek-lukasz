@@ -64,7 +64,7 @@ public class InFileDatabaseTest extends DatabaseTest {
   }
 
   @Test
-  public void shouldAddOneLineToDbFile(){
+  public void shouldAddOneLineToDbFile() {
     //given
     getCleanDatabase();
     //when
@@ -78,7 +78,7 @@ public class InFileDatabaseTest extends DatabaseTest {
   }
 
   @Test
-  public void shouldRemoveOneLineFromDbFile(){
+  public void shouldRemoveOneLineFromDbFile() {
     //given
     getCleanDatabase();
     //when
@@ -93,7 +93,7 @@ public class InFileDatabaseTest extends DatabaseTest {
   }
 
   @Test
-  public void shouldGetOneLineFromDbFile(){
+  public void shouldGetOneLineFromDbFile() {
     getCleanDatabase();
     //when
     fileHelper.addLine("test line1");
@@ -104,8 +104,9 @@ public class InFileDatabaseTest extends DatabaseTest {
     assertEquals("test line2",output);
 
   }
+
   @Test
-  public void shouldReturnAllLinesAtDbFile(){
+  public void shouldReturnAllLinesAtDbFile() {
     getCleanDatabase();
 
     //when
