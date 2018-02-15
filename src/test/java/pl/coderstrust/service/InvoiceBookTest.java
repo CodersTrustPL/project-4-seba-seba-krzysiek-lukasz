@@ -5,16 +5,19 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertThat;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-
 import org.junit.rules.ExpectedException;
 import pl.coderstrust.model.Company;
 import pl.coderstrust.model.Invoice;
 import pl.coderstrust.model.PaymentState;
 import pl.coderstrust.model.Product;
 import pl.coderstrust.model.Vat;
+import pl.coderstrust.testhelpers.TestCasesGenerator;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -24,16 +27,22 @@ public class InvoiceBookTest {
 
   private InvoiceBook testBook;
   private TestCasesGenerator generator;
+  private ObjectMapper mapper = new ObjectMapper();
+
 
   @Before
   public void initializeInvoiceBook() {
     testBook = new InvoiceBook();
     generator = new TestCasesGenerator();
+    mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+    mapper.registerModule(new JavaTimeModule());
   }
+
+  @Rule
+  public ExpectedException expectedExceptionFromFind = ExpectedException.none();
 
   @Test
   public void shouldAddLargeNumberOfInvoices() {
-
     int invoiceEntriesCount = 1000;
     int invoicesCount = 1_000;
 
@@ -61,7 +70,7 @@ public class InvoiceBookTest {
   public void shouldAddAndThenRemoveInvoices() {
 
     int invoiceEntriesCount = 1000;
-    int invoicesCount = 1_000;
+    int invoicesCount = 10;
 
     Invoice[] invoices = new Invoice[invoicesCount];
     String[] invoiceIds = new String[invoicesCount];

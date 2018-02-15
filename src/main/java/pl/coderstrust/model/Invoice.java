@@ -7,7 +7,7 @@ import java.util.List;
 public class Invoice {
 
   private long systemId;
-  private final String visibleId;
+  private String visibleId;
   private Company buyer;
   private Company seller;
   private LocalDate issueDate;
@@ -15,8 +15,11 @@ public class Invoice {
   List<InvoiceEntry> products = new ArrayList<>();
   private PaymentState paymentState;
 
+  public Invoice() {
+  }
+
   /**
-   * Constructor.
+   * Constructor initializing all fields.
    */
   public Invoice(String visibleId, Company buyer, Company seller,
       LocalDate issueDate, LocalDate paymentDate,
