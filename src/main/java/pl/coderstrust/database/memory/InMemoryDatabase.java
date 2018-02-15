@@ -1,14 +1,15 @@
-package pl.coderstrust.database.database.memory;
+package pl.coderstrust.database.memory;
 
 import pl.coderstrust.database.Database;
+import pl.coderstrust.database.DbException;
 import pl.coderstrust.model.Invoice;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 public class InMemoryDatabase implements Database {
 
+  private static final int INVALID_INDEX_VALUE = -1;
   private List<Invoice> invoices = new ArrayList<>();
 
   @Override
@@ -23,10 +24,15 @@ public class InMemoryDatabase implements Database {
 
   @Override
   public Invoice getInvoiceById(long id) {
-    return invoices.get(findIndexInListByInvoiceId(id));
+    try {
+      return invoices.get(findIndexInListByInvoiceId(id));
+    } catch (Exception e) {
+      throw new DbException("Required invoice does not exits.");
+      //TODO dfsdfs
+    }
   }
 
-  //discuss this method
+
   @Override
   public void updateInvoice(Invoice invoice) {
     invoices.set(findIndexInListByInvoiceId(invoice.getSystemId()), invoice);
@@ -43,7 +49,6 @@ public class InMemoryDatabase implements Database {
         return i;
       }
     }
-    throw new NoSuchElementException("There is no invoice with id : " + id);
+    return INVALID_INDEX_VALUE;
   }
-
 }
