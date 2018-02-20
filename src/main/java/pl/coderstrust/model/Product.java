@@ -12,6 +12,14 @@ public class Product {
   public Product() {
   }
 
+  public Product(String name, String description, BigDecimal netValue,
+      Vat vatRate) {
+    this.name = name;
+    this.description = description;
+    this.netValue = netValue;
+    this.vatRate = vatRate;
+  }
+
   public String getName() {
     return name;
   }

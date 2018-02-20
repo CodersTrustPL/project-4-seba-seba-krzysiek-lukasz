@@ -18,6 +18,19 @@ public class Invoice {
   public Invoice() {
   }
 
+
+  public Invoice(String visibleId, Company buyer, Company seller,
+      LocalDate issueDate, LocalDate paymentDate,
+      List<InvoiceEntry> products, PaymentState paymentState) {
+    this.invoiceName = visibleId;
+    this.buyer = buyer;
+    this.seller = seller;
+    this.issueDate = issueDate;
+    this.paymentDate = paymentDate;
+    this.products = products;
+    this.paymentState = paymentState;
+  }
+
   @Override
   public String toString() {
     return "Invoice{"

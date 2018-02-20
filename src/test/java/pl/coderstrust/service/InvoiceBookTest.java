@@ -34,11 +34,11 @@ public class InvoiceBookTest {
   @Test
   public void shouldAddInvoice() {
     //given
-    doNothing().when(database).addInvoice(invoice);
+    when(database.addInvoice(invoice)).thenReturn(1L);
     //when
     invoiceBook.addInvoice(invoice);
     //then
-    verify(database).addInvoice(invoice);
+    assertThat(invoiceBook.addInvoice(invoice), is(equalTo(1L)));
   }
 
   @Test
@@ -101,6 +101,6 @@ public class InvoiceBookTest {
     //when
     invoiceBook.getInvoiceByDate(date, date);
     //then
-    assertThat(invoiceBook.getInvoices().iterator().next().getIssueDate(),is(equalTo(date)));
+    assertThat(invoiceBook.getInvoices().iterator().next().getIssueDate(), is(equalTo(date)));
   }
 }

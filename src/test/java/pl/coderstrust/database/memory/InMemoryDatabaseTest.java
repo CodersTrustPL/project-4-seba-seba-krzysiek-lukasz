@@ -1,28 +1,12 @@
 package pl.coderstrust.database.memory;
 
-import org.junit.Assert;
-import org.junit.Test;
+import pl.coderstrust.database.Database;
+import pl.coderstrust.database.DatabaseTest;
 
-public class InMemoryDatabaseTest {
+public class InMemoryDatabaseTest extends DatabaseTest {
 
-  @Test
-  public void addInvoice() throws Exception {
+  @Override
+  public Database getCleanDatabase() {
+    return new InMemoryDatabase();
   }
-
-  @Test
-  public void deleteInvoiceById() throws Exception {
-  }
-
-  @Test
-  public void getInvoiceById() throws Exception {
-  }
-
-  @Test
-  public void updateInvoice() throws Exception {
-  }
-
-  @Test
-  public void getInvoices() throws Exception {
-  }
-
 }

@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class InvoiceBuilder {
+
   private Invoice invoice = new Invoice();
 
   public InvoiceBuilder(long id, String buyerName, String sellerName) {

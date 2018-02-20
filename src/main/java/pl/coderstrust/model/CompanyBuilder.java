@@ -1,6 +1,7 @@
 package pl.coderstrust.model;
 
 public class CompanyBuilder {
+
   private Company company = new Company();
 
   public CompanyBuilder(String name) {

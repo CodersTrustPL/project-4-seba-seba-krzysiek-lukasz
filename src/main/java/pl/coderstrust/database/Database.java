@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface Database {
 
-  void addInvoice(Invoice invoice);
+  long addInvoice(Invoice invoice);
 
   void deleteInvoice(long id);
 
@@ -17,4 +17,5 @@ public interface Database {
   List<Invoice> getInvoices();
 
   boolean idExist(long id);
+
 }

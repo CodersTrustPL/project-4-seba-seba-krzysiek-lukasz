@@ -5,12 +5,13 @@ import static pl.coderstrust.model.Vat.VAT_23;
 import java.math.BigDecimal;
 
 public class ProductBuilder {
+
   private Product product = new Product();
 
   /**
    * If not provided Vat rate is set to 23%.
    *
-   * @param name     -Product name.
+   * @param name -Product name.
    * @param netValue = Product net value.
    */
   public ProductBuilder(String name, double netValue) {
