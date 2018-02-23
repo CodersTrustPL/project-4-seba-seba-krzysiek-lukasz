@@ -70,7 +70,6 @@ public class InvoiceBookController {
     invoice.setId(id);
     invoiceBook.updateInvoice(invoice);
     return ResponseEntity.ok().build();
-
   }
 
   @RequestMapping(value = "invoice/{id}", method = RequestMethod.DELETE)
