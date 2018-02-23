@@ -1,5 +1,6 @@
 package pl.coderstrust.testhelpers;
 
+import org.springframework.stereotype.Service;
 import pl.coderstrust.model.Company;
 import pl.coderstrust.model.CompanyBuilder;
 import pl.coderstrust.model.Invoice;
@@ -13,7 +14,7 @@ import pl.coderstrust.model.Vat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
+@Service
 public class TestCasesGenerator {
 
 
