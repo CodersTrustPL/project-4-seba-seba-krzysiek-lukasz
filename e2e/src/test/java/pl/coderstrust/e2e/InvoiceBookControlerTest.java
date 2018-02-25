@@ -5,12 +5,14 @@ import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 
 import io.restassured.RestAssured;
+import io.restassured.response.Response;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import pl.coderstrust.e2e.model.Company;
 import pl.coderstrust.e2e.model.Invoice;
 import pl.coderstrust.e2e.model.InvoiceEntry;
+import pl.coderstrust.e2e.testHelpers.ObjectMapperHelper;
 import pl.coderstrust.e2e.testHelpers.TestCasesGenerator;
 
 import java.time.LocalDate;
@@ -19,14 +21,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
-public class SampleTest {
+public class InvoiceBookControlerTest {
 
   private TestCasesGenerator generator = new TestCasesGenerator();
   private ObjectMapperHelper mapper = new ObjectMapperHelper();
   private LocalDate currentDate;
   private Invoice testInvoice;
-  private Pattern pattern = Pattern.compile("(\\[)(.*?)(\\])");
-  private Matcher matcher;
+  private Pattern intFromString;
 
   @BeforeClass
   public void setupClass() {
@@ -48,7 +49,7 @@ public class SampleTest {
       baseHost = "http://localhost";
     }
     RestAssured.baseURI = baseHost;
-    pattern = Pattern.compile("([0-9])+");
+    intFromString = Pattern.compile("([0-9])+");
 
   }
 
@@ -68,25 +69,28 @@ public class SampleTest {
 
   @Test
   public void shouldCorrectlyAddAndGetInvoice() {
-
-    String response = given()
+    Response response = given()
         .contentType("application/json")
         .body(testInvoice)
         .when()
-        .post("")
-        .body().print();
+        .post("");
 
-    Matcher matcher = pattern.matcher(response);
-    matcher.find();
-    long position = Long.parseLong(matcher.group(0));
-    testInvoice.setId(position);
+    long invoiceId = getInvoiceIdFromServerResponse(response.print());
+
+    testInvoice.setId(invoiceId);
     given().
         when().
-        get("/" + position).
+        get("/" + invoiceId).
 
         then().
         assertThat().
         body(equalTo(mapper.toJson(testInvoice)));
+  }
+
+  long getInvoiceIdFromServerResponse(String response){
+    Matcher matcher = intFromString.matcher(response);
+    matcher.find();
+    return Long.parseLong(matcher.group(0));
   }
 
   @Test
@@ -159,7 +163,6 @@ public class SampleTest {
         then().
         assertThat().
         body(equalTo("[\"Company name is empty.\"]"));
-
   }
 }
 

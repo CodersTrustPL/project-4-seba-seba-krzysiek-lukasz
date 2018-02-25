@@ -1,4 +1,4 @@
-package pl.coderstrust.e2e;
+package pl.coderstrust.e2e.testHelpers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
