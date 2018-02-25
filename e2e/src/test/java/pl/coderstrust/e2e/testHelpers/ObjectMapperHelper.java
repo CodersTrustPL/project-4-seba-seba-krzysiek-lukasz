@@ -9,6 +9,8 @@ import pl.coderstrust.e2e.model.ExceptionMsg;
 import pl.coderstrust.e2e.model.Invoice;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ObjectMapperHelper {
 
@@ -36,5 +38,15 @@ public class ObjectMapperHelper {
       throw new DbException(ExceptionMsg.INTERNAL_PROCESSING_ERROR, e);
       //TODO add logging.
     }
+  }
+
+  public List<Invoice> toInvoiceList(String json){
+    try {
+      return jsonMapper.readValue(json,jsonMapper.getTypeFactory().constructCollectionType(ArrayList.class, Invoice.class));
+    } catch (IOException e) {
+      throw new DbException(ExceptionMsg.INTERNAL_PROCESSING_ERROR, e);
+      //TODO add logging.
+    }
+
   }
 }
