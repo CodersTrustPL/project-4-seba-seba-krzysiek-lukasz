@@ -1,110 +1,166 @@
 package pl.coderstrust.e2e;
 
-
-//@RunWith(SpringJUnit4ClassRunner.class)
-//@SpringBootTest(classes = Application.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-
-//@RunWith(SpringRunner.class)
-//@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-//public class SampleTest {
-//
-//  private int port;
-//
-//  @Test
-//  public void sampleTest(){
-//
-//    RestAssured.baseURI ="http://localhost:"+"/invoice";
-//    RequestSpecification request = given();
-//
-//    String invoice = "{\"invoiceName\":\"idVisible_111\",\"buyer\":{\"name\":\"buyer_name_0\",\"address\""
-//        + ":\"buyer_address_0\",\"city\":\"buyer_city_0\",\"zipCode\":\"buyer_zipCode_0\""
-//        + ",\"nip\":\"buyer_nip_0\",\"bankAccoutNumber\":\"buyer_bankAccoutNumber_0\"},"
-//        + "\"seller\":{\"name\":\"seller_name_0\",\"address\":\"seller_address_0\","
-//        + "\"city\":\"seller_city_0\",\"zipCode\":\"seller_zipCode_0\",\"nip\":\"seller_nip_0\""
-//        + ",\"bankAccoutNumber\":\"seller_bankAccoutNumber_0\"},\"issueDate\":\"2018-05-01\","
-//        + "\"paymentDate\":\"2018-06-16\",\"products\":[{\"product\":{\"name\":\"name_0_0\","
-//        + "\"description\":\"description_0_0\",\"netValue\":1,\"vatRate\":\"VAT_23\"},\"amount\""
-//        + ":0},{\"product\":{\"name\":\"name_0_1\",\"description\":\"description_0_1\","
-//        + "\"netValue\":30,\"vatRate\":\"VAT_23\"},\"amount\":1},{\"product\""
-//        + ":{\"name\":\"name_0_2\",\"description\":\"description_0_2\",\"netValue\":1,"
-//        + "\"vatRate\":\"VAT_23\"},\"amount\":2}],\"paymentState\":\"NOT_PAID\"}";
-//
-//    Response r = given()
-//        .contentType("application/json").
-//            body(invoice).
-//            when().
-//            post("");
-//
-//    String body = r.getBody().asString();
-//    System.out.println(body);
-//
-//  }
-
-//}
-
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.equalTo;
 
 import io.restassured.RestAssured;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+import pl.coderstrust.e2e.model.Company;
+import pl.coderstrust.e2e.model.Invoice;
+import pl.coderstrust.e2e.model.InvoiceEntry;
+import pl.coderstrust.e2e.testHelpers.TestCasesGenerator;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 
 public class SampleTest {
+
+  private TestCasesGenerator generator = new TestCasesGenerator();
+  private ObjectMapperHelper mapper = new ObjectMapperHelper();
+  private LocalDate currentDate;
+  private Invoice testInvoice;
+  private Pattern pattern = Pattern.compile("(\\[)(.*?)(\\])");
+  private Matcher matcher;
+
   @BeforeClass
-  public static void setup() {
+  public void setupClass() {
     String port = System.getProperty("server.port");
     if (port == null) {
       RestAssured.port = Integer.valueOf(8080);
-    }
-    else{
+    } else {
       RestAssured.port = Integer.valueOf(port);
     }
 
-
     String basePath = System.getProperty("server.base");
-    if(basePath==null){
+    if (basePath == null) {
       basePath = "/invoice/";
     }
     RestAssured.basePath = basePath;
 
     String baseHost = System.getProperty("server.host");
-    if(baseHost==null){
+    if (baseHost == null) {
       baseHost = "http://localhost";
     }
     RestAssured.baseURI = baseHost;
+    pattern = Pattern.compile("([0-9])+");
 
   }
 
-  @Test
-  public void basicPingTest() {
-    given().when().get("").then().statusCode(200);
+  @BeforeMethod
+  public void setupMethod() {
+    currentDate = LocalDate.now();
+    testInvoice = generator.getTestInvoice(1, 1);
   }
 
   @Test
-  public void sampleTest(){
+  public void shouldReturnCorrectStatusCode() {
+    given()
+        .when().get("")
+        .then()
+        .statusCode(200);
+  }
 
+  @Test
+  public void shouldCorrectlyAddAndGetInvoice() {
 
-    String invoice = "{\"invoiceName\":\"idVisible_111\",\"buyer\":{\"name\":\"buyer_name_0\",\"address\""
-        + ":\"buyer_address_0\",\"city\":\"buyer_city_0\",\"zipCode\":\"buyer_zipCode_0\""
-        + ",\"nip\":\"buyer_nip_0\",\"bankAccoutNumber\":\"buyer_bankAccoutNumber_0\"},"
-        + "\"seller\":{\"name\":\"seller_name_0\",\"address\":\"seller_address_0\","
-        + "\"city\":\"seller_city_0\",\"zipCode\":\"seller_zipCode_0\",\"nip\":\"seller_nip_0\""
-        + ",\"bankAccoutNumber\":\"seller_bankAccoutNumber_0\"},\"issueDate\":\"2018-05-01\","
-        + "\"paymentDate\":\"2018-06-16\",\"products\":[{\"product\":{\"name\":\"name_0_0\","
-        + "\"description\":\"description_0_0\",\"netValue\":1,\"vatRate\":\"VAT_23\"},\"amount\""
-        + ":0},{\"product\":{\"name\":\"name_0_1\",\"description\":\"description_0_1\","
-        + "\"netValue\":30,\"vatRate\":\"VAT_23\"},\"amount\":1},{\"product\""
-        + ":{\"name\":\"name_0_2\",\"description\":\"description_0_2\",\"netValue\":1,"
-        + "\"vatRate\":\"VAT_23\"},\"amount\":2}],\"paymentState\":\"NOT_PAID\"}";
-
-    String s = given()
+    String response = given()
         .contentType("application/json")
-        .body(invoice)
-        .when().post("")
-        .getBody().asString();
+        .body(testInvoice)
+        .when()
+        .post("")
+        .body().print();
 
-    System.out.println(s);
+    Matcher matcher = pattern.matcher(response);
+    matcher.find();
+    long position = Long.parseLong(matcher.group(0));
+    testInvoice.setId(position);
+    given().
+        when().
+        get("/" + position).
+
+        then().
+        assertThat().
+        body(equalTo(mapper.toJson(testInvoice)));
+  }
+
+  @Test
+  public void shouldCorrectlyAdd10Invoices() {
+    ArrayList<Invoice> invoices = new ArrayList<>();
+    for (int i = 0; i < 10; i++) {
+      invoices.add(generator.getTestInvoice(i + 1, 1));
+      invoices.get(i).setIssueDate(currentDate.plusYears(i));
+      invoices.get(i).setPaymentDate(currentDate.plusYears(i).plusDays(15));
+
+      given().
+          contentType("application/json").
+          body(invoices.get(i)).
+
+          when().
+          post("").
+
+          then().
+          assertThat().
+          body(containsString("Invoice added under id :"));
+    }
+  }
+
+  @Test
+  public void shouldRejectAddingInvoiceIssuedBeforeCurrentDate() {
+    testInvoice.setIssueDate(currentDate.minusDays(1));
+
+    given().
+        contentType("application/json").
+        body(testInvoice).
+
+        when().
+        post("").
+
+        then().
+        assertThat().
+        body(equalTo("[\"Date is earlier then actual date.\"]"));
+  }
+
+  @Test
+  public void shouldRejectAddingInvoiceWithProductListEmpty() {
+    testInvoice.setProducts(new ArrayList<InvoiceEntry>());
+
+    given().
+        contentType("application/json").
+        body(testInvoice).
+
+        when().
+        post("").
+
+        then().
+        assertThat().
+        body(equalTo("[\"Products list is empty.\"]"));
 
   }
 
+  @Test
+  public void shouldRejectAddingInvoiceWithCompanyNameEmpty() {
+    Company company = generator.getTestCompany(1, "sample_Prefix");
+    company.setName("");
+    testInvoice.setBuyer(company);
 
+    given().
+        contentType("application/json").
+        body(testInvoice).
+
+        when().
+        post("").
+
+        then().
+        assertThat().
+        body(equalTo("[\"Company name is empty.\"]"));
+
+  }
 }
+
+
