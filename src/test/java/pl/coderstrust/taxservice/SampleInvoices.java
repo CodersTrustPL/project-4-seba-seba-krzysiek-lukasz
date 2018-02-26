@@ -189,4 +189,76 @@ public class SampleInvoices {
 
     return invoiceBuilder2.build();
   }
+
+  public List<Invoice> invoicesSmallPrices() {
+    List<Invoice> invoiceWithSmallPrices = new ArrayList<>();
+
+    for (int i = 0; i < 5; i++) {
+      Product product;
+      ProductBuilder productBuilder2 = new ProductBuilder("apple", 0.5 + i);
+      productBuilder2.setVatRate(Vat.VAT_5);
+      product = productBuilder2.build();
+
+      InvoiceEntry invoiceEntry = new InvoiceEntry(product, 1);
+
+      Invoice invoice;
+      InvoiceBuilder invoiceBuilder = new InvoiceBuilder(i, "My company", "other");
+      invoiceBuilder.setIssueDate(LocalDate.of(2018, 2, 22));
+      invoiceBuilder.setProducts(Collections.singletonList(invoiceEntry));
+      invoice = invoiceBuilder.build();
+
+      invoiceWithSmallPrices.add(invoice);
+    }
+    for (int i = 0; i < 5; i++) {
+      Product product;
+      ProductBuilder productBuilder2 = new ProductBuilder("apple", 0.5 + i);
+      productBuilder2.setVatRate(Vat.VAT_5);
+      product = productBuilder2.build();
+
+      InvoiceEntry invoiceEntry = new InvoiceEntry(product, 1);
+
+      Invoice invoice;
+      InvoiceBuilder invoiceBuilder = new InvoiceBuilder(i, "My company", "other");
+      invoiceBuilder.setIssueDate(LocalDate.of(2018, 5, 22));
+      invoiceBuilder.setProducts(Collections.singletonList(invoiceEntry));
+      invoice = invoiceBuilder.build();
+
+      invoiceWithSmallPrices.add(invoice);
+    }
+
+    for (int i = 0; i < 5; i++) {
+      Product product;
+      ProductBuilder productBuilder2 = new ProductBuilder("apple", 0.1 + i);
+      productBuilder2.setVatRate(Vat.VAT_5);
+      product = productBuilder2.build();
+
+      InvoiceEntry invoiceEntry = new InvoiceEntry(product, 1);
+
+      Invoice invoice;
+      InvoiceBuilder invoiceBuilder = new InvoiceBuilder(i, "other", "My company");
+      invoiceBuilder.setIssueDate(LocalDate.of(2018, 2, 22));
+      invoiceBuilder.setProducts(Collections.singletonList(invoiceEntry));
+      invoice = invoiceBuilder.build();
+
+      invoiceWithSmallPrices.add(invoice);
+    }
+
+    for (int i = 0; i < 5; i++) {
+      Product product;
+      ProductBuilder productBuilder2 = new ProductBuilder("apple", 0.1 + i);
+      productBuilder2.setVatRate(Vat.VAT_5);
+      product = productBuilder2.build();
+
+      InvoiceEntry invoiceEntry = new InvoiceEntry(product, 1);
+
+      Invoice invoice;
+      InvoiceBuilder invoiceBuilder = new InvoiceBuilder(i, "other", "My company");
+      invoiceBuilder.setIssueDate(LocalDate.of(2018, 7, 22));
+      invoiceBuilder.setProducts(Collections.singletonList(invoiceEntry));
+      invoice = invoiceBuilder.build();
+
+      invoiceWithSmallPrices.add(invoice);
+    }
+    return invoiceWithSmallPrices;
+  }
 }
