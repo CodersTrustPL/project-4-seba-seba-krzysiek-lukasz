@@ -21,17 +21,17 @@ public class TaxCalculatorService {
     this.database = database;
   }
 
-  public String calculateIncomeCost(LocalDate beginDate, LocalDate endDate) {
+  public String calculateIncomeCost(String companyName,LocalDate beginDate, LocalDate endDate) {
     BigDecimal income = BigDecimal.valueOf(0);
     BigDecimal cost = BigDecimal.valueOf(0);
 
     List<Invoice> invoiceByDates = new ArrayList<>(getInvoiceByDate(beginDate, endDate));
 
     for (Invoice invoice : invoiceByDates) {
-      if (invoice.getSeller().getName().equals("My company")) {
+      if (invoice.getSeller().getName().equals(companyName)) {
         income = income.add(getNetValue(invoice));
       }
-      if (invoice.getBuyer().getName().equals("My company")) {
+      if (invoice.getBuyer().getName().equals(companyName)) {
         cost = cost.add(getNetValue(invoice));
       }
     }
@@ -39,17 +39,17 @@ public class TaxCalculatorService {
     return decimalFormat.format(income.subtract(cost));
   }
 
-  public String calculateVat(LocalDate beginDate, LocalDate endDate) {
+  public String calculateVat(String companyName,LocalDate beginDate, LocalDate endDate) {
     BigDecimal income = BigDecimal.valueOf(0);
     BigDecimal cost = BigDecimal.valueOf(0);
 
     List<Invoice> invoiceByDates = new ArrayList<>(getInvoiceByDate(beginDate, endDate));
 
     for (Invoice invoice : invoiceByDates) {
-      if (invoice.getSeller().getName().equals("My company")) {
+      if (invoice.getSeller().getName().equals(companyName)) {
         income = income.add(getVatValue(invoice));
       }
-      if (invoice.getBuyer().getName().equals("My company")) {
+      if (invoice.getBuyer().getName().equals(companyName)) {
         cost = cost.add(getVatValue(invoice));
       }
     }
