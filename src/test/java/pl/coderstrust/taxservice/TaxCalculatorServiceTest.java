@@ -93,4 +93,27 @@ public class TaxCalculatorServiceTest {
     assertThat(calculateVat, is(equalTo("2300,00")));
   }
 
+  @Test
+  public void shouldCalculateVatDifferenceInvoiceWithSmallPricesExpectedNegativeNumber() {
+    //given
+    when(database.getInvoices()).thenReturn(sampleInvoices.invoicesSmallPrices());
+    //when
+    String calculateValue = taxCalculatorService.calculateIncomeCost(startDate,
+        endDate);
+    //then
+    assertThat(calculateValue, is(equalTo("-2,00")));
+  }
+
+  @Test
+  public void shouldCalculateIncomeCostInvoiceWithSmallPricesExpectedNegativeNumber() {
+    //given
+    when(database.getInvoices()).thenReturn(sampleInvoices.invoicesSmallPrices());
+    //when
+    String calculateVat = taxCalculatorService.calculateVat(startDate, endDate);
+    //then
+    assertThat(calculateVat, is(equalTo("-0,10")));
+  }
+
+
+
 }
