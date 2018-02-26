@@ -59,9 +59,9 @@ public class TaxCalculatorService {
   private BigDecimal getNetValue(Invoice invoice) {
     BigDecimal netValueMultiplyAmount = BigDecimal.valueOf(0);
 
-    for (InvoiceEntry invoiceEntry : invoice.getProducts()) {
-      int amount = invoiceEntry.getAmount();
-      BigDecimal netValue = invoiceEntry.getProduct().getNetValue();
+    for (InvoiceEntry products : invoice.getProducts()) {
+      int amount = products.getAmount();
+      BigDecimal netValue = products.getProduct().getNetValue();
       netValueMultiplyAmount = netValueMultiplyAmount
           .add(netValue.multiply(new BigDecimal(amount)));
     }
@@ -71,10 +71,10 @@ public class TaxCalculatorService {
   private BigDecimal getVatValue(Invoice invoice) {
     BigDecimal netValueMultiplyAmount = BigDecimal.valueOf(0);
 
-    for (InvoiceEntry invoiceEntry : invoice.getProducts()) {
-      int amount = invoiceEntry.getAmount();
-      double vatRate = invoiceEntry.getProduct().getVatRate().getVatPercent();
-      BigDecimal netValue = invoiceEntry.getProduct().getNetValue()
+    for (InvoiceEntry products : invoice.getProducts()) {
+      int amount = products.getAmount();
+      double vatRate = products.getProduct().getVatRate().getVatPercent();
+      BigDecimal netValue = products.getProduct().getNetValue()
           .multiply(BigDecimal.valueOf(vatRate));
       netValueMultiplyAmount = netValueMultiplyAmount
           .add(netValue.multiply(new BigDecimal(amount)));
