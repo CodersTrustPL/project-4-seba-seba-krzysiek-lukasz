@@ -11,12 +11,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import pl.coderstrust.database.Database;
-
 import java.time.LocalDate;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TaxCalculatorServiceTest {
 
+  private String companyName = "My company";
   private LocalDate startDate = LocalDate.of(2018, 2, 21);
   private LocalDate endDate = LocalDate.of(2018, 2, 22);
   private SampleInvoices sampleInvoices = new SampleInvoices();
@@ -32,7 +32,7 @@ public class TaxCalculatorServiceTest {
     //given
     when(database.getInvoices()).thenReturn(sampleInvoices.listOfInvoicesInDateRange());
     //when
-    String calculateValue = taxCalculatorService.calculateIncomeCost(startDate,
+    String calculateValue = taxCalculatorService.calculateIncomeCost(companyName, startDate,
         endDate);
     //then
     assertThat(calculateValue, is(equalTo("10000,00")));
@@ -43,7 +43,7 @@ public class TaxCalculatorServiceTest {
     //given
     when(database.getInvoices()).thenReturn(sampleInvoices.listOfInvoicesInDateRange());
     //when
-    String calculateVat = taxCalculatorService.calculateVat(startDate,
+    String calculateVat = taxCalculatorService.calculateVat(companyName, startDate,
         endDate);
     //then
     assertThat(calculateVat, is(equalTo("2300,00")));
@@ -54,7 +54,7 @@ public class TaxCalculatorServiceTest {
     //given
     when(database.getInvoices()).thenReturn(sampleInvoices.listOfInvoicesOutOfDate());
     //when
-    String calculateValue = taxCalculatorService.calculateIncomeCost(startDate,
+    String calculateValue = taxCalculatorService.calculateIncomeCost(companyName, startDate,
         endDate);
     //then
     assertThat(calculateValue, is(equalTo("0,00")));
@@ -65,7 +65,7 @@ public class TaxCalculatorServiceTest {
     //given
     when(database.getInvoices()).thenReturn(sampleInvoices.listOfInvoicesOutOfDate());
     //when
-    String calculateVat = taxCalculatorService.calculateVat(startDate,
+    String calculateVat = taxCalculatorService.calculateVat(companyName, startDate,
         endDate);
     //then
     assertThat(calculateVat, is(equalTo("0,00")));
@@ -76,7 +76,7 @@ public class TaxCalculatorServiceTest {
     //given
     when(database.getInvoices()).thenReturn(sampleInvoices.listOfinvoicesWholeDates());
     //when
-    String calculateValue = taxCalculatorService.calculateIncomeCost(startDate,
+    String calculateValue = taxCalculatorService.calculateIncomeCost(companyName, startDate,
         endDate);
     //then
     assertThat(calculateValue, is(equalTo("10000,00")));
@@ -87,7 +87,7 @@ public class TaxCalculatorServiceTest {
     //given
     when(database.getInvoices()).thenReturn(sampleInvoices.listOfInvoicesInDateRange());
     //when
-    String calculateVat = taxCalculatorService.calculateVat(startDate,
+    String calculateVat = taxCalculatorService.calculateVat(companyName, startDate,
         endDate);
     //then
     assertThat(calculateVat, is(equalTo("2300,00")));
@@ -98,7 +98,7 @@ public class TaxCalculatorServiceTest {
     //given
     when(database.getInvoices()).thenReturn(sampleInvoices.invoicesSmallPrices());
     //when
-    String calculateValue = taxCalculatorService.calculateIncomeCost(startDate,
+    String calculateValue = taxCalculatorService.calculateIncomeCost(companyName, startDate,
         endDate);
     //then
     assertThat(calculateValue, is(equalTo("-2,00")));
@@ -109,11 +109,10 @@ public class TaxCalculatorServiceTest {
     //given
     when(database.getInvoices()).thenReturn(sampleInvoices.invoicesSmallPrices());
     //when
-    String calculateVat = taxCalculatorService.calculateVat(startDate, endDate);
+    String calculateVat = taxCalculatorService.calculateVat(companyName, startDate, endDate);
     //then
     assertThat(calculateVat, is(equalTo("-0,10")));
   }
-
 
 
 }
