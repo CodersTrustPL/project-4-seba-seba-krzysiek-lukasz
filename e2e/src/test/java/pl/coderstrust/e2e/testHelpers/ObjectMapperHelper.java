@@ -4,8 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import pl.coderstrust.e2e.model.DbException;
-import pl.coderstrust.e2e.model.ExceptionMsg;
 import pl.coderstrust.e2e.model.Invoice;
 
 import java.io.IOException;
@@ -26,8 +24,7 @@ public class ObjectMapperHelper {
     try {
       return jsonMapper.writeValueAsString(value);
     } catch (JsonProcessingException e) {
-      throw new DbException(ExceptionMsg.INTERNAL_PROCESSING_ERROR, e);
-      //TODO add logging.
+      throw new RuntimeException("Mapper failed at conversion from object to Json.",e);
     }
   }
 
@@ -35,18 +32,16 @@ public class ObjectMapperHelper {
     try {
       return jsonMapper.readValue(json, Invoice.class);
     } catch (IOException e) {
-      throw new DbException(ExceptionMsg.INTERNAL_PROCESSING_ERROR, e);
-      //TODO add logging.
+      throw new RuntimeException("Mapper failed at conversion from Json to object.",e);
     }
   }
 
-  public List<Invoice> toInvoiceList(String json){
+  public List<Invoice> toInvoiceList(String json) {
     try {
-      return jsonMapper.readValue(json,jsonMapper.getTypeFactory().constructCollectionType(ArrayList.class, Invoice.class));
+      return jsonMapper.readValue(json,
+          jsonMapper.getTypeFactory().constructCollectionType(ArrayList.class, Invoice.class));
     } catch (IOException e) {
-      throw new DbException(ExceptionMsg.INTERNAL_PROCESSING_ERROR, e);
-      //TODO add logging.
+      throw new RuntimeException("Mapper failed at conversion from Json to list of object.",e);
     }
-
   }
 }

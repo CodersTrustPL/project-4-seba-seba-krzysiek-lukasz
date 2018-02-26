@@ -21,6 +21,7 @@ import java.util.regex.Pattern;
 
 
 public class ValidInputTests {
+
   private TestsConfiguration config = new TestsConfiguration();
   private TestCasesGenerator generator = new TestCasesGenerator();
   private ObjectMapperHelper mapper = new ObjectMapperHelper();
@@ -42,11 +43,11 @@ public class ValidInputTests {
   @BeforeMethod
   public void setupMethod() {
     currentDate = LocalDate.now();
-    testInvoice = generator.getTestInvoice(1, config.getDefaultEntriesCount());
+    testInvoice = generator.getTestInvoice(config.getDefaultTestInvoiceNumber(), config.getDefaultEntriesCount());
   }
 
   @Test
-  public void shouldReturnCorrectStatusCode() {
+  public void shouldReturnCorrectStatusCodeWhenServiceIsUp() {
     given()
         .when().get("")
         .then()
@@ -54,15 +55,8 @@ public class ValidInputTests {
   }
 
   @Test
-  public void shouldCorrectlyAddAndGetInvoice() {
-    Response response = given()
-        .contentType("application/json")
-        .body(testInvoice)
-        .when()
-        .post("");
-
-    long invoiceId = getInvoiceIdFromServerResponse(response.print());
-
+  public void shouldCorrectlyAddAndGetInvoiceById() {
+    long invoiceId = addInvoice(testInvoice);
     testInvoice.setId(invoiceId);
     given().
         when().
@@ -73,6 +67,15 @@ public class ValidInputTests {
         body(equalTo(mapper.toJson(testInvoice)));
   }
 
+  long addInvoice(Invoice testInvoice) {
+    Response response = given()
+        .contentType("application/json")
+        .body(testInvoice)
+        .when()
+        .post("");
+    return getInvoiceIdFromServerResponse(response.print());
+  }
+
   long getInvoiceIdFromServerResponse(String response) {
     Matcher matcher = extractIntFromString.matcher(response);
     matcher.find();
@@ -80,7 +83,51 @@ public class ValidInputTests {
   }
 
   @Test
-  public void shouldAdd10InvoicesAndReturnCorrectMessage() {
+  public void shouldCorrectlyUpdateInvoice() {
+    long invoiceId = addInvoice(testInvoice);
+
+    Invoice updatedInvoice = testInvoice = generator
+        .getTestInvoice(config.getDefaultTestInvoiceNumber() + 1, config.getDefaultEntriesCount());
+    updatedInvoice.setId(invoiceId);
+    given()
+        .contentType("application/json")
+        .body(testInvoice)
+        .when()
+        .put("/"+invoiceId);
+
+    given().
+        when().
+        get("/" + invoiceId).
+
+        then().
+        assertThat().
+        body(equalTo(mapper.toJson(updatedInvoice)));
+  }
+
+  @Test
+  public void shouldCorrectlyDeleteInvoiceById(){
+      long invoiceId = addInvoice(testInvoice);
+
+      Invoice updatedInvoice = testInvoice = generator
+          .getTestInvoice(config.getDefaultTestInvoiceNumber() + 1, config.getDefaultEntriesCount());
+      updatedInvoice.setId(invoiceId);
+      given()
+          .contentType("application/json")
+          .body(testInvoice)
+          .when()
+          .delete("/"+invoiceId);
+
+      given().
+          when().
+          get("/" + invoiceId).
+
+          then().
+          assertThat().
+          body(equalTo(""));
+  }
+
+  @Test
+  public void shouldAddSeveralInvoicesAndReturnCorrectMessage() {
     for (Invoice invoice : testInvoices) {
       given().
           contentType("application/json").

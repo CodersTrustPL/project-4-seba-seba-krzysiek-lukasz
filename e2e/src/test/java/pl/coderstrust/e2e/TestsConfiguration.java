@@ -29,43 +29,43 @@ public class TestsConfiguration {
     }
   }
 
-  public  String getBasePath() {
+  public String getBasePath() {
     return BASE_PATH;
   }
 
-  public  String getBaseUri() {
+  public String getBaseUri() {
     return BASE_URI;
   }
 
-  public  int getBasePort() {
+  public int getBasePort() {
     return BASE_PORT;
   }
 
-  public  int getTestInvoicesCount() {
+  public int getTestInvoicesCount() {
     return TEST_INVOICES_COUNT;
   }
 
-  public  int getDefaultEntriesCount() {
+  public int getDefaultEntriesCount() {
     return DEFAULT_ENTRIES_COUNT;
   }
 
-  public  int getServerOkStatusCode() {
+  public int getServerOkStatusCode() {
     return SERVER_OK_STATUS_CODE;
   }
 
-  public  String getIntFromStringRegexPattern() {
+  public String getIntFromStringRegexPattern() {
     return INT_FROM_STRING_REGEX_PATTERN;
   }
 
-  public  int getDefaultTestInvoiceNumber() {
+  public int getDefaultTestInvoiceNumber() {
     return DEFAULT_TEST_INVOICE_NUMBER;
   }
 
-  public  int getDefaultProductQuanitity() {
+  public int getDefaultProductQuantity() {
     return DEFAULT_PRODUCT_QUANTITY;
   }
 
-  public  BigDecimal getWrongNetValue() {
+  public BigDecimal getWrongNetValue() {
     return WRONG_NET_VALUE;
   }
 }

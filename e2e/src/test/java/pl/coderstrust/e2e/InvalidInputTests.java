@@ -21,7 +21,6 @@ public class InvalidInputTests {
   TestsConfiguration config = new TestsConfiguration();
   TestCasesGenerator generator = new TestCasesGenerator();
 
-
   @Test(dataProvider = "invalidInvoices")
   public void shouldReturnCorrectMessageWhenAddingInvalidInvoice(Invoice invoice, String message) {
     given().
@@ -52,8 +51,7 @@ public class InvalidInputTests {
     testCases.add(new Object[]{getInvoiceDateToEarly(), Messages.DATE_TOO_EARLY});
     testCases.add(new Object[]{getInvoiceProductNoName(), Messages.PRODUCT_NO_NAME});
     testCases.add(new Object[]{getInvoiceProductNoDescription(), Messages.PRODUCT_NO_DESCRIPTION});
-    //testCases.add(new Object[]{getInvoiceProductNoNetValue(), Messages.PRODUCT_NO_NET_VALUE});
-    //TODO: reporeted error 400; not the expected error message
+    testCases.add(new Object[]{getInvoiceProductNoNetValue(), Messages.PRODUCT_NO_NET_VALUE});
     testCases.add(new Object[]{getInvoiceProductWrongNetValue(), Messages.PRODUCT_WRONG_NET_VALUE});
     testCases.add(new Object[]{getInvoiceProductNoVat(), Messages.PRODUCT_NO_VAT});
 
@@ -207,11 +205,11 @@ public class InvalidInputTests {
         .getTestProduct(config.getDefaultTestInvoiceNumber(), config.getDefaultEntriesCount());
   }
 
-  private List<InvoiceEntry> getInvoiceEntriesWithInvalidProduct(Product invalidProduct){
+  private List<InvoiceEntry> getInvoiceEntriesWithInvalidProduct(Product invalidProduct) {
     List<InvoiceEntry> entries = getDefaultInvoiceEntries();
     InvoiceEntry entry = new InvoiceEntry();
     entry.setProduct(invalidProduct);
-    entry.setAmount(config.getDefaultProductQuanitity());
+    entry.setAmount(config.getDefaultProductQuantity());
     entries.set(config.getDefaultEntriesCount() - 1, entry);
 
     return entries;
