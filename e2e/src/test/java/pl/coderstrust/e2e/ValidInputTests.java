@@ -43,7 +43,8 @@ public class ValidInputTests {
   @BeforeMethod
   public void setupMethod() {
     currentDate = LocalDate.now();
-    testInvoice = generator.getTestInvoice(config.getDefaultTestInvoiceNumber(), config.getDefaultEntriesCount());
+    testInvoice = generator
+        .getTestInvoice(config.getDefaultTestInvoiceNumber(), config.getDefaultEntriesCount());
   }
 
   @Test
@@ -93,7 +94,7 @@ public class ValidInputTests {
         .contentType("application/json")
         .body(testInvoice)
         .when()
-        .put("/"+invoiceId);
+        .put("/" + invoiceId);
 
     given().
         when().
@@ -105,25 +106,25 @@ public class ValidInputTests {
   }
 
   @Test
-  public void shouldCorrectlyDeleteInvoiceById(){
-      long invoiceId = addInvoice(testInvoice);
+  public void shouldCorrectlyDeleteInvoiceById() {
+    long invoiceId = addInvoice(testInvoice);
 
-      Invoice updatedInvoice = testInvoice = generator
-          .getTestInvoice(config.getDefaultTestInvoiceNumber() + 1, config.getDefaultEntriesCount());
-      updatedInvoice.setId(invoiceId);
-      given()
-          .contentType("application/json")
-          .body(testInvoice)
-          .when()
-          .delete("/"+invoiceId);
+    Invoice updatedInvoice = testInvoice = generator
+        .getTestInvoice(config.getDefaultTestInvoiceNumber() + 1, config.getDefaultEntriesCount());
+    updatedInvoice.setId(invoiceId);
+    given()
+        .contentType("application/json")
+        .body(testInvoice)
+        .when()
+        .delete("/" + invoiceId);
 
-      given().
-          when().
-          get("/" + invoiceId).
+    given().
+        when().
+        get("/" + invoiceId).
 
-          then().
-          assertThat().
-          body(equalTo(""));
+        then().
+        assertThat().
+        body(equalTo(""));
   }
 
   @Test

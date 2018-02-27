@@ -24,7 +24,7 @@ public class ObjectMapperHelper {
     try {
       return jsonMapper.writeValueAsString(value);
     } catch (JsonProcessingException e) {
-      throw new RuntimeException("Mapper failed at conversion from object to Json.",e);
+      throw new RuntimeException("Mapper failed at conversion from object to Json.", e);
     }
   }
 
@@ -32,7 +32,7 @@ public class ObjectMapperHelper {
     try {
       return jsonMapper.readValue(json, Invoice.class);
     } catch (IOException e) {
-      throw new RuntimeException("Mapper failed at conversion from Json to object.",e);
+      throw new RuntimeException("Mapper failed at conversion from Json to object.", e);
     }
   }
 
@@ -41,7 +41,7 @@ public class ObjectMapperHelper {
       return jsonMapper.readValue(json,
           jsonMapper.getTypeFactory().constructCollectionType(ArrayList.class, Invoice.class));
     } catch (IOException e) {
-      throw new RuntimeException("Mapper failed at conversion from Json to list of object.",e);
+      throw new RuntimeException("Mapper failed at conversion from Json to list of object.", e);
     }
   }
 }
