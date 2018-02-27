@@ -14,7 +14,6 @@ import java.util.function.Function;
 public class TaxCalculatorService {
 
   private Database database;
-  private Function<Invoice, BigDecimal> getValueFunction;
 
   @Autowired
   public TaxCalculatorService(Database database) {
@@ -22,27 +21,17 @@ public class TaxCalculatorService {
   }
 
   public BigDecimal calculateIncome(String companyName, LocalDate beginDate, LocalDate endDate) {
-    BigDecimal income = BigDecimal.valueOf(0);
-    List<Invoice> invoiceByDates = new ArrayList<>(getInvoiceByDate(beginDate, endDate));
+    Function<Invoice, BigDecimal> getValueFunction = x -> x.getSeller().getName()
+        .equals(companyName) ? getNetValue(x) : BigDecimal.ZERO;
 
-    for (Invoice invoice : invoiceByDates) {
-      getValueFunction = x -> x.getSeller().getName()
-          .equals(companyName) ? getNetValue(invoice) : BigDecimal.ZERO;
-      income = income.add(getValueFunction.apply(invoice));
-    }
-    return income;
+    return calculatePattern(getValueFunction, beginDate, endDate);
   }
 
   public BigDecimal calculateCost(String companyName, LocalDate beginDate, LocalDate endDate) {
-    BigDecimal cost = BigDecimal.valueOf(0);
-    List<Invoice> invoiceByDates = new ArrayList<>(getInvoiceByDate(beginDate, endDate));
+    Function<Invoice, BigDecimal> getValueFunction = x -> x.getBuyer().getName()
+        .equals(companyName) ? getNetValue(x) : BigDecimal.ZERO;
 
-    for (Invoice invoice : invoiceByDates) {
-      getValueFunction = x -> x.getBuyer().getName()
-          .equals(companyName) ? getNetValue(invoice) : BigDecimal.ZERO;
-      cost = cost.add(getValueFunction.apply(invoice));
-    }
-    return cost;
+    return calculatePattern(getValueFunction, beginDate, endDate);
   }
 
   public BigDecimal calculateIncomeCost(String companyName, LocalDate beginDate,
@@ -52,28 +41,16 @@ public class TaxCalculatorService {
   }
 
   public BigDecimal calculateIncomeVat(String companyName, LocalDate beginDate, LocalDate endDate) {
-    BigDecimal incomeVat = BigDecimal.valueOf(0);
-    List<Invoice> invoiceByDates = new ArrayList<>(getInvoiceByDate(beginDate, endDate));
-
-    for (Invoice invoice : invoiceByDates) {
-      getValueFunction = x -> x.getBuyer().getName()
-          .equals(companyName) ? getVatValue(invoice) : BigDecimal.ZERO;
-      incomeVat = incomeVat.add(getValueFunction.apply(invoice));
-    }
-    return incomeVat;
+    Function<Invoice, BigDecimal> getValueFunction = x -> x.getBuyer().getName()
+        .equals(companyName) ? getVatValue(x) : BigDecimal.ZERO;
+    return calculatePattern(getValueFunction, beginDate, endDate);
   }
 
   public BigDecimal calculateOutcomeVat(String companyName, LocalDate beginDate,
       LocalDate endDate) {
-    BigDecimal outcomeVat = BigDecimal.valueOf(0);
-    List<Invoice> invoiceByDates = new ArrayList<>(getInvoiceByDate(beginDate, endDate));
-
-    for (Invoice invoice : invoiceByDates) {
-      getValueFunction = x -> x.getSeller().getName()
-          .equals(companyName) ? getVatValue(invoice) : BigDecimal.ZERO;
-      outcomeVat = outcomeVat.add(getValueFunction.apply(invoice));
-    }
-    return outcomeVat;
+    Function<Invoice, BigDecimal> getValueFunction = x -> x.getSeller().getName()
+        .equals(companyName) ? getVatValue(x) : BigDecimal.ZERO;
+    return calculatePattern(getValueFunction, beginDate, endDate);
   }
 
   public BigDecimal calculateDifferenceVat(String companyName, LocalDate beginDate,
@@ -82,14 +59,22 @@ public class TaxCalculatorService {
         .subtract(calculateIncomeVat(companyName, beginDate, endDate));
   }
 
+  private BigDecimal calculatePattern(Function<Invoice, BigDecimal> getValueFunction,
+      LocalDate beginDate, LocalDate endDate) {
+    BigDecimal income = BigDecimal.valueOf(0);
+    for (Invoice invoice : getInvoiceByDate(beginDate, endDate)) {
+      income = income.add(getValueFunction.apply(invoice));
+    }
+    return income;
+  }
+
   private BigDecimal getNetValue(Invoice invoice) {
     BigDecimal netValueMultiplyAmount = BigDecimal.valueOf(0);
 
     for (InvoiceEntry products : invoice.getProducts()) {
       int amount = products.getAmount();
-      BigDecimal netValue = products.getProduct().getNetValue();
       netValueMultiplyAmount = netValueMultiplyAmount
-          .add(netValue.multiply(new BigDecimal(amount)));
+          .add(products.getProduct().getNetValue().multiply(new BigDecimal(amount)));
     }
     return netValueMultiplyAmount;
   }
@@ -100,11 +85,8 @@ public class TaxCalculatorService {
     for (InvoiceEntry products : invoice.getProducts()) {
       int amount = products.getAmount();
       double vatRate = products.getProduct().getVatRate().getVatPercent();
-
-      BigDecimal netValue = products.getProduct().getNetValue()
-          .multiply(BigDecimal.valueOf(vatRate));
-      netValueMultiplyAmount = netValueMultiplyAmount
-          .add(netValue.multiply(new BigDecimal(amount)));
+      netValueMultiplyAmount = netValueMultiplyAmount.add(products.getProduct().getNetValue()
+          .multiply(BigDecimal.valueOf(vatRate)).multiply(new BigDecimal(amount)));
     }
     return netValueMultiplyAmount;
   }
