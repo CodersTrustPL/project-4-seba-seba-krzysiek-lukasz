@@ -50,7 +50,9 @@ public class ValidInputTests {
   @Test
   public void shouldReturnCorrectStatusCodeWhenServiceIsUp() {
     given()
-        .when().get("")
+        .when()
+        .get("")
+
         .then()
         .statusCode(config.getServerOkStatusCode());
   }
@@ -59,25 +61,25 @@ public class ValidInputTests {
   public void shouldCorrectlyAddAndGetInvoiceById() {
     long invoiceId = addInvoice(testInvoice);
     testInvoice.setId(invoiceId);
-    given().
-        when().
-        get("/" + invoiceId).
+    given()
+        .when()
+        .get("/" + invoiceId).
 
-        then().
-        assertThat().
-        body(equalTo(mapper.toJson(testInvoice)));
+        then()
+        .assertThat()
+        .body(equalTo(mapper.toJson(testInvoice)));
   }
 
   long addInvoice(Invoice testInvoice) {
-    Response response = given()
+    Response ServiceResponse = given()
         .contentType("application/json")
         .body(testInvoice)
         .when()
         .post("");
-    return getInvoiceIdFromServerResponse(response.print());
+    return getInvoiceIdFromServiceResponse(ServiceResponse.print());
   }
 
-  long getInvoiceIdFromServerResponse(String response) {
+  long getInvoiceIdFromServiceResponse(String response) {
     Matcher matcher = extractIntFromString.matcher(response);
     matcher.find();
     return Long.parseLong(matcher.group(0));
@@ -86,60 +88,56 @@ public class ValidInputTests {
   @Test
   public void shouldCorrectlyUpdateInvoice() {
     long invoiceId = addInvoice(testInvoice);
-
-    Invoice updatedInvoice = testInvoice = generator
-        .getTestInvoice(config.getDefaultTestInvoiceNumber() + 1, config.getDefaultEntriesCount());
+    Invoice updatedInvoice = generator.getTestInvoice(
+        config.getDefaultTestInvoiceNumber() + 1, config.getDefaultEntriesCount());
     updatedInvoice.setId(invoiceId);
     given()
         .contentType("application/json")
-        .body(testInvoice)
+        .body(updatedInvoice)
+
         .when()
         .put("/" + invoiceId);
 
-    given().
-        when().
-        get("/" + invoiceId).
+    given()
+        .when()
+        .get("/" + invoiceId)
 
-        then().
-        assertThat().
-        body(equalTo(mapper.toJson(updatedInvoice)));
+        .then()
+        .assertThat()
+        .body(equalTo(mapper.toJson(updatedInvoice)));
   }
 
   @Test
   public void shouldCorrectlyDeleteInvoiceById() {
     long invoiceId = addInvoice(testInvoice);
-
-    Invoice updatedInvoice = testInvoice = generator
-        .getTestInvoice(config.getDefaultTestInvoiceNumber() + 1, config.getDefaultEntriesCount());
-    updatedInvoice.setId(invoiceId);
     given()
         .contentType("application/json")
         .body(testInvoice)
         .when()
         .delete("/" + invoiceId);
 
-    given().
-        when().
-        get("/" + invoiceId).
+    given()
+        .when()
+        .get("/" + invoiceId)
 
-        then().
-        assertThat().
-        body(equalTo(""));
+        .then()
+        .assertThat()
+        .body(equalTo(""));
   }
 
   @Test
   public void shouldAddSeveralInvoicesAndReturnCorrectMessage() {
     for (Invoice invoice : testInvoices) {
-      given().
-          contentType("application/json").
-          body(invoice).
+      given()
+          .contentType("application/json")
+          .body(invoice)
 
-          when().
-          post("").
+          .when()
+          .post("")
 
-          then().
-          assertThat().
-          body(containsString("Invoice added under id :"));
+          .then()
+          .assertThat()
+          .body(containsString("Invoice added under id :"));
     }
   }
 
@@ -147,11 +145,11 @@ public class ValidInputTests {
   public void shouldAddSeveralInvoicesAndFindThemByIssueDate(LocalDate newDate) {
     int invoicesAtDateCount = getInvoicesCountForDateRange(newDate, newDate);
     testInvoice.setIssueDate(newDate);
-    given().
-        contentType("application/json").
-        body(testInvoice).
-        when().
-        post("");
+    given()
+        .contentType("application/json")
+        .body(testInvoice)
+        .when()
+        .post("");
 
     int invoicesAdded = getInvoicesCountForDateRange(newDate, newDate) - invoicesAtDateCount;
     Assert.assertEquals(invoicesAdded, 1);
@@ -168,9 +166,9 @@ public class ValidInputTests {
 
   private int getInvoicesCountForDateRange(LocalDate dateFrom, LocalDate dateTo) {
     String path = "/" + dateFrom + "/" + dateTo;
-    String response = given().
-        body(path).
-        get("")
+    String response = given()
+        .body(path)
+        .get("")
         .body().print();
     return mapper.toInvoiceList(response).size();
   }
