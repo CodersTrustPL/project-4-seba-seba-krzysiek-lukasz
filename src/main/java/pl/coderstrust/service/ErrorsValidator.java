@@ -92,7 +92,7 @@ public class ErrorsValidator {
 
     if (product.getNetValue() == null) {
       errors.add(Messages.PRODUCT_NO_NET_VALUE);
-    }else {
+    } else {
       if (BigDecimal.ZERO.compareTo(product.getNetValue()) >= 0) {
         errors.add(Messages.PRODUCT_WRONG_NET_VALUE);
       }

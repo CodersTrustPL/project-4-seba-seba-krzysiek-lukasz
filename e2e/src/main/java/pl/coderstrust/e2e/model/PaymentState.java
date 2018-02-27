@@ -1,5 +1,8 @@
 package pl.coderstrust.e2e.model;
 
+import lombok.Getter;
+
+@Getter
 public enum PaymentState {
   PAID("Paid"),
   NOT_PAID("Not paid");
@@ -8,9 +11,5 @@ public enum PaymentState {
 
   PaymentState(String state) {
     this.state = state;
-  }
-
-  public String getState() {
-    return state;
   }
 }

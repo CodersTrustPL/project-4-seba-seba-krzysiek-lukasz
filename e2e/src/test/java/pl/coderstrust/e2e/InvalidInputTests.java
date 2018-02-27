@@ -23,16 +23,16 @@ public class InvalidInputTests {
 
   @Test(dataProvider = "invalidInvoices")
   public void shouldReturnCorrectMessageWhenAddingInvalidInvoice(Invoice invoice, String message) {
-    given().
-        contentType("application/json").
-        body(invoice).
+    given()
+        .contentType("application/json")
+        .body(invoice)
 
-        when().
-        post("").
+        .when()
+        .post("")
 
-        then().
-        assertThat().
-        body(containsString(message));
+        .then()
+        .assertThat()
+        .body(containsString(message));
   }
 
   @DataProvider(name = "invalidInvoices")
