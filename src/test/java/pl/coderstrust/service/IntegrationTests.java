@@ -311,7 +311,6 @@ public class IntegrationTests {
     //given
     for (int i = 1; i <= 50; i++) {
       Invoice invoice = generator.getTestInvoice(i, 5);
-      invoice.setIssueDate(LocalDate.of(2020, 1, 1).plusMonths(i));
       this.mockMvc
           .perform(post(DEFAULT_PATH)
               .content(mapper.toJson(invoice))
@@ -352,7 +351,6 @@ public class IntegrationTests {
     assertThat(invoiceList.size(), is(48));
     assertFalse(invoiceList.contains(generator.getTestInvoice(10, 5)));
     assertFalse(invoiceList.contains(generator.getTestInvoice(25, 5)));
-    assertFalse(invoiceList.contains(generator.getTestInvoice(10, 5)));
   }
 
   //ToDo Test update method)
