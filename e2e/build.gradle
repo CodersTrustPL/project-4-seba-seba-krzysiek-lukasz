@@ -22,9 +22,11 @@ repositories {
 	mavenCentral()
 }
 
+test {
+	useTestNG()
+}
 
 dependencies {
-
 	compile('org.springframework.boot:spring-boot-starter-web')
 
 	testCompile('org.springframework.boot:spring-boot-starter-test')
@@ -43,5 +45,5 @@ dependencies {
 // https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-jsr310
 	compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.9.4'
 
-
 }
+
