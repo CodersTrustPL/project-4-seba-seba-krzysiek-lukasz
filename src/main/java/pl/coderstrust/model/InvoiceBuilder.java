@@ -18,6 +18,11 @@ public class InvoiceBuilder {
     return this;
   }
 
+  public InvoiceBuilder setId(long id) {
+    invoice.setId(id);
+    return this;
+  }
+
   public InvoiceBuilder setBuyer(Company company) {
     invoice.setBuyer(company);
     return this;

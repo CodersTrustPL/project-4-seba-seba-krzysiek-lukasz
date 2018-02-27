@@ -14,6 +14,7 @@ import pl.coderstrust.model.Vat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+
 @Service
 public class TestCasesGenerator {
 
@@ -27,7 +28,7 @@ public class TestCasesGenerator {
     builder.setVisibleId(idVisible);
     builder.setBuyer(buyer);
     builder.setSeller(seller);
-    LocalDate dateIssue = LocalDate.of(2018, 1, 1);
+    LocalDate dateIssue = LocalDate.of(2018, 3, 1);
     builder.setIssueDate(dateIssue);
     builder.setPaymentDate(dateIssue.plusDays(15));
     builder.setProducts(getTestEntries(invoiceNumber, entriesCount));
@@ -51,7 +52,7 @@ public class TestCasesGenerator {
   public List<InvoiceEntry> getTestEntries(int invoiceNumber, int productsCount) {
 
     ArrayList<InvoiceEntry> entries = new ArrayList<>(productsCount);
-    for (int i = 0; i < productsCount; i++) {
+    for (int i = 1; i <= productsCount; i++) {
       entries.add(new InvoiceEntry(getTestProduct(invoiceNumber, i), i));
     }
     return entries;

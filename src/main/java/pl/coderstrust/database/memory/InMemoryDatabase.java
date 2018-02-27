@@ -1,5 +1,6 @@
 package pl.coderstrust.database.memory;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Repository;
 import pl.coderstrust.database.Database;
 import pl.coderstrust.database.DbException;
@@ -11,14 +12,14 @@ import java.util.HashMap;
 import java.util.List;
 
 @Repository
+@ConditionalOnProperty(name = "pl.coderstrust.database.Database", havingValue = "inMemory")
 public class InMemoryDatabase implements Database {
 
   private static final int INITIAL_ID = 0;
   private static final int INCREMENT_ID = 1;
 
-
   private HashMap<Long, Invoice> invoices = new HashMap<>();
-  long lastId = INITIAL_ID;
+  private long lastId = INITIAL_ID;
 
   @Override
   public long addInvoice(Invoice invoice) {
@@ -70,4 +71,5 @@ public class InMemoryDatabase implements Database {
   public boolean idExist(long id) {
     return invoices.containsKey(id);
   }
+
 }

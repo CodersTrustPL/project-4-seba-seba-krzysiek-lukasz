@@ -1,6 +1,6 @@
 package pl.coderstrust.database.file;
 
-import org.springframework.context.annotation.Primary;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Repository;
 import pl.coderstrust.database.Database;
 import pl.coderstrust.database.DbException;
@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Repository
-@Primary
+@ConditionalOnProperty(name = "pl.coderstrust.database.Database", havingValue = "inFile")
 public class InFileDatabase implements Database {
 
   private static final int FIRST_ID = 0;

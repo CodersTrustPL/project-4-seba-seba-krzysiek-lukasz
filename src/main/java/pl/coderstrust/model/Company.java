@@ -1,5 +1,7 @@
 package pl.coderstrust.model;
 
+import java.util.Objects;
+
 public class Company {
 
   private String name;
@@ -74,5 +76,28 @@ public class Company {
         + ", zipCode='" + zipCode + '\''
         + ", nip='" + nip + '\''
         + ", bankAccoutNumber='" + bankAccoutNumber + '\'' + '}';
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    Company company = (Company) o;
+    return Objects.equals(name, company.name) &&
+        Objects.equals(address, company.address) &&
+        Objects.equals(city, company.city) &&
+        Objects.equals(zipCode, company.zipCode) &&
+        Objects.equals(nip, company.nip) &&
+        Objects.equals(bankAccoutNumber, company.bankAccoutNumber);
+  }
+
+  @Override
+  public int hashCode() {
+
+    return Objects.hash(name, address, city, zipCode, nip, bankAccoutNumber);
   }
 }

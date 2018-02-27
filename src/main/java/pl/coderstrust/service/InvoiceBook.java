@@ -12,6 +12,8 @@ import java.util.List;
 @Service
 public class InvoiceBook {
 
+  private final LocalDate MIN_DATE = LocalDate.of(1500, 11, 12);
+  private final LocalDate MAX_DATE = LocalDate.of(3000, 11, 12);
   private Database database;
 
   @Autowired
@@ -61,15 +63,16 @@ public class InvoiceBook {
 
   public List<Invoice> getInvoiceByDate(LocalDate beginDate, LocalDate endDate) {
     if (beginDate == null) {
-      beginDate = LocalDate.MIN;
+      beginDate = MIN_DATE;
     }
     if (endDate == null) {
-      endDate = LocalDate.MAX;
+      endDate = MAX_DATE;
     }
     List<Invoice> selectedInvoices = new ArrayList<>();
     List<Invoice> allInvoices = database.getInvoices();
     for (Invoice invoice : allInvoices) {
-      if (invoice.getIssueDate().isBefore(endDate) && invoice.getIssueDate().isAfter(beginDate)) {
+      if (invoice.getIssueDate().isBefore(endDate.plusDays(1)) && invoice.getIssueDate()
+          .isAfter(beginDate.minusDays(1))) {
         selectedInvoices.add(invoice);
       }
     }
@@ -83,4 +86,5 @@ public class InvoiceBook {
   public boolean idExist(long id) {
     return database.idExist(id);
   }
+
 }

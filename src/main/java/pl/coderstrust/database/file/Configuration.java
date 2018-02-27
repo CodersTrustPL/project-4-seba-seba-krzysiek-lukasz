@@ -2,8 +2,8 @@ package pl.coderstrust.database.file;
 
 public class Configuration {
 
-  private static final String jsonFilePath = "src\\main\\resources\\database.json";
-  private static final String jsonTempFilePath = "src\\main\\resources\\temporary.json";
+  private static final String jsonFilePath = "src/main/resources/database.json";
+  private static final String jsonTempFilePath = "src/main/resources/temporary.json";
   private static final int fileSystemWaitTimeMs = 2000;
   private static final int UNIT_SLEEP_TIME_MS = 20;
 

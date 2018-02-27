@@ -26,6 +26,9 @@ public class ErrorsValidator {
       errors.add(Messages.PRODUCTS_LIST_EMPTY);
     } else {
       for (int i = 0; i < invoice.getProducts().size(); i++) {
+        if (invoice.getProducts().get(i).getAmount() <= 0) {
+          errors.add(Messages.PRODUCT_WRONG_AMOUNT);
+        }
         errors.addAll(checkProduct(invoice.getProducts().get(i).getProduct()));
       }
     }
