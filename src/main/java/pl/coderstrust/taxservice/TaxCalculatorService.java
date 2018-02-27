@@ -9,10 +9,12 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 public class TaxCalculatorService {
 
   private Database database;
+  private Function<Invoice, BigDecimal> getValueFunction;
 
   @Autowired
   public TaxCalculatorService(Database database) {
@@ -24,9 +26,9 @@ public class TaxCalculatorService {
     List<Invoice> invoiceByDates = new ArrayList<>(getInvoiceByDate(beginDate, endDate));
 
     for (Invoice invoice : invoiceByDates) {
-      if (invoice.getSeller().getName().equals(companyName)) {
-        income = income.add(getNetValue(invoice));
-      }
+      getValueFunction = x -> x.getSeller().getName()
+          .equals(companyName) ? getNetValue(invoice) : BigDecimal.ZERO;
+      income = income.add(getValueFunction.apply(invoice));
     }
     return income;
   }
@@ -36,9 +38,9 @@ public class TaxCalculatorService {
     List<Invoice> invoiceByDates = new ArrayList<>(getInvoiceByDate(beginDate, endDate));
 
     for (Invoice invoice : invoiceByDates) {
-      if (invoice.getBuyer().getName().equals(companyName)) {
-        cost = cost.add(getNetValue(invoice));
-      }
+      getValueFunction = x -> x.getBuyer().getName()
+          .equals(companyName) ? getNetValue(invoice) : BigDecimal.ZERO;
+      cost = cost.add(getValueFunction.apply(invoice));
     }
     return cost;
   }
@@ -54,9 +56,9 @@ public class TaxCalculatorService {
     List<Invoice> invoiceByDates = new ArrayList<>(getInvoiceByDate(beginDate, endDate));
 
     for (Invoice invoice : invoiceByDates) {
-      if (invoice.getBuyer().getName().equals(companyName)) {
-        incomeVat = incomeVat.add(getVatValue(invoice));
-      }
+      getValueFunction = x -> x.getBuyer().getName()
+          .equals(companyName) ? getVatValue(invoice) : BigDecimal.ZERO;
+      incomeVat = incomeVat.add(getValueFunction.apply(invoice));
     }
     return incomeVat;
   }
@@ -67,9 +69,9 @@ public class TaxCalculatorService {
     List<Invoice> invoiceByDates = new ArrayList<>(getInvoiceByDate(beginDate, endDate));
 
     for (Invoice invoice : invoiceByDates) {
-      if (invoice.getSeller().getName().equals(companyName)) {
-        outcomeVat = outcomeVat.add(getVatValue(invoice));
-      }
+      getValueFunction = x -> x.getSeller().getName()
+          .equals(companyName) ? getVatValue(invoice) : BigDecimal.ZERO;
+      outcomeVat = outcomeVat.add(getValueFunction.apply(invoice));
     }
     return outcomeVat;
   }
