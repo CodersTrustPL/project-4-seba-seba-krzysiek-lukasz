@@ -33,23 +33,23 @@ public class InvoiceEntry {
 
   @Override
   public String toString() {
-    return "InvoiceEntry{" +
-        "product=" + product +
-        ", amount=" + amount +
-        '}';
+    return "InvoiceEntry{"
+        + "product=" + product
+        + ", amount=" + amount
+        + '}';
   }
 
   @Override
-  public boolean equals(Object o) {
-    if (this == o) {
+  public boolean equals(Object object) {
+    if (this == object) {
       return true;
     }
-    if (o == null || getClass() != o.getClass()) {
+    if (object == null || getClass() != object.getClass()) {
       return false;
     }
-    InvoiceEntry that = (InvoiceEntry) o;
-    return amount == that.amount &&
-        Objects.equals(product, that.product);
+    InvoiceEntry that = (InvoiceEntry) object;
+    return amount == that.amount
+        && Objects.equals(product, that.product);
   }
 
   @Override

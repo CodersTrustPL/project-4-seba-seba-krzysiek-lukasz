@@ -79,20 +79,20 @@ public class Company {
   }
 
   @Override
-  public boolean equals(Object o) {
-    if (this == o) {
+    public boolean equals(Object object) {
+    if (this == object) {
       return true;
     }
-    if (o == null || getClass() != o.getClass()) {
+    if (object == null || getClass() != object.getClass()) {
       return false;
     }
-    Company company = (Company) o;
-    return Objects.equals(name, company.name) &&
-        Objects.equals(address, company.address) &&
-        Objects.equals(city, company.city) &&
-        Objects.equals(zipCode, company.zipCode) &&
-        Objects.equals(nip, company.nip) &&
-        Objects.equals(bankAccoutNumber, company.bankAccoutNumber);
+    Company company = (Company) object;
+    return Objects.equals(name, company.name)
+        && Objects.equals(address, company.address)
+        && Objects.equals(city, company.city)
+        && Objects.equals(zipCode, company.zipCode)
+        && Objects.equals(nip, company.nip)
+        && Objects.equals(bankAccoutNumber, company.bankAccoutNumber);
   }
 
   @Override

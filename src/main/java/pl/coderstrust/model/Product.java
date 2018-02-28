@@ -56,18 +56,18 @@ public class Product {
   }
 
   @Override
-  public boolean equals(Object o) {
-    if (this == o) {
+  public boolean equals(Object object) {
+    if (this == object) {
       return true;
     }
-    if (o == null || getClass() != o.getClass()) {
+    if (object == null || getClass() != object.getClass()) {
       return false;
     }
-    Product product = (Product) o;
-    return Objects.equals(name, product.name) &&
-        Objects.equals(description, product.description) &&
-        Objects.equals(netValue, product.netValue) &&
-        vatRate == product.vatRate;
+    Product product = (Product) object;
+    return Objects.equals(name, product.name)
+        && Objects.equals(description, product.description)
+        && Objects.equals(netValue, product.netValue)
+        && vatRate == product.vatRate;
   }
 
   @Override

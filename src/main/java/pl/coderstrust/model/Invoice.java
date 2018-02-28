@@ -105,22 +105,22 @@ public class Invoice {
   }
 
   @Override
-  public boolean equals(Object o) {
-    if (this == o) {
+  public boolean equals(Object object) {
+    if (this == object) {
       return true;
     }
-    if (o == null || getClass() != o.getClass()) {
+    if (object == null || getClass() != object.getClass()) {
       return false;
     }
-    Invoice invoice = (Invoice) o;
-    return id == invoice.id &&
-        Objects.equals(invoiceName, invoice.invoiceName) &&
-        Objects.equals(buyer, invoice.buyer) &&
-        Objects.equals(seller, invoice.seller) &&
-        Objects.equals(issueDate, invoice.issueDate) &&
-        Objects.equals(paymentDate, invoice.paymentDate) &&
-        Objects.equals(products, invoice.products) &&
-        paymentState == invoice.paymentState;
+    Invoice invoice = (Invoice) object;
+    return id == invoice.id
+        && Objects.equals(invoiceName, invoice.invoiceName)
+        && Objects.equals(buyer, invoice.buyer)
+        && Objects.equals(seller, invoice.seller)
+        && Objects.equals(issueDate, invoice.issueDate)
+        && Objects.equals(paymentDate, invoice.paymentDate)
+        && Objects.equals(products, invoice.products)
+        && paymentState == invoice.paymentState;
   }
 
   @Override
