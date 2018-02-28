@@ -1,10 +1,9 @@
 package pl.coderstrust.model;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-
-import java.util.Objects;
 
 public class InvoiceEntry {
 
@@ -47,7 +46,6 @@ public class InvoiceEntry {
 
   @Override
   public int hashCode() {
-
-    return Objects.hash(product, amount);
+    return HashCodeBuilder.reflectionHashCode(this,true);
   }
 }

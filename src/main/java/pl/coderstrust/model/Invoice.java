@@ -1,13 +1,13 @@
 package pl.coderstrust.model;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class Invoice {
 
@@ -107,8 +107,6 @@ public class Invoice {
 
   @Override
   public int hashCode() {
-
-    return Objects
-        .hash(id, invoiceName, buyer, seller, issueDate, paymentDate, products, paymentState);
+    return HashCodeBuilder.reflectionHashCode(this,true);
   }
 }
