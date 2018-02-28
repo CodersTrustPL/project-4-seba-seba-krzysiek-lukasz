@@ -98,7 +98,6 @@
                   </limits>
                   <excludes>
                     <exclude>database.impl.ConfigurationProvider</exclude>
-                    <exclude>pl.coderstrust.model.Messages</exclude>
                   </excludes>
                 </rule>
               </rules>
