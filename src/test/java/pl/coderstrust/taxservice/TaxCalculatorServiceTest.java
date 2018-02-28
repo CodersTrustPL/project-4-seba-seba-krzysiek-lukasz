@@ -52,17 +52,6 @@ public class TaxCalculatorServiceTest {
   }
 
   @Test
-  public void shouldCalculateIncomeCostWholeInvoicesInDataRange() {
-    //given
-    when(database.getInvoices()).thenReturn(sampleInvoices.listOfInvoicesInDateRange());
-    //when
-    BigDecimal calculateValue = taxCalculatorService.calculateIncomeCost(companyName, startDate,
-        endDate);
-    //then
-    assertThat(calculateValue, is(closeTo(new BigDecimal(10_000), new BigDecimal(0.001))));
-  }
-
-  @Test
   public void shouldNotCalculateIncomeWholeInvoicesOutOfData() {
     //given
     when(database.getInvoices()).thenReturn(sampleInvoices.listOfInvoicesOutOfDate());
@@ -79,17 +68,6 @@ public class TaxCalculatorServiceTest {
     when(database.getInvoices()).thenReturn(sampleInvoices.listOfInvoicesOutOfDate());
     //when
     BigDecimal calculateValue = taxCalculatorService.calculateCost(companyName, startDate,
-        endDate);
-    //then
-    assertThat(calculateValue, is(closeTo(new BigDecimal(0), new BigDecimal(0.001))));
-  }
-
-  @Test
-  public void shouldNotCalculateIncomeCostWholeInvoicesOutOfData() {
-    //given
-    when(database.getInvoices()).thenReturn(sampleInvoices.listOfInvoicesOutOfDate());
-    //when
-    BigDecimal calculateValue = taxCalculatorService.calculateIncomeCost(companyName, startDate,
         endDate);
     //then
     assertThat(calculateValue, is(closeTo(new BigDecimal(0), new BigDecimal(0.001))));
@@ -118,17 +96,6 @@ public class TaxCalculatorServiceTest {
   }
 
   @Test
-  public void shouldCalculateIncomeCostWholeInvoicesInDataRangeAndOutOfData() {
-    //given
-    when(database.getInvoices()).thenReturn(sampleInvoices.listOfinvoicesWholeDates());
-    //when
-    BigDecimal calculateValue = taxCalculatorService.calculateIncomeCost(companyName, startDate,
-        endDate);
-    //then
-    assertThat(calculateValue, is(closeTo(new BigDecimal(10_000), new BigDecimal(0.001))));
-  }
-
-  @Test
   public void shouldCalculateIncomeInvoiceWithSmallPrices() {
     //given
     when(database.getInvoices()).thenReturn(sampleInvoices.invoicesSmallPrices());
@@ -148,17 +115,6 @@ public class TaxCalculatorServiceTest {
         endDate);
     //then
     assertThat(calculateValue, is(closeTo(new BigDecimal(12.5), new BigDecimal(0.001))));
-  }
-
-  @Test
-  public void shouldCalculateIncomeCostInvoiceWithSmallPricesExpectedNegativeNumber() {
-    //given
-    when(database.getInvoices()).thenReturn(sampleInvoices.invoicesSmallPrices());
-    //when
-    BigDecimal calculateValue = taxCalculatorService.calculateIncomeCost(companyName, startDate,
-        endDate);
-    //then
-    assertThat(calculateValue, is(closeTo(new BigDecimal(-2), new BigDecimal(0.001))));
   }
 
   @Test
@@ -184,17 +140,6 @@ public class TaxCalculatorServiceTest {
   }
 
   @Test
-  public void shouldCalculateVatDifferenceWholeInvoicesInDataRange() {
-    //given
-    when(database.getInvoices()).thenReturn(sampleInvoices.listOfInvoicesInDateRange());
-    //when
-    BigDecimal calculateVat = taxCalculatorService.calculateDifferenceVat(companyName, startDate,
-        endDate);
-    //then
-    assertThat(calculateVat, is(closeTo(new BigDecimal(2300), new BigDecimal(0.006))));
-  }
-
-  @Test
   public void shouldNotCalculateVatOutcomeWholeInvoicesOutOfData() {
     //given
     when(database.getInvoices()).thenReturn(sampleInvoices.listOfInvoicesOutOfDate());
@@ -211,17 +156,6 @@ public class TaxCalculatorServiceTest {
     when(database.getInvoices()).thenReturn(sampleInvoices.listOfInvoicesOutOfDate());
     //when
     BigDecimal calculateVat = taxCalculatorService.calculateIncomeVat(companyName, startDate,
-        endDate);
-    //then
-    assertThat(calculateVat, is(closeTo(new BigDecimal(0), new BigDecimal(0.006))));
-  }
-
-  @Test
-  public void shouldNotCalculateVatDifferenceWholeInvoicesOutOfData() {
-    //given
-    when(database.getInvoices()).thenReturn(sampleInvoices.listOfInvoicesOutOfDate());
-    //when
-    BigDecimal calculateVat = taxCalculatorService.calculateDifferenceVat(companyName, startDate,
         endDate);
     //then
     assertThat(calculateVat, is(closeTo(new BigDecimal(0), new BigDecimal(0.006))));
@@ -249,16 +183,6 @@ public class TaxCalculatorServiceTest {
     assertThat(calculateVat, is(closeTo(new BigDecimal(759), new BigDecimal(0.006))));
   }
 
-  @Test
-  public void shouldCalculateVatDifferenceWholeInvoicesInDataRangeAndOutOfRange() {
-    //given
-    when(database.getInvoices()).thenReturn(sampleInvoices.listOfInvoicesInDateRange());
-    //when
-    BigDecimal calculateVat = taxCalculatorService.calculateDifferenceVat(companyName, startDate,
-        endDate);
-    //then
-    assertThat(calculateVat, is(closeTo(new BigDecimal(2300), new BigDecimal(0.006))));
-  }
 
   @Test
   public void shouldCalculateVatOutcomeInvoiceWithSmallPrices() {
@@ -280,16 +204,5 @@ public class TaxCalculatorServiceTest {
         .calculateIncomeVat(companyName, startDate, endDate);
     //then
     assertThat(calculateVat, is(closeTo(new BigDecimal(0.63), new BigDecimal(0.006))));
-  }
-
-  @Test
-  public void shouldCalculateVatDifferenceInvoiceWithSmallPricesExpectedNegativeNumber() {
-    //given
-    when(database.getInvoices()).thenReturn(sampleInvoices.invoicesSmallPrices());
-    //when
-    BigDecimal calculateVat = taxCalculatorService
-        .calculateDifferenceVat(companyName, startDate, endDate);
-    //then
-    assertThat(calculateVat, is(closeTo(new BigDecimal(-0.10), new BigDecimal(0.006))));
   }
 }
