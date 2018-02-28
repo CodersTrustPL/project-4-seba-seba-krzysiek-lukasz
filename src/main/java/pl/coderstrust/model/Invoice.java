@@ -1,5 +1,9 @@
 package pl.coderstrust.model;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,15 +25,7 @@ public class Invoice {
 
   @Override
   public String toString() {
-    return "Invoice{"
-        + "id=" + id
-        + ", invoiceName='" + invoiceName + '\''
-        + ", buyer=" + buyer
-        + ", seller=" + seller
-        + ", issueDate=" + issueDate
-        + ", paymentDate=" + paymentDate
-        + ", products=" + products
-        + ", paymentState=" + paymentState + '}';
+    return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
   }
 
   public long getId() {
@@ -106,21 +102,7 @@ public class Invoice {
 
   @Override
   public boolean equals(Object object) {
-    if (this == object) {
-      return true;
-    }
-    if (object == null || getClass() != object.getClass()) {
-      return false;
-    }
-    Invoice invoice = (Invoice) object;
-    return id == invoice.id
-        && Objects.equals(invoiceName, invoice.invoiceName)
-        && Objects.equals(buyer, invoice.buyer)
-        && Objects.equals(seller, invoice.seller)
-        && Objects.equals(issueDate, invoice.issueDate)
-        && Objects.equals(paymentDate, invoice.paymentDate)
-        && Objects.equals(products, invoice.products)
-        && paymentState == invoice.paymentState;
+    return EqualsBuilder.reflectionEquals(this, object);
   }
 
   @Override

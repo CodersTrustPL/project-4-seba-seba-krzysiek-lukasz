@@ -1,5 +1,9 @@
 package pl.coderstrust.model;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 import java.util.Objects;
 
 public class InvoiceEntry {
@@ -33,23 +37,12 @@ public class InvoiceEntry {
 
   @Override
   public String toString() {
-    return "InvoiceEntry{"
-        + "product=" + product
-        + ", amount=" + amount
-        + '}';
+    return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
   }
 
   @Override
   public boolean equals(Object object) {
-    if (this == object) {
-      return true;
-    }
-    if (object == null || getClass() != object.getClass()) {
-      return false;
-    }
-    InvoiceEntry that = (InvoiceEntry) object;
-    return amount == that.amount
-        && Objects.equals(product, that.product);
+    return EqualsBuilder.reflectionEquals(this, object);
   }
 
   @Override

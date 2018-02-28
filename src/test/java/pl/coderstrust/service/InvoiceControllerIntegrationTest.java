@@ -34,7 +34,7 @@ import java.util.List;
 @SpringBootTest
 @AutoConfigureMockMvc
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-public class IntegrationTests {
+public class InvoiceControllerIntegrationTest {
 
   private static final String GET_INVOICE_BY_DATE_METHOD = "getInvoiceByDate";
   private static final String GET_INVOICE_BY_ID_METHOD = "getInvoiceById";

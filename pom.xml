@@ -63,6 +63,13 @@
         <version>0.7.9</version>
         <executions>
           <execution>
+            <id>jacoco-report</id>
+            <phase>test</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+          </execution>
+          <execution>
             <id>default-prepare-agent</id>
             <goals>
               <goal>prepare-agent</goal>
@@ -76,21 +83,22 @@
             <configuration>
               <rules>
                 <rule>
-                  <element>CLASS</element>
+                  <element>BUNDLE</element>
                   <limits>
                     <limit>
                       <counter>LINE</counter>
                       <value>COVEREDRATIO</value>
-                      <minimum>0.00</minimum>
+                      <minimum>0.80</minimum>
                     </limit>
                     <limit>
                       <counter>BRANCH</counter>
                       <value>COVEREDRATIO</value>
-                      <minimum>0.00</minimum>
+                      <minimum>0.50</minimum>
                     </limit>
                   </limits>
                   <excludes>
                     <exclude>database.impl.ConfigurationProvider</exclude>
+                    <exclude>pl.coderstrust.model.Messages</exclude>
                   </excludes>
                 </rule>
               </rules>
@@ -98,12 +106,10 @@
           </execution>
         </executions>
       </plugin>
-
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
       </plugin>
-
     </plugins>
   </build>
   <properties>
@@ -179,6 +185,13 @@
       <artifactId>jackson-datatype-jsr310</artifactId>
       <version>${jackson.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>3.4</version>
+    </dependency>
+
+
 
   </dependencies>
 </project>

@@ -1,5 +1,9 @@
 package pl.coderstrust.model;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 import java.util.Objects;
 
 public class Company {
@@ -69,30 +73,12 @@ public class Company {
 
   @Override
   public String toString() {
-    return "Company{"
-        + "name='" + name + '\''
-        + ", address='" + address + '\''
-        + ", city='" + city + '\''
-        + ", zipCode='" + zipCode + '\''
-        + ", nip='" + nip + '\''
-        + ", bankAccoutNumber='" + bankAccoutNumber + '\'' + '}';
+    return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
   }
 
   @Override
-    public boolean equals(Object object) {
-    if (this == object) {
-      return true;
-    }
-    if (object == null || getClass() != object.getClass()) {
-      return false;
-    }
-    Company company = (Company) object;
-    return Objects.equals(name, company.name)
-        && Objects.equals(address, company.address)
-        && Objects.equals(city, company.city)
-        && Objects.equals(zipCode, company.zipCode)
-        && Objects.equals(nip, company.nip)
-        && Objects.equals(bankAccoutNumber, company.bankAccoutNumber);
+  public boolean equals(Object object) {
+    return EqualsBuilder.reflectionEquals(this, object);
   }
 
   @Override
