@@ -1,6 +1,7 @@
 package pl.coderstrust.taxservice;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import pl.coderstrust.database.Database;
 import pl.coderstrust.model.Invoice;
 import pl.coderstrust.model.InvoiceEntry;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+@Service
 public class TaxCalculatorService {
 
   private Database database;
@@ -33,12 +35,6 @@ public class TaxCalculatorService {
     return calculatePattern(getValueFunction, beginDate, endDate);
   }
 
-  public BigDecimal calculateIncomeCost(String companyName, LocalDate beginDate,
-      LocalDate endDate) {
-    return calculateIncome(companyName, beginDate, endDate)
-        .subtract(calculateCost(companyName, beginDate, endDate));
-  }
-
   public BigDecimal calculateIncomeVat(String companyName, LocalDate beginDate, LocalDate endDate) {
     Function<Invoice, BigDecimal> getValueFunction = x -> getCompanyNameBuyer(companyName).test(x)
         ? getVatValue(x) : BigDecimal.ZERO;
@@ -50,12 +46,6 @@ public class TaxCalculatorService {
     Function<Invoice, BigDecimal> getValueFunction = x -> getCompanyNameSeller(companyName).test(x)
         ? getVatValue(x) : BigDecimal.ZERO;
     return calculatePattern(getValueFunction, beginDate, endDate);
-  }
-
-  public BigDecimal calculateDifferenceVat(String companyName, LocalDate beginDate,
-      LocalDate endDate) {
-    return calculateOutcomeVat(companyName, beginDate, endDate)
-        .subtract(calculateIncomeVat(companyName, beginDate, endDate));
   }
 
   private Predicate<Invoice> getCompanyNameSeller(String companyName) {
