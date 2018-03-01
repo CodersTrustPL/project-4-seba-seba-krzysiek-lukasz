@@ -50,7 +50,6 @@ dependencies {
 }
 
 lombok {
-
 	version = "1.16.20"
 	sha256 = ""
 }
