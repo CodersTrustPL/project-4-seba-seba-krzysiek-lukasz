@@ -16,6 +16,7 @@ public class Messages {
 
   public static final String DATE_EMPTY = "Date is empty.";
   public static final String DATE_TOO_EARLY = "Date is earlier then actual date.";
+  public static final String END_BEFORE_START = "end date is before the start date";
 
   public static final String PRODUCT_NO_NAME = "Product name is empty.";
   public static final String PRODUCT_NO_DESCRIPTION = "Product description is empty.";
