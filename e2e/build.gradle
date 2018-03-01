@@ -9,6 +9,9 @@ buildscript {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
 	}
 }
+plugins {
+	id 'io.franzbecker.gradle-lombok' version '1.11'
+}
 
 apply plugin: 'java'
 apply plugin: 'idea'
@@ -44,6 +47,10 @@ dependencies {
 
 	// https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-jsr310
 	compile group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.9.4'
-
 }
 
+lombok {
+
+	version = "1.16.20"
+	sha256 = ""
+}
