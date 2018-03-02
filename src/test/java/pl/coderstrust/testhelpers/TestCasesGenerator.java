@@ -28,7 +28,7 @@ public class TestCasesGenerator {
     builder.setVisibleId(idVisible);
     builder.setBuyer(buyer);
     builder.setSeller(seller);
-    LocalDate dateIssue = LocalDate.of(2018, 3, 1);
+    LocalDate dateIssue = LocalDate.of(2019, 3, 1);
     builder.setIssueDate(dateIssue);
     builder.setPaymentDate(dateIssue.plusDays(15));
     builder.setProducts(getTestEntries(invoiceNumber, entriesCount));
