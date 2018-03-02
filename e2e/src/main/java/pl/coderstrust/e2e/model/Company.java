@@ -2,16 +2,16 @@ package pl.coderstrust.e2e.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.ToString;
 
 
-@Getter
-@Setter
-@Builder
-@AllArgsConstructor
+@Data
 @NoArgsConstructor
+@AllArgsConstructor
+@ToString(includeFieldNames=true)
+@Builder
 public class Company {
 
   private String name;
@@ -22,14 +22,14 @@ public class Company {
   private String bankAccoutNumber;
 
 
-  @Override
-  public String toString() {
-    return "Company{"
-        + "name='" + name + '\''
-        + ", address='" + address + '\''
-        + ", city='" + city + '\''
-        + ", zipCode='" + zipCode + '\''
-        + ", nip='" + nip + '\''
-        + ", bankAccoutNumber='" + bankAccoutNumber + '\'' + '}';
-  }
+//  @Override
+//  public String toString() {
+//    return "Company{"
+//        + "name='" + name + '\''
+//        + ", address='" + address + '\''
+//        + ", city='" + city + '\''
+//        + ", zipCode='" + zipCode + '\''
+//        + ", nip='" + nip + '\''
+//        + ", bankAccoutNumber='" + bankAccoutNumber + '\'' + '}';
+//  }
 }

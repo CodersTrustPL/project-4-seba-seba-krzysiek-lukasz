@@ -1,12 +1,10 @@
 package pl.coderstrust.e2e.model;
 
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
+@Data
 @NoArgsConstructor
-@Getter
-@Setter
 public class InvoiceEntry {
 
   private Product product;

@@ -5,15 +5,15 @@ import java.time.LocalDate;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.ToString;
 
 
-@AllArgsConstructor
+@Data
 @NoArgsConstructor
-@Getter
-@Setter
+@AllArgsConstructor
+@ToString(includeFieldNames=true)
 @Builder
 public class Invoice {
 
@@ -26,16 +26,16 @@ public class Invoice {
   List<InvoiceEntry> products;
   private PaymentState paymentState;
 
-  @Override
-  public String toString() {
-    return "Invoice{"
-        + "id=" + id
-        + ", invoiceName='" + invoiceName + '\''
-        + ", buyer=" + buyer
-        + ", seller=" + seller
-        + ", issueDate=" + issueDate
-        + ", paymentDate=" + paymentDate
-        + ", products=" + products
-        + ", paymentState=" + paymentState + '}';
-  }
+//  @Override
+//  public String toString() {
+//    return "Invoice{"
+//        + "id=" + id
+//        + ", invoiceName='" + invoiceName + '\''
+//        + ", buyer=" + buyer
+//        + ", seller=" + seller
+//        + ", issueDate=" + issueDate
+//        + ", paymentDate=" + paymentDate
+//        + ", products=" + products
+//        + ", paymentState=" + paymentState + '}';
+//  }
 }
