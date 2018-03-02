@@ -88,8 +88,8 @@ public class InvoiceControllerIntegrationTest {
         .andExpect(jsonPath("$.[0].seller.nip ", is("seller_nip_1")))
         .andExpect(jsonPath("$.[0].seller.bankAccoutNumber ",
             is("seller_bankAccoutNumber_1")))
-        .andExpect(jsonPath("$.[0].issueDate ", is("2018-03-01")))
-        .andExpect(jsonPath("$.[0].paymentDate ", is("2018-03-16")))
+        .andExpect(jsonPath("$.[0].issueDate ", is("2019-03-01")))
+        .andExpect(jsonPath("$.[0].paymentDate ", is("2019-03-16")))
         .andExpect(jsonPath("$.[0].products.[0].product.name", is("name_1_1")))
         .andExpect(jsonPath("$.[0].products.[0].product.description",
             is("name_1_1_description_1")))
