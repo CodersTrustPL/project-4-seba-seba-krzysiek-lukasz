@@ -14,6 +14,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.time.LocalDate;
+import java.util.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +28,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import pl.coderstrust.model.Invoice;
 import pl.coderstrust.testhelpers.InvoicesWithSpecifiedData;
 import pl.coderstrust.testhelpers.TestCasesGenerator;
-
-import java.time.LocalDate;
-import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -54,10 +53,11 @@ public class InvoiceControllerIntegrationTest {
 
   @Test
   public void shouldAddInvoices() throws Exception {
+    Invoice testInvoice = generator.getTestInvoice(1, 1);
     //when
     this.mockMvc
         .perform(post(DEFAULT_PATH)
-            .content(json(generator.getTestInvoice(1, 1)))
+            .content(json(testInvoice))
             .contentType(CONTENT_TYPE))
         .andExpect(handler().methodName(ADD_INVOICE_METHOD))
         .andExpect(status().isOk());
@@ -88,8 +88,10 @@ public class InvoiceControllerIntegrationTest {
         .andExpect(jsonPath("$.[0].seller.nip ", is("seller_nip_1")))
         .andExpect(jsonPath("$.[0].seller.bankAccoutNumber ",
             is("seller_bankAccoutNumber_1")))
-        .andExpect(jsonPath("$.[0].issueDate ", is("2018-03-01")))
-        .andExpect(jsonPath("$.[0].paymentDate ", is("2018-03-16")))
+        .andExpect(jsonPath("$.[0].issueDate ",
+            is(testInvoice.getIssueDate().toString())))
+        .andExpect(jsonPath("$.[0].paymentDate ",
+        is(testInvoice.getPaymentDate().toString())))
         .andExpect(jsonPath("$.[0].products.[0].product.name", is("name_1_1")))
         .andExpect(jsonPath("$.[0].products.[0].product.description",
             is("name_1_1_description_1")))

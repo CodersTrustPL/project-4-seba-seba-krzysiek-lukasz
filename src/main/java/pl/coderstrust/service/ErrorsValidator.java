@@ -92,16 +92,16 @@ public class ErrorsValidator {
 
     if (product.getNetValue() == null) {
       errors.add(Messages.PRODUCT_NO_NET_VALUE);
+    } else {
+      if (BigDecimal.ZERO.compareTo(product.getNetValue()) >= 0) {
+        errors.add(Messages.PRODUCT_WRONG_NET_VALUE);
+      }
     }
 
-    if (product.getNetValue().compareTo(BigDecimal.ZERO) <= 0) {
-      errors.add(Messages.PRODUCT_WRONG_NET_VALUE);
-    }
     return errors;
   }
 
   private boolean checkInputString(String input) {
     return ((input == null || input.trim().length() == 0));
   }
-
 }
