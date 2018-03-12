@@ -1,5 +1,6 @@
 package pl.coderstrust.e2e.performanceTests;
 
+import org.junit.Test;
 import pl.coderstrust.e2e.TestsConfiguration;
 import pl.coderstrust.e2e.model.Invoice;
 import pl.coderstrust.e2e.testHelpers.TestCasesGenerator;
@@ -20,6 +21,7 @@ public class PerformanceTests implements Runnable {
 
 
     @Override
+    @Test
     public void run() {
 
         currentDate = LocalDate.now();

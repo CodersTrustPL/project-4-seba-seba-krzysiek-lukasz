@@ -1,18 +1,19 @@
 package pl.coderstrust.e2e.performanceTests;
 
+
 import org.junit.Test;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-public class PerformanceTestsRunner {
+public class PerformanceTestsRunner extends PerformanceTests{
 
     @Test
     public void shouldAddInvoicesInMultiThreads() {
 
-        final ExecutorService newFixedThreadPool = Executors.newFixedThreadPool(3);
-        for (int i = 0; i <= 3; i++) {
+        final ExecutorService newFixedThreadPool = Executors.newFixedThreadPool(10);
+        for (int i = 0; i <= 10; i++) {
             newFixedThreadPool.execute(new PerformanceTests());
         }
         newFixedThreadPool.shutdown();
