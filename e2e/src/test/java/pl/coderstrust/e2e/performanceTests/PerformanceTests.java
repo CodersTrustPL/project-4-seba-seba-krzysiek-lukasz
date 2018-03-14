@@ -1,15 +1,15 @@
 package pl.coderstrust.e2e.performanceTests;
 
-import org.junit.Test;
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.containsString;
+
+import org.testng.annotations.Test;
 import pl.coderstrust.e2e.TestsConfiguration;
 import pl.coderstrust.e2e.model.Invoice;
 import pl.coderstrust.e2e.testHelpers.TestCasesGenerator;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-
-import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.containsString;
 
 public class PerformanceTests implements Runnable {
 
@@ -21,7 +21,7 @@ public class PerformanceTests implements Runnable {
 
 
     @Override
-    @Test
+    @Test(groups={"PerformanceTests.run"})
     public void run() {
 
         currentDate = LocalDate.now();
