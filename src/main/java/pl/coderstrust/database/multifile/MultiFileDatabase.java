@@ -36,7 +36,7 @@ public class MultiFileDatabase implements Database {
   }
 
   @Override
-  public long addInvoice(Invoice invoice) {
+  public synchronized long addInvoice(Invoice invoice) {
     invoice.setId(getNextId());
     fileHelper.addLine(objectMapper.toJson(invoice), invoice);
     fileCache.getCache().put(invoice.getId(), pathSelector.getFilePath(invoice));
