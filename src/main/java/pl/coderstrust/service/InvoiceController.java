@@ -8,7 +8,8 @@ import pl.coderstrust.model.Invoice;
 @RequestMapping("invoice")
 public class InvoiceController extends AbstractController<Invoice> {
 
-  public InvoiceController(InvoiceService invoiceService) {
+  public InvoiceController(InvoiceService invoiceService, InvoiceByCompanyFilter byCustomerFilter) {
     super.service = invoiceService;
+    super.byCustomerFilter = byCustomerFilter;
   }
 }

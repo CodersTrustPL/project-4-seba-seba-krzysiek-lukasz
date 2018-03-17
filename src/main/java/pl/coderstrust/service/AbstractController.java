@@ -13,15 +13,26 @@ import pl.coderstrust.model.WithValidation;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public abstract class AbstractController<T extends WithNameIdIssueDate & WithValidation> {
 
   protected AbstractService<T> service;
+  protected EntriesFilter<T> byCustomerFilter;
 
-  @RequestMapping(value = "", method = RequestMethod.POST)
+  @RequestMapping(value = {"", "/{filterKey}"}, method = RequestMethod.POST)
   @ApiOperation(value = "Adds the entries and returning id")
-  public ResponseEntity addEntry(@RequestBody T entry) {
+  public ResponseEntity addEntry(
+      @PathVariable(name = "filterKey", required = false) Optional<Long> filterKey,
+      @RequestBody T entry) {
+
     List<String> entryState = entry.validate();
+
+    if (filterKey.isPresent()) {
+      if(!byCustomerFilter.hasObjectById(entry, filterKey.get()))
+        entryState.add("Invalid Company entry");
+    }
+
     if (entryState.isEmpty()) {
       long id = service.addEntry(entry);
       return ResponseEntity.ok(Messages.CONTROLLER_ENTRY_ADDED + id);
