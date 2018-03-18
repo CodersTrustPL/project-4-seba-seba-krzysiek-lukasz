@@ -43,7 +43,7 @@ public class InFileDatabaseTest extends DatabaseTest {
         e.printStackTrace();
       }
     }
-    Database database = new InFileDatabase<Invoice>(Invoice.class);
+    Database database = new InFileDatabase<Invoice>(Invoice.class, "\"invoideId\"");
     return database;
   }
 
@@ -161,7 +161,7 @@ public class InFileDatabaseTest extends DatabaseTest {
     long lastId = invoiceIds[INVOICES_COUNT - 1];
 
     //when
-    Database dbInstance = new InFileDatabase<Invoice>(Invoice.class);
+    Database dbInstance = new InFileDatabase<Invoice>(Invoice.class, "\"invoiceId\"");
 
     //then
     long nextId = dbInstance.addEntry(generator.getTestInvoice(1, 1));

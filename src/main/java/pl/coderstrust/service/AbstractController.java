@@ -29,8 +29,9 @@ public abstract class AbstractController<T extends WithNameIdIssueDate & WithVal
     List<String> entryState = entry.validate();
 
     if (filterKey.isPresent()) {
-      if(!byCustomerFilter.hasObjectById(entry, filterKey.get()))
+      if (!byCustomerFilter.hasObjectById(entry, filterKey.get())) {
         entryState.add("Invalid Company entry");
+      }
     }
 
     if (entryState.isEmpty()) {
@@ -40,11 +41,18 @@ public abstract class AbstractController<T extends WithNameIdIssueDate & WithVal
     return ResponseEntity.badRequest().body(entryState);
   }
 
-  @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+  @RequestMapping(value = {"/{id}", "/{id}/{filterKey}"}, method = RequestMethod.GET)
   @ApiOperation(value = "Returns the entry by id in the specified date range")
-  public ResponseEntity getEntryById(@PathVariable("id") long id) {
+  public ResponseEntity getEntryById(@PathVariable("id") long id,
+      @PathVariable(name = "filterKey", required = false) Optional<Long> filterKey) {
     if (!service.idExist(id)) {
       return ResponseEntity.notFound().build();
+    }
+
+    if (filterKey.isPresent()) {
+      if (!byCustomerFilter.hasField(service.findEntry(id), filterKey.get())) {
+        return ResponseEntity.notFound().build();
+      }
     }
     return ResponseEntity.ok(service.findEntry(id));
   }
@@ -52,19 +60,40 @@ public abstract class AbstractController<T extends WithNameIdIssueDate & WithVal
   @RequestMapping(value = "", method = RequestMethod.GET)
   @ApiOperation(value = "Returns the list of entries in the specified date range")
   public ResponseEntity getEntryByDate(
+      @RequestParam(name = "filterKey", required = false) Optional<Long> filterKey,
       @RequestParam(value = "startDate", required = false) LocalDate startDate,
       @RequestParam(value = "endDate", required = false) LocalDate endDate) {
+
     if (startDate == null && endDate == null) {
+      if (filterKey.isPresent()) {
+        return ResponseEntity
+            .ok(byCustomerFilter.filterByField(service.getEntry(), filterKey.get()));
+      }
       return ResponseEntity.ok(service.getEntry());
     }
+
+    if (filterKey.isPresent()) {
+      return ResponseEntity.ok(byCustomerFilter.filterByField(service.getEntryByDate(startDate,
+          endDate), filterKey.get()));
+    }
+
     return ResponseEntity.ok(service.getEntryByDate(startDate,
         endDate));
   }
 
-  @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+  @RequestMapping(value = {"/{id}", "/{id}/{filterKey}"}, method = RequestMethod.PUT)
   @ApiOperation(value = "Updates the entries by id")
-  public ResponseEntity updateInvoice(@PathVariable("id") long id, @RequestBody T entry) {
+  public ResponseEntity updateInvoice(
+      @PathVariable(name = "filterKey", required = false) Optional<Long> filterKey,
+      @PathVariable("id") long id, @RequestBody T entry) {
     List<String> entryState = entry.validate();
+
+    if (filterKey.isPresent()) {
+      if (!byCustomerFilter.hasObjectById(entry, filterKey.get())) {
+        entryState.add("Invalid Company entry");
+      }
+    }
+
     if (!entryState.isEmpty()) {
       return ResponseEntity.badRequest().body(entryState);
     }

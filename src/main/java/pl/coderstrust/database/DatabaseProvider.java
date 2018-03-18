@@ -23,7 +23,7 @@ public class DatabaseProvider {
   public Database<Invoice> masterWithInvoices() {
     switch (masterDatabaseType) {
       case "inFile":
-        return new InFileDatabase<>(Invoice.class);
+        return new InFileDatabase<>(Invoice.class,"\"invoiceId\"");
       case "multiFile":
         return new MultiFileDatabase<>(Invoice.class);
       default:
@@ -35,7 +35,7 @@ public class DatabaseProvider {
   public Database<Company> masterWithCompanies() {
     switch (masterDatabaseType) {
       case "inFile":
-        return new InFileDatabase<>(Company.class);
+        return new InFileDatabase<>(Company.class,"\"companyId\"");
       case "multiFile":
         return new MultiFileDatabase<>(Company.class);
       default:
@@ -48,7 +48,7 @@ public class DatabaseProvider {
   public Database<Invoice> filterWithInvoices() {
     switch (filterDatabaseType) {
       case "inFile":
-        return new InFileDatabase<>(Invoice.class);
+        return new InFileDatabase<>(Invoice.class, "\"invoiceId\"");
       case "multiFile":
         return new MultiFileDatabase<>(Invoice.class);
       default:
@@ -60,7 +60,7 @@ public class DatabaseProvider {
   public Database<Company> filterWithCompanies() {
     switch (filterDatabaseType) {
       case "inFile":
-        return new InFileDatabase<>(Company.class);
+        return new InFileDatabase<>(Company.class,"\"companyId\"");
       case "multiFile":
         return new MultiFileDatabase<>(Company.class);
       default:
