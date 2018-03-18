@@ -69,12 +69,12 @@ public class Invoice implements WithNameIdIssueDate, WithValidation {
     return issueDate;
   }
 
-  public void setIssueDate(LocalDate issueDate) {
-    this.issueDate = issueDate;
-  }
-
   public void setIssueDate(String issueDate) {
     this.issueDate = LocalDate.parse(issueDate);
+  }
+
+  public void setIssueDate(LocalDate issueDate) {
+    this.issueDate = issueDate;
   }
 
   @ApiModelProperty(example = "2019-07-15")
@@ -82,12 +82,12 @@ public class Invoice implements WithNameIdIssueDate, WithValidation {
     return paymentDate;
   }
 
-  public void setPaymentDate(LocalDate paymentDate) {
-    this.paymentDate = paymentDate;
-  }
-
   public void setPaymentDate(String paymentDate) {
     this.paymentDate = LocalDate.parse(paymentDate);
+  }
+
+  public void setPaymentDate(LocalDate paymentDate) {
+    this.paymentDate = paymentDate;
   }
 
   public List<InvoiceEntry> getProducts() {

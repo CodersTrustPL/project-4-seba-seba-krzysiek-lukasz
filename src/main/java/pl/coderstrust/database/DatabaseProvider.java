@@ -27,7 +27,7 @@ public class DatabaseProvider {
 
 
   @Bean
-  public Database<Invoice> masterWithInvoices() {
+  public Database<Invoice> dbWithInvoices() {
     switch (masterDbType) {
       case "inFile":
         return new InFileDatabase<>(Invoice.class, masterDbKey);
@@ -39,33 +39,8 @@ public class DatabaseProvider {
   }
 
   @Bean
-  public Database<Company> masterWithCompanies() {
+  public Database<Company> dbWithCompanies() {
     switch (masterDbType) {
-      case "inFile":
-        return new InFileDatabase<>(Company.class, filterDbKey);
-      case "multiFile":
-        return new MultiFileDatabase<>(Company.class, filterDbKey);
-      default:
-        return new InMemoryDatabase<>(Company.class);
-    }
-  }
-
-
-  @Bean
-  public Database<Invoice> filterWithInvoices() {
-    switch (filterDbType) {
-      case "inFile":
-        return new InFileDatabase<>(Invoice.class, masterDbKey);
-      case "multiFile":
-        return new MultiFileDatabase<>(Invoice.class, filterDbKey);
-      default:
-        return new InMemoryDatabase<>(Invoice.class);
-    }
-  }
-
-  @Bean
-  public Database<Company> filterWithCompanies() {
-    switch (filterDbType) {
       case "inFile":
         return new InFileDatabase<>(Company.class, filterDbKey);
       case "multiFile":

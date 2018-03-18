@@ -31,7 +31,7 @@ public abstract class AbstractController<T extends WithNameIdIssueDate & WithVal
 
     if (filterKey.isPresent()) {
       if (!byCustomerFilter.hasObjectById(entry, filterKey.get())) {
-        entryState.add("Invalid Company entry");
+        entryState.add("Specified buyer and/or seller does not match company ID.");
       }
     }
 
@@ -91,7 +91,7 @@ public abstract class AbstractController<T extends WithNameIdIssueDate & WithVal
 
     if (filterKey.isPresent()) {
       if (!byCustomerFilter.hasObjectById(entry, filterKey.get())) {
-        entryState.add("Invalid Company entry");
+        entryState.add("Specified buyer and/or seller does not match company ID.");
       }
     }
 
@@ -116,7 +116,7 @@ public abstract class AbstractController<T extends WithNameIdIssueDate & WithVal
 
     if (filterKey.isPresent()) {
       if (!byCustomerFilter.hasField(service.findEntry(id), filterKey.get())) {
-        entryState.add("Invalid Company entry");
+        entryState.add("Specified buyer and/or seller does not match company ID.");
         return ResponseEntity.badRequest().body(entryState);
       }
     }

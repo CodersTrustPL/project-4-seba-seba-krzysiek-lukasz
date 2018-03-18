@@ -11,7 +11,7 @@ public class InvoiceService extends AbstractService<Invoice> {
 
 
   @Autowired
-  public InvoiceService(@Qualifier("masterWithInvoices") Database<Invoice> dbInvoices) {
+  public InvoiceService(@Qualifier("dbWithInvoices") Database<Invoice> dbInvoices) {
     super.entriesDb = dbInvoices;
   }
 }
