@@ -38,8 +38,6 @@ public class ObjectMapperHelper<T> {
 //      System.out.println("field name : " + f.getName() + " , type : " + t);
 //    }
 
-
-
     try {
       return jsonMapper.readValue(json, entryClass);
     } catch (IOException e) {

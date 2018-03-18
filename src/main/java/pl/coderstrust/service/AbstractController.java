@@ -12,6 +12,7 @@ import pl.coderstrust.model.WithNameIdIssueDate;
 import pl.coderstrust.model.WithValidation;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -103,12 +104,23 @@ public abstract class AbstractController<T extends WithNameIdIssueDate & WithVal
 
   }
 
-  @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+  @RequestMapping(value = {"/{id}", "/{id}/{filterKey}"}, method = RequestMethod.DELETE)
   @ApiOperation(value = "Deletes the entries by id")
-  public ResponseEntity removeEntry(@PathVariable("id") long id) {
+  public ResponseEntity removeEntry(@PathVariable("id") long id,
+      @PathVariable(name = "filterKey", required = false) Optional<Long> filterKey) {
+    List<String> entryState = new ArrayList<>();
+
     if (!service.idExist(id)) {
       return ResponseEntity.notFound().build();
     }
+
+    if (filterKey.isPresent()) {
+      if (!byCustomerFilter.hasField(service.findEntry(id), filterKey.get())) {
+        entryState.add("Invalid Company entry");
+        return ResponseEntity.badRequest().body(entryState);
+      }
+    }
+
     service.deleteEntry(id);
     return ResponseEntity.ok().build();
   }

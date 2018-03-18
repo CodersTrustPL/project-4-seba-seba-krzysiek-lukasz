@@ -14,16 +14,23 @@ import pl.coderstrust.model.Invoice;
 public class DatabaseProvider {
 
   @Value("${pl.coderstrust.database.MasterDatabase}")
-  private String masterDatabaseType;
+  private String masterDbType;
 
   @Value("${pl.coderstrust.database.FilterDatabase}")
-  private String filterDatabaseType;
+  private String filterDbType;
+
+  @Value("${pl.coderstrust.database.MasterDatabase.key}")
+  private String masterDbKey;
+
+  @Value("${pl.coderstrust.database.FilterDatabase.key}")
+  private String filterDbKey;
+
 
   @Bean
   public Database<Invoice> masterWithInvoices() {
-    switch (masterDatabaseType) {
+    switch (masterDbType) {
       case "inFile":
-        return new InFileDatabase<>(Invoice.class,"\"invoiceId\"");
+        return new InFileDatabase<>(Invoice.class, masterDbKey);
       case "multiFile":
         return new MultiFileDatabase<>(Invoice.class);
       default:
@@ -33,9 +40,9 @@ public class DatabaseProvider {
 
   @Bean
   public Database<Company> masterWithCompanies() {
-    switch (masterDatabaseType) {
+    switch (masterDbType) {
       case "inFile":
-        return new InFileDatabase<>(Company.class,"\"companyId\"");
+        return new InFileDatabase<>(Company.class, filterDbKey);
       case "multiFile":
         return new MultiFileDatabase<>(Company.class);
       default:
@@ -46,9 +53,9 @@ public class DatabaseProvider {
 
   @Bean
   public Database<Invoice> filterWithInvoices() {
-    switch (filterDatabaseType) {
+    switch (filterDbType) {
       case "inFile":
-        return new InFileDatabase<>(Invoice.class, "\"invoiceId\"");
+        return new InFileDatabase<>(Invoice.class, masterDbKey);
       case "multiFile":
         return new MultiFileDatabase<>(Invoice.class);
       default:
@@ -58,14 +65,13 @@ public class DatabaseProvider {
 
   @Bean
   public Database<Company> filterWithCompanies() {
-    switch (filterDatabaseType) {
+    switch (filterDbType) {
       case "inFile":
-        return new InFileDatabase<>(Company.class,"\"companyId\"");
+        return new InFileDatabase<>(Company.class, filterDbKey);
       case "multiFile":
         return new MultiFileDatabase<>(Company.class);
       default:
         return new InMemoryDatabase<>(Company.class);
     }
-
   }
 }
