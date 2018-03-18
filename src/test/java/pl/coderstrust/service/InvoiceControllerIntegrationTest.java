@@ -73,9 +73,9 @@ public class InvoiceControllerIntegrationTest {
         .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
         .andExpect(handler().methodName(GET_INVOICE_BY_DATE_METHOD))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.[0].id ", is(1)))
+        .andExpect(jsonPath("$.[0].invoiceId ", is(1)))
         .andExpect(jsonPath("$.[0].name", is("idVisible_1")))
-        .andExpect(jsonPath("$.[0].buyer.id", is(0)))
+        .andExpect(jsonPath("$.[0].buyer.companyId", is(0)))
         .andExpect(jsonPath("$.[0].buyer.name", is("buyer_name_1")))
         .andExpect(jsonPath("$.[0].buyer.address", is("buyer_address_1")))
         .andExpect(jsonPath("$.[0].buyer.city ", is("buyer_city_1")))
@@ -83,7 +83,7 @@ public class InvoiceControllerIntegrationTest {
         .andExpect(jsonPath("$.[0].buyer.nip ", is("buyer_nip_1")))
         .andExpect(jsonPath("$.[0].buyer.bankAccoutNumber ",
             is("buyer_bankAccoutNumber_1")))
-        .andExpect(jsonPath("$.[0].seller.id", is(0)))
+        .andExpect(jsonPath("$.[0].seller.companyId", is(0)))
         .andExpect(jsonPath("$.[0].seller.name", is("seller_name_1")))
         .andExpect(jsonPath("$.[0].seller.address", is("seller_address_1")))
         .andExpect(jsonPath("$.[0].seller.city ", is("seller_city_1")))
@@ -99,10 +99,10 @@ public class InvoiceControllerIntegrationTest {
         .andExpect(jsonPath("$.[0].products.[0].product.netValue", is(1.0)))
         .andExpect(jsonPath("$.[0].products.[0].product.vatRate", is("VAT_23")))
         .andExpect(jsonPath("$.[0].products.[0].amount", is(1)))
-        .andExpect(jsonPath("$.[0].paymentState", is("NOT_PAID")))//
-        .andExpect(jsonPath("$.[1].id ", is(2)))
+        .andExpect(jsonPath("$.[0].paymentState", is("NOT_PAID")))
+        .andExpect(jsonPath("$.[1].invoiceId ", is(2)))
         .andExpect(jsonPath("$.[1].name", is("1 / 2025-12-24")))
-        .andExpect(jsonPath("$.[0].buyer.id", is(0)))
+        .andExpect(jsonPath("$.[0].buyer.companyId", is(0)))
         .andExpect(jsonPath("$.[1].buyer.name", is("P.H. Marian Paździoch")))
         .andExpect(jsonPath("$.[1].buyer.address", is("Bazarowa 3/6")))
         .andExpect(jsonPath("$.[1].buyer.city ", is("Wrocław")))
@@ -110,7 +110,7 @@ public class InvoiceControllerIntegrationTest {
         .andExpect(jsonPath("$.[1].buyer.nip ", is("123-456-32-18")))
         .andExpect(jsonPath("$.[1].buyer.bankAccoutNumber ",
             is("99 1010 2222 3333 4444 5555 6666")))
-        .andExpect(jsonPath("$.[1].seller.id", is(0)))
+        .andExpect(jsonPath("$.[1].seller.companyId", is(0)))
         .andExpect(jsonPath("$.[1].seller.name",
             is("Ferdynand Kiepski i Syn Sp.zoo")))
         .andExpect(jsonPath("$.[1].seller.address", is("ćwiartki 3/4")))

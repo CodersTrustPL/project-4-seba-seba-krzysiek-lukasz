@@ -21,8 +21,11 @@ public class FileHelper {
   private FileCache fileCache;
   private PathSelector pathSelector;
   private String jsonTempFilePath;
+  private String dbKey;
 
-  public FileHelper(FileCache fileCache, PathSelector pathSelector, String jsonTempFilePath) {
+  public FileHelper(FileCache fileCache, PathSelector pathSelector, String jsonTempFilePath,
+      String dbKey) {
+    this.dbKey = dbKey;
     this.fileCache = fileCache;
     this.pathSelector = pathSelector;
     this.jsonTempFilePath = jsonTempFilePath;
@@ -46,7 +49,7 @@ public class FileHelper {
     String pathFile = fileCache.getCache().get(id).toString();
     String json = null;
     try (Stream<String> stream = Files.lines(new File(pathFile).toPath())) {
-      json = stream.filter(line -> line.contains("id\":" + id))
+      json = stream.filter(line -> line.contains(idToLineKey(id)))
           .collect(Collectors.joining());
     } catch (IOException e) {
       e.printStackTrace();
@@ -54,12 +57,16 @@ public class FileHelper {
     return json;
   }
 
+  String idToLineKey(long systemId) {
+    return dbKey + ":" + String.valueOf(systemId);
+  }
+
   public void deleteLine(long id) {
     File inputFile = new File(fileCache.getCache().get(id).toString());
     File tempFile = new File(jsonTempFilePath);
     try (BufferedReader reader = new BufferedReader(new FileReader(inputFile));
         BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))) {
-      String lineToRemove = "id\":" + id;
+      String lineToRemove = idToLineKey(id);
       String currentLine;
       while ((currentLine = reader.readLine()) != null) {
         String trimmedLine = currentLine.trim();

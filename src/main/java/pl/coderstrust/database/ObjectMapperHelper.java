@@ -30,14 +30,6 @@ public class ObjectMapperHelper<T> {
   }
 
   public T toObject(String json) {
-//    Invoice saddjoakdj = new Invoice();
-//
-//    Field[] fields = entryClass.getDeclaredFields();
-//    for(Field f : fields){
-//      Class t = f.getType();
-//      System.out.println("field name : " + f.getName() + " , type : " + t);
-//    }
-
     try {
       return jsonMapper.readValue(json, entryClass);
     } catch (IOException e) {

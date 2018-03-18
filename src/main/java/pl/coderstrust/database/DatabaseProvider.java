@@ -32,7 +32,7 @@ public class DatabaseProvider {
       case "inFile":
         return new InFileDatabase<>(Invoice.class, masterDbKey);
       case "multiFile":
-        return new MultiFileDatabase<>(Invoice.class);
+        return new MultiFileDatabase<>(Invoice.class, masterDbKey);
       default:
         return new InMemoryDatabase<>(Invoice.class);
     }
@@ -44,7 +44,7 @@ public class DatabaseProvider {
       case "inFile":
         return new InFileDatabase<>(Company.class, filterDbKey);
       case "multiFile":
-        return new MultiFileDatabase<>(Company.class);
+        return new MultiFileDatabase<>(Company.class, filterDbKey);
       default:
         return new InMemoryDatabase<>(Company.class);
     }
@@ -57,7 +57,7 @@ public class DatabaseProvider {
       case "inFile":
         return new InFileDatabase<>(Invoice.class, masterDbKey);
       case "multiFile":
-        return new MultiFileDatabase<>(Invoice.class);
+        return new MultiFileDatabase<>(Invoice.class, filterDbKey);
       default:
         return new InMemoryDatabase<>(Invoice.class);
     }
@@ -69,7 +69,7 @@ public class DatabaseProvider {
       case "inFile":
         return new InFileDatabase<>(Company.class, filterDbKey);
       case "multiFile":
-        return new MultiFileDatabase<>(Company.class);
+        return new MultiFileDatabase<>(Company.class, filterDbKey);
       default:
         return new InMemoryDatabase<>(Company.class);
     }

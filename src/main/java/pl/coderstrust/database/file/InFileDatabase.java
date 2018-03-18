@@ -23,12 +23,11 @@ public class InFileDatabase<T extends WithNameIdIssueDate> implements Database<T
   private HashSet<Long> savedIds;
   private String keyName;
 
-  public InFileDatabase(Class<T> entryClass, String keyName) {
-    this.keyName = keyName;
+  public InFileDatabase(Class<T> entryClass, String dbKey) {
+    this.keyName = dbKey;
     mapper = new ObjectMapperHelper(entryClass);
     fileHelper = new FileHelper(new Configuration(entryClass.getSimpleName()));
     savedIds = getIdsFromDbFile();
-    System.out.println(savedIds.size() + "  " + entryClass.getSimpleName());
   }
 
 

@@ -14,7 +14,7 @@ import java.util.List;
 public class Invoice implements WithNameIdIssueDate, WithValidation {
 
   List<InvoiceEntry> products = new ArrayList<>();
-  private long invoiceId;
+  private long id;
   private String name;
   private Company buyer;
   private Company seller;
@@ -32,11 +32,11 @@ public class Invoice implements WithNameIdIssueDate, WithValidation {
 
   @JsonProperty("invoiceId")
   public long getId() {
-    return invoiceId;
+    return id;
   }
 
   public void setId(long id) {
-    this.invoiceId = id;
+    this.id = id;
   }
 
   @ApiModelProperty(example = "FV 2/22/06/2019")
@@ -69,12 +69,12 @@ public class Invoice implements WithNameIdIssueDate, WithValidation {
     return issueDate;
   }
 
-  public void setIssueDate(String issueDate) {
-    this.issueDate = LocalDate.parse(issueDate);
-  }
-
   public void setIssueDate(LocalDate issueDate) {
     this.issueDate = issueDate;
+  }
+
+  public void setIssueDate(String issueDate) {
+    this.issueDate = LocalDate.parse(issueDate);
   }
 
   @ApiModelProperty(example = "2019-07-15")
@@ -82,12 +82,12 @@ public class Invoice implements WithNameIdIssueDate, WithValidation {
     return paymentDate;
   }
 
-  public void setPaymentDate(String paymentDate) {
-    this.paymentDate = LocalDate.parse(paymentDate);
-  }
-
   public void setPaymentDate(LocalDate paymentDate) {
     this.paymentDate = paymentDate;
+  }
+
+  public void setPaymentDate(String paymentDate) {
+    this.paymentDate = LocalDate.parse(paymentDate);
   }
 
   public List<InvoiceEntry> getProducts() {

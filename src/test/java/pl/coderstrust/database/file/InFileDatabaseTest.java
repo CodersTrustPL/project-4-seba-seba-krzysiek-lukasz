@@ -43,7 +43,7 @@ public class InFileDatabaseTest extends DatabaseTest {
         e.printStackTrace();
       }
     }
-    Database database = new InFileDatabase<Invoice>(Invoice.class, "\"invoideId\"");
+    Database database = new InFileDatabase<Invoice>(Invoice.class, "\"invoiceId\"");
     return database;
   }
 
