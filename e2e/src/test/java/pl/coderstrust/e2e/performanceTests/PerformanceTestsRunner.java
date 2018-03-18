@@ -1,23 +1,26 @@
 package pl.coderstrust.e2e.performanceTests;
 
 
-
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import pl.coderstrust.e2e.TestsConfiguration;
 import pl.coderstrust.e2e.ValidInputTests;
+import pl.coderstrust.e2e.testHelpers.ObjectMapperHelper;
 
+import java.time.LocalDate;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-public class PerformanceTestsRunner extends ValidInputTests{
+import static io.restassured.RestAssured.given;
 
-    public PerformanceTestsRunner() {
-        this.validInputTests = new ValidInputTests();
-    }
+public class PerformanceTestsRunner extends ValidInputTests {
 
-    private ValidInputTests validInputTests;
-    private int THREADS_NUMBER = 10;
+    private TestsConfiguration config = new TestsConfiguration();
+    private ObjectMapperHelper mapper = new ObjectMapperHelper();
+    private ValidInputTests validInputTests = new ValidInputTests();
+    private int THREADS_NUMBER = 5;
 
 
     @BeforeClass
@@ -26,39 +29,7 @@ public class PerformanceTestsRunner extends ValidInputTests{
         validInputTests.setupMethod();
     }
 
-    @Test
-    public void shouldAddInvoicesIn5Threads() {
-
-        final ExecutorService newFixedThreadPool = Executors.newFixedThreadPool(5);
-        for (int i = 0; i < 5; i++) {
-            newFixedThreadPool.execute(new PerformanceTests());
-        }
-        newFixedThreadPool.shutdown();
-        try {
-            newFixedThreadPool.awaitTermination(10, TimeUnit.SECONDS);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        newFixedThreadPool.shutdown();
-    }
-
-    @Test//(dependsOnGroups = {"PerformanceTests.run"})
-    public void shouldAddInvoicesIn10Threads() {
-
-        final ExecutorService newFixedThreadPool = Executors.newFixedThreadPool(10);
-        for (int i = 0; i < 10; i++) {
-            newFixedThreadPool.execute(new PerformanceTests());
-        }
-        newFixedThreadPool.shutdown();
-        try {
-            newFixedThreadPool.awaitTermination(10, TimeUnit.SECONDS);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        newFixedThreadPool.shutdown();
-    }
-
-    @Test
+    @Test(dependsOnGroups = {"ValidInputTests.shouldCorrectlyAddAndGetInvoiceById"})
     public void shouldCorrectlyAddAndGetInvoiceByIdInThreads() {
         Runnable test = new Runnable() {
             @Override
@@ -79,7 +50,7 @@ public class PerformanceTestsRunner extends ValidInputTests{
         newFixedThreadPool.shutdown();
     }
 
-    @Test
+    @Test(dependsOnGroups = {"ValidInputTests.shouldAddSeveralInvoicesAndReturnCorrectMessage"})
     public void shouldAddSeveralInvoicesAndReturnCorrectMessageInThreads() {
         Runnable test = new Runnable() {
             @Override
@@ -100,8 +71,8 @@ public class PerformanceTestsRunner extends ValidInputTests{
         newFixedThreadPool.shutdown();
     }
 
-    @Test
-    public void shouldAdshouldCorrectlyDeleteInvoiceByIdInThreads() {
+    @Test(dependsOnGroups = {"ValidInputTests.shouldCorrectlyDeleteInvoiceById"})
+    public void shouldCorrectlyDeleteInvoiceByIdInThreads() {
         Runnable test = new Runnable() {
             @Override
             public void run() {
@@ -121,7 +92,7 @@ public class PerformanceTestsRunner extends ValidInputTests{
         newFixedThreadPool.shutdown();
     }
 
-    @Test
+    @Test(dependsOnGroups = {"ValidInputTests.shouldCorrectlyUpdateInvoice"})
     public void shouldCorrectlyUpdateInvoiceInThreads() {
         Runnable test = new Runnable() {
             @Override
@@ -141,5 +112,22 @@ public class PerformanceTestsRunner extends ValidInputTests{
         }
         newFixedThreadPool.shutdown();
     }
-}
 
+    @DataProvider(name = "validDates")
+    Object[] validDatesProvider() {
+        Object[] validDates = new Object[10];
+        for (int i = 0; i < config.getTestInvoicesCount(); i++) {
+            validDates[i] = LocalDate.now().plusYears(i);
+        }
+        return validDates;
+    }
+
+    private int getInvoicesCountForDateRange(LocalDate dateFrom, LocalDate dateTo) {
+        String path = "/" + dateFrom + "/" + dateTo;
+        String response = given()
+                .body(path)
+                .get("")
+                .body().print();
+        return mapper.toInvoiceList(response).size();
+    }
+}

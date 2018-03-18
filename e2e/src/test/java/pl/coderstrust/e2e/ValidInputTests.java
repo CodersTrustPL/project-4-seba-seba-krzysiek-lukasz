@@ -1,9 +1,5 @@
 package pl.coderstrust.e2e;
 
-import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.equalTo;
-
 import io.restassured.response.Response;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
@@ -18,6 +14,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.equalTo;
 
 
 public class ValidInputTests {
@@ -57,7 +57,7 @@ public class ValidInputTests {
         .statusCode(config.getServerOkStatusCode());
   }
 
-  @Test
+  @Test(groups={"ValidInputTests.shouldCorrectlyAddAndGetInvoiceById"})
   public void shouldCorrectlyAddAndGetInvoiceById() {
     long invoiceId = addInvoice(testInvoice);
     testInvoice.setId(invoiceId);
@@ -85,7 +85,7 @@ public class ValidInputTests {
     return Long.parseLong(matcher.group(0));
   }
 
-  @Test
+  @Test(groups={"ValidInputTests.shouldCorrectlyUpdateInvoice"})
   public void shouldCorrectlyUpdateInvoice() {
     long invoiceId = addInvoice(testInvoice);
     Invoice updatedInvoice = generator.getTestInvoice(
@@ -107,7 +107,7 @@ public class ValidInputTests {
         .body(equalTo(mapper.toJson(updatedInvoice)));
   }
 
-  @Test
+  @Test(groups={"ValidInputTests.shouldCorrectlyDeleteInvoiceById"})
   public void shouldCorrectlyDeleteInvoiceById() {
     long invoiceId = addInvoice(testInvoice);
     given()
@@ -125,7 +125,7 @@ public class ValidInputTests {
         .body(equalTo(""));
   }
 
-  @Test
+  @Test(groups={"ValidInputTests.shouldAddSeveralInvoicesAndReturnCorrectMessage"})
   public void shouldAddSeveralInvoicesAndReturnCorrectMessage() {
     for (Invoice invoice : testInvoices) {
       given()
