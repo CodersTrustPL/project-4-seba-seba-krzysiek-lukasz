@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 
 import static io.restassured.RestAssured.given;
 
-public class PerformanceTestsRunner extends ValidInputTests {
+public class PerformanceTests extends ValidInputTests{
 
     private TestsConfiguration config = new TestsConfiguration();
     private ObjectMapperHelper mapper = new ObjectMapperHelper();
@@ -112,6 +112,29 @@ public class PerformanceTestsRunner extends ValidInputTests {
         }
         newFixedThreadPool.shutdown();
     }
+
+    @Test(dataProvider = "validDates", dependsOnGroups = {"ValidInputTests.shouldAddSeveralInvoicesAndFindThemByIssueDate"})
+    public void shouldAddSeveralInvoicesAndFindThemByIssueDateInThreads(LocalDate newDate) {
+        Runnable test = new Runnable() {
+            @Override
+            public void run() {
+                validInputTests.shouldAddSeveralInvoicesAndFindThemByIssueDate(newDate);
+            }
+        };
+        final ExecutorService newFixedThreadPool = Executors.newFixedThreadPool(THREADS_NUMBER);
+        for (int i = 0; i < THREADS_NUMBER; i++) {
+            newFixedThreadPool.submit(test);
+        }
+        newFixedThreadPool.shutdown();
+        try {
+            newFixedThreadPool.awaitTermination(10, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        newFixedThreadPool.shutdown();
+    }
+
+
 
     @DataProvider(name = "validDates")
     Object[] validDatesProvider() {
