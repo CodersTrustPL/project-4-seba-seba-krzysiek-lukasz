@@ -13,8 +13,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import static io.restassured.RestAssured.given;
-
 public class PerformanceTests extends ValidInputTests{
 
     private TestsConfiguration config = new TestsConfiguration();
@@ -28,6 +26,7 @@ public class PerformanceTests extends ValidInputTests{
         validInputTests.setupClass();
         validInputTests.setupMethod();
     }
+
 
     @Test(dependsOnGroups = {"ValidInputTests.shouldCorrectlyAddAndGetInvoiceById"})
     public void shouldCorrectlyAddAndGetInvoiceByIdInThreads() {
@@ -50,6 +49,7 @@ public class PerformanceTests extends ValidInputTests{
         newFixedThreadPool.shutdown();
     }
 
+
     @Test(dependsOnGroups = {"ValidInputTests.shouldAddSeveralInvoicesAndReturnCorrectMessage"})
     public void shouldAddSeveralInvoicesAndReturnCorrectMessageInThreads() {
         Runnable test = new Runnable() {
@@ -70,6 +70,7 @@ public class PerformanceTests extends ValidInputTests{
         }
         newFixedThreadPool.shutdown();
     }
+
 
     @Test(dependsOnGroups = {"ValidInputTests.shouldCorrectlyDeleteInvoiceById"})
     public void shouldCorrectlyDeleteInvoiceByIdInThreads() {
@@ -92,6 +93,7 @@ public class PerformanceTests extends ValidInputTests{
         newFixedThreadPool.shutdown();
     }
 
+
     @Test(dependsOnGroups = {"ValidInputTests.shouldCorrectlyUpdateInvoice"})
     public void shouldCorrectlyUpdateInvoiceInThreads() {
         Runnable test = new Runnable() {
@@ -112,6 +114,7 @@ public class PerformanceTests extends ValidInputTests{
         }
         newFixedThreadPool.shutdown();
     }
+
 
     @Test(dataProvider = "validDates", dependsOnGroups = {"ValidInputTests.shouldAddSeveralInvoicesAndFindThemByIssueDate"})
     public void shouldAddSeveralInvoicesAndFindThemByIssueDateInThreads(LocalDate newDate) {
@@ -135,7 +138,6 @@ public class PerformanceTests extends ValidInputTests{
     }
 
 
-
     @DataProvider(name = "validDates")
     Object[] validDatesProvider() {
         Object[] validDates = new Object[10];
@@ -143,14 +145,5 @@ public class PerformanceTests extends ValidInputTests{
             validDates[i] = LocalDate.now().plusYears(i);
         }
         return validDates;
-    }
-
-    private int getInvoicesCountForDateRange(LocalDate dateFrom, LocalDate dateTo) {
-        String path = "/" + dateFrom + "/" + dateTo;
-        String response = given()
-                .body(path)
-                .get("")
-                .body().print();
-        return mapper.toInvoiceList(response).size();
     }
 }
