@@ -4,6 +4,7 @@ import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -45,9 +46,23 @@ public class InvoiceControllerWithCompanyFilterIntegrationTests {
   private static final String DEFAULT_PATH_COMPANY = "/company";
   private static final MediaType CONTENT_TYPE = MediaType.APPLICATION_JSON_UTF8;
   private static final String INT_FROM_STRING_REGEX_PATTERN = "([0-9])+";
+  private static String START_DATE = "2020-01-01";
+  private static String END_DATE = "2060-01-01";
+
+  private static final int DEFAULT_INVOICE_NUMBER = 1;
+  private static final int DEFAULT_UPDATED_INVOICE_NUMBER = 2;
+  private static final int DEFAULT_ENTRIES_COUNT = 1;
+
+  private LocalDate startDate = LocalDate.parse(START_DATE);
+  private LocalDate endDate = LocalDate.parse(END_DATE);
 
   private Pattern extractIntFromString = Pattern.compile(INT_FROM_STRING_REGEX_PATTERN);
-  private Invoice givenInvoice;
+  private Invoice invoice;
+  private Invoice updatedInvoice;
+  private long buyerId;
+  private long sellerId;
+  private long invoiceId;
+  private long anotherCompanyId;
 
   @Autowired
   private MockMvc mockMvc;
@@ -59,12 +74,79 @@ public class InvoiceControllerWithCompanyFilterIntegrationTests {
   private TestCasesGenerator generator;
 
   @Before
-  public void testSetup() {
-    givenInvoice = generator.getTestInvoice(1, 1);
+  public void givenForTest() throws Exception {
+    invoice = generator.getTestInvoice(DEFAULT_INVOICE_NUMBER, DEFAULT_ENTRIES_COUNT);
+    updatedInvoice = generator
+        .getTestInvoice(DEFAULT_UPDATED_INVOICE_NUMBER, DEFAULT_ENTRIES_COUNT);
+
+    buyerId = registerInvoiceBuyerAtCompanyDb(invoice);
+    sellerId = registerInvoiceSellerAtCompanyDb(invoice);
+    invoiceId = addInvoiceToInvoiceDb(invoice);
+    anotherCompanyId = addCompanyToCompanyDb(invoice.getSeller());
+    updatedInvoice.setId(invoiceId);
+    updatedInvoice.setBuyer(invoice.getBuyer());
+    updatedInvoice.setSeller(invoice.getSeller());
+  }
+
+  @Test
+  public void shouldAddInvoiceWhenBuyerMatchesCompanyId() throws Exception {
+    //then
+    this.mockMvc
+        .perform(post(addInvoiceUrl(buyerId))
+            .content(mapper.writeValueAsString(invoice))
+            .contentType(CONTENT_TYPE))
+        .andExpect(handler().methodName(ADD_ENTRY_METHOD))
+        .andExpect(status().isOk());
   }
 
   private String addInvoiceUrl(long companyId) {
     return DEFAULT_PATH_INVOICE + "/" + String.valueOf(companyId);
+  }
+
+  private long registerInvoiceBuyerAtCompanyDb(Invoice invoice) throws Exception {
+    long buyerId = addCompanyToCompanyDb(invoice.getBuyer());
+    this.invoice.getBuyer().setId(buyerId);
+    return buyerId;
+  }
+
+  private long registerInvoiceSellerAtCompanyDb(Invoice invoice) throws Exception {
+    long sellerId = addCompanyToCompanyDb(invoice.getSeller());
+    this.invoice.getSeller().setId(sellerId);
+    return sellerId;
+  }
+
+
+  @Test
+  public void shouldAddInvoiceWhenSellerMatchesCompanyId() throws Exception {
+    //then
+    this.mockMvc
+        .perform(post(addInvoiceUrl(sellerId))
+            .content(mapper.writeValueAsString(invoice))
+            .contentType(CONTENT_TYPE))
+        .andExpect(handler().methodName(ADD_ENTRY_METHOD))
+        .andExpect(status().isOk());
+  }
+
+  @Test
+  public void shouldReturnErrorWhileAddWhenCompaniesNotMatchCompanyId() throws Exception {
+    //then
+    this.mockMvc
+        .perform(post(addInvoiceUrl(anotherCompanyId))
+            .content(mapper.writeValueAsString(invoice))
+            .contentType(CONTENT_TYPE))
+        .andExpect(handler().methodName(ADD_ENTRY_METHOD))
+        .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  public void shouldGetEntryByIdWhenSellerMatchesCompanyId() throws Exception {
+    //then
+    this.mockMvc
+        .perform(get(getInvoiceUrl(invoiceId, sellerId)))
+        .andExpect(content().contentType(CONTENT_TYPE))
+        .andExpect(handler().methodName(GET_ENTRY_BY_ID_METHOD))
+        .andExpect(status().isOk())
+        .andExpect(content().json(mapper.writeValueAsString(invoice)));
   }
 
   private String getInvoiceUrl(long invoiceId, long companyId) {
@@ -73,95 +155,22 @@ public class InvoiceControllerWithCompanyFilterIntegrationTests {
   }
 
   @Test
-  public void shouldAddInvoiceWhenBuyerMatchesCompanyId() throws Exception {
-    //when
-    long buyerId = registerBuyerAtDb(givenInvoice);
-    this.mockMvc
-        .perform(post(addInvoiceUrl(buyerId))
-            .content(mapper.writeValueAsString(givenInvoice))
-            .contentType(CONTENT_TYPE))
-        .andExpect(handler().methodName(ADD_ENTRY_METHOD))
-        .andExpect(status().isOk());
-  }
-
-  private long registerBuyerAtDb(Invoice invoice) throws Exception {
-    long buyerId = addCompanyToDb(invoice.getBuyer());
-    givenInvoice.getBuyer().setId(buyerId);
-    return buyerId;
-  }
-
-  private long registerSellerAtDb(Invoice invoice) throws Exception {
-    long sellerId = addCompanyToDb(invoice.getSeller());
-    givenInvoice.getSeller().setId(sellerId);
-    return sellerId;
-  }
-
-
-  @Test
-  public void shouldAddInvoiceWhenSellerMatchesCompanyId() throws Exception {
-    //when
-    long sellerId = registerSellerAtDb(givenInvoice);
-
-    this.mockMvc
-        .perform(post(addInvoiceUrl(sellerId))
-            .content(mapper.writeValueAsString(givenInvoice))
-            .contentType(CONTENT_TYPE))
-        .andExpect(handler().methodName(ADD_ENTRY_METHOD))
-        .andExpect(status().isOk());
-  }
-
-  @Test
-  public void shouldReturnErrorWhileAddWhenCompaniesNotMatchCompanyId() throws Exception {
-    //when
-    addCompanyToDb(givenInvoice.getSeller());
-    long anotherSellerId = addCompanyToDb(givenInvoice.getSeller());
-
-        this.mockMvc
-        .perform(post(addInvoiceUrl(anotherSellerId))
-            .content(mapper.writeValueAsString(givenInvoice))
-            .contentType(CONTENT_TYPE))
-        .andExpect(handler().methodName(ADD_ENTRY_METHOD))
-        .andExpect(status().isBadRequest());
-  }
-
-  @Test
-  public void shouldGetEntryByIdWhenSellerMatchesCompanyId() throws Exception {
-    //when
-    long sellerId = registerSellerAtDb(givenInvoice);
-    givenInvoice.setId(addInvoiceToDb(givenInvoice));
-
-    this.mockMvc
-        .perform(get(getInvoiceUrl(givenInvoice.getId(),sellerId)))
-        .andExpect(content().contentType(CONTENT_TYPE))
-        .andExpect(handler().methodName(GET_ENTRY_BY_ID_METHOD))
-        .andExpect(status().isOk())
-        .andExpect(content().json(mapper.writeValueAsString(givenInvoice)));
-  }
-
-  @Test
   public void shouldGetEntryByIdWhenBuyerMatchesCompanyId() throws Exception {
-    //when
-    long buyerId = registerBuyerAtDb(givenInvoice);
-    givenInvoice.setId(addInvoiceToDb(givenInvoice));
-
+    //then
     this.mockMvc
-        .perform(get(getInvoiceUrl(givenInvoice.getId(),buyerId)))
+        .perform(get(getInvoiceUrl(invoice.getId(), buyerId)))
         .andExpect(content().contentType(CONTENT_TYPE))
         .andExpect(handler().methodName(GET_ENTRY_BY_ID_METHOD))
         .andExpect(status().isOk())
-        .andExpect(content().json(mapper.writeValueAsString(givenInvoice)));
+        .andExpect(content().json(mapper.writeValueAsString(invoice)));
   }
 
   @Test
   public void shouldReturnErrorWhileGetEntryByIdWhenBuyerOrSellerIdNotMatchIdAtInvoice()
       throws Exception {
-    //when
-    long buyerId = addCompanyToDb(givenInvoice.getSeller());
-    givenInvoice.getBuyer().setId(buyerId);
-    givenInvoice.setId(addInvoiceToDb(givenInvoice));
-
+    //then
     this.mockMvc
-        .perform(get(getInvoiceUrl(givenInvoice.getId(),buyerId+1)))
+        .perform(get(getInvoiceUrl(invoiceId, anotherCompanyId)))
         .andExpect(handler().methodName(GET_ENTRY_BY_ID_METHOD))
         .andExpect(status().isNotFound());
   }
@@ -169,27 +178,23 @@ public class InvoiceControllerWithCompanyFilterIntegrationTests {
   @Test
   public void shouldGetCorrectEntriesByDateWhenBuyerMatchesCompanyId() throws Exception {
     //given
-    long buyerId = registerBuyerAtDb(givenInvoice);
-    LocalDate startDate = LocalDate.of(2020, 1, 1);
-    LocalDate endDate = LocalDate.of(2060, 1, 1);
     LocalDate invoiceDate = startDate;
-
     while (invoiceDate.isBefore(endDate)) {
-      givenInvoice.setIssueDate(invoiceDate);
+      invoice.setIssueDate(invoiceDate);
       invoiceDate = invoiceDate.plusYears(1);
-      addInvoiceToDb(givenInvoice);
+      addInvoiceToInvoiceDb(invoice);
     }
 
     //when
     String response = this.mockMvc
-        .perform(get(DEFAULT_PATH_INVOICE + "?filterKey=" + String.valueOf(buyerId)
-            + "&startDate=2021-01-01&endDate=2023-01-02"))
+        .perform(get(getInvoiceByDateUrl(buyerId)))
         .andExpect(content().contentType(CONTENT_TYPE))
         .andExpect(handler().methodName(GET_ENTRY_BY_DATE_METHOD))
         .andExpect(status().isOk())
         .andReturn().getResponse().getContentAsString();
 
     List<Invoice> invoiceList = getInvoicesFromResponse(response);
+
     //then
     for (Invoice inv : invoiceList) {
       assertTrue((inv.getIssueDate().isBefore(endDate.plusDays(1))
@@ -197,30 +202,31 @@ public class InvoiceControllerWithCompanyFilterIntegrationTests {
     }
   }
 
+  private String getInvoiceByDateUrl(long companyId) {
+    return DEFAULT_PATH_INVOICE + "?filterKey=" + String.valueOf(companyId)
+        + "&startDate=" + START_DATE + "&endDate=" + END_DATE;
+  }
+
   @Test
   public void shouldGetEntryByDateWhenSellerMatchesCompanyId() throws Exception {
     //given
-    long sellerId = registerSellerAtDb(givenInvoice);
-    LocalDate startDate = LocalDate.of(2020, 1, 1);
-    LocalDate endDate = LocalDate.of(2060, 1, 1);
     LocalDate invoiceDate = startDate;
-
     while (invoiceDate.isBefore(endDate)) {
-      givenInvoice.setIssueDate(invoiceDate);
+      invoice.setIssueDate(invoiceDate);
       invoiceDate = invoiceDate.plusYears(1);
-      addInvoiceToDb(givenInvoice);
+      addInvoiceToInvoiceDb(invoice);
     }
 
     //when
     String response = this.mockMvc
-        .perform(get(DEFAULT_PATH_INVOICE + "?filterKey=" + String.valueOf(sellerId)
-            + "&startDate=2021-01-01&endDate=2023-01-02"))
+        .perform(get(getInvoiceByDateUrl(sellerId)))
         .andExpect(content().contentType(CONTENT_TYPE))
         .andExpect(handler().methodName(GET_ENTRY_BY_DATE_METHOD))
         .andExpect(status().isOk())
         .andReturn().getResponse().getContentAsString();
 
     List<Invoice> invoiceList = getInvoicesFromResponse(response);
+
     //then
     for (Invoice inv : invoiceList) {
       assertTrue((inv.getIssueDate().isBefore(endDate.plusDays(1))
@@ -233,66 +239,91 @@ public class InvoiceControllerWithCompanyFilterIntegrationTests {
   public void shouldGetErrorWhileEntryByDateWhenBuyerAndSellerNotMatchesCompanyId()
       throws Exception {
     //given
-    long sellerId = registerSellerAtDb(givenInvoice);
-    LocalDate startDate = LocalDate.of(2020, 1, 1);
-    LocalDate endDate = LocalDate.of(2060, 1, 1);
     LocalDate invoiceDate = startDate;
 
     while (invoiceDate.isBefore(endDate)) {
-      givenInvoice.setIssueDate(invoiceDate);
+      invoice.setIssueDate(invoiceDate);
       invoiceDate = invoiceDate.plusYears(1);
-      addInvoiceToDb(givenInvoice);
+      addInvoiceToInvoiceDb(invoice);
     }
 
     //when
     String response = this.mockMvc
-        .perform(get(DEFAULT_PATH_INVOICE + "?filterKey=" + String.valueOf(sellerId + 10)
-            + "&startDate=" + startDate.toString() + "&endDate=" + endDate.toString()))
+        .perform(get(getInvoiceByDateUrl(sellerId + 1)))
         .andExpect(content().contentType(CONTENT_TYPE))
         .andExpect(handler().methodName(GET_ENTRY_BY_DATE_METHOD))
         .andReturn().getResponse().getContentAsString();
+
+    //than
     assertThat(response, is(equalTo("[]")));
   }
 
   @Test
   public void shouldUpdateInvoiceWhenBuyerMatchesId() throws Exception {
-    //given
-    long buyerId = registerBuyerAtDb(givenInvoice);
-    long invoiceId = addInvoiceToDb(givenInvoice);
-
-    Invoice updatedInvoice = generator.getTestInvoice(2, 1);
-    updatedInvoice.setId(invoiceId);
-    updatedInvoice.setBuyer(givenInvoice.getBuyer());
-
-    //when
+    //then
     this.mockMvc
-        .perform(put(DEFAULT_PATH_INVOICE + "/" + String.valueOf(buyerId) + "/" + invoiceId)
+        .perform(put(getInvoiceUpdateUrl(invoiceId, buyerId))
             .content(mapper.writeValueAsString(updatedInvoice))
             .contentType(CONTENT_TYPE))
         .andExpect(status().isOk());
-    //then
   }
 
   @Test
   public void shouldUpdateInvoiceWhenSellerMatchesId() throws Exception {
-    //given
-    long sellerId = registerSellerAtDb(givenInvoice);
-    long invoiceId = addInvoiceToDb(givenInvoice);
-
-    Invoice updatedInvoice = generator.getTestInvoice(2, 1);
-    updatedInvoice.setId(invoiceId);
-    updatedInvoice.setSeller(givenInvoice.getSeller());
-
-    //when
+    //then
     this.mockMvc
-        .perform(put(DEFAULT_PATH_INVOICE + "/" + String.valueOf(sellerId) + "/" + invoiceId)
+        .perform(put(getInvoiceUpdateUrl(invoiceId, sellerId))
             .content(mapper.writeValueAsString(updatedInvoice))
             .contentType(CONTENT_TYPE))
         .andExpect(status().isOk());
-    //then
   }
 
-  private long addCompanyToDb(Company company) throws Exception {
+  @Test
+  public void shouldNotUpdateInvoiceWhenSellerBuyerNotMatchId() throws Exception {
+    //then
+    this.mockMvc
+        .perform(put(getInvoiceUpdateUrl(invoiceId, anotherCompanyId))
+            .content(mapper.writeValueAsString(updatedInvoice))
+            .contentType(CONTENT_TYPE))
+        .andExpect(status().isBadRequest());
+  }
+
+  String getInvoiceUpdateUrl(long invoiceId, long sellerId) {
+    return DEFAULT_PATH_INVOICE + "/" + invoiceId + "/" + String.valueOf(sellerId);
+  }
+
+  @Test
+  public void shouldDeleteInvoiceWhenBuyerMatchesId() throws Exception {
+    //then
+    this.mockMvc
+        .perform(delete(getInvoiceDeleteUrl(invoiceId, buyerId)))
+        .andExpect(handler().methodName(REMOVE_ENTRY_METHOD))
+        .andExpect(status().isOk());
+  }
+
+  String getInvoiceDeleteUrl(long invoiceId, long companyId) {
+    return DEFAULT_PATH_INVOICE + "/" + String.valueOf(invoiceId) + "/" + String.valueOf(companyId);
+  }
+
+  @Test
+  public void shouldNotDeleteInvoiceWhenSellerBuyerNotMatchesId() throws Exception {
+    //then
+    this.mockMvc
+        .perform(delete(getInvoiceDeleteUrl(invoiceId, anotherCompanyId)))
+        .andExpect(handler().methodName(REMOVE_ENTRY_METHOD))
+        .andExpect(status().isBadRequest());
+  }
+
+  @Test
+  public void shouldDeleteInvoiceWhenSellerMatchesId() throws Exception {
+    //then
+    this.mockMvc
+        .perform(delete(getInvoiceDeleteUrl(invoiceId, sellerId)))
+        .andExpect(handler().methodName(REMOVE_ENTRY_METHOD))
+        .andExpect(status().isOk());
+  }
+
+  private long addCompanyToCompanyDb(Company company) throws Exception {
     String serviceResponse = this.mockMvc
         .perform(post(DEFAULT_PATH_COMPANY)
             .content(mapper.writeValueAsString(company))
@@ -303,7 +334,7 @@ public class InvoiceControllerWithCompanyFilterIntegrationTests {
     return getEntryIdFromServiceResponse(serviceResponse);
   }
 
-  private long addInvoiceToDb(Invoice invoice) throws Exception {
+  private long addInvoiceToInvoiceDb(Invoice invoice) throws Exception {
     String serviceResponse = this.mockMvc
         .perform(post(DEFAULT_PATH_INVOICE)
             .content(mapper.writeValueAsString(invoice))
@@ -314,22 +345,16 @@ public class InvoiceControllerWithCompanyFilterIntegrationTests {
     return getEntryIdFromServiceResponse(serviceResponse);
   }
 
-
   private long getEntryIdFromServiceResponse(String response) {
     Matcher matcher = extractIntFromString.matcher(response);
     matcher.find();
     return Long.parseLong(matcher.group(0));
   }
 
-  private Invoice getInvoiceFromServiceResponce(String responce) throws Exception {
-    return mapper.readValue(responce, Invoice.class);
-  }
 
   private List<Invoice> getInvoicesFromResponse(String response) throws Exception {
-    ObjectMapper objectMapper = new ObjectMapper();
     return mapper.readValue(
         response,
         mapper.getTypeFactory().constructCollectionType(List.class, Invoice.class));
   }
-
 }
