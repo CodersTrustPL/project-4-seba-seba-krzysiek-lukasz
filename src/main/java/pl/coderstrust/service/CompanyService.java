@@ -10,8 +10,8 @@ import pl.coderstrust.model.Company;
 public class CompanyService extends AbstractService<Company> {
 
   @Autowired
-  public CompanyService(@Qualifier("withCompanies") Database<Company> dbCompanies) {
-    super.database = dbCompanies;
+  public CompanyService(@Qualifier("dbWithCompanies") Database<Company> dbCompanies) {
+    super.entriesDb = dbCompanies;
   }
 }
 

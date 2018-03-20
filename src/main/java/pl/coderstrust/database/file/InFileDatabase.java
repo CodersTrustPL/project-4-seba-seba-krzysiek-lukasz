@@ -21,8 +21,10 @@ public class InFileDatabase<T extends WithNameIdIssueDate> implements Database<T
   private FileHelper fileHelper;
   private ObjectMapperHelper mapper;
   private HashSet<Long> savedIds;
+  private String keyName;
 
-  public InFileDatabase(Class<T> entryClass) {
+  public InFileDatabase(Class<T> entryClass, String dbKey) {
+    this.keyName = dbKey;
     mapper = new ObjectMapperHelper(entryClass);
     fileHelper = new FileHelper(new Configuration(entryClass.getSimpleName()));
     savedIds = getIdsFromDbFile();
@@ -69,7 +71,7 @@ public class InFileDatabase<T extends WithNameIdIssueDate> implements Database<T
   }
 
   String idToLineKey(long systemId) {
-    return "\"id\":" + String.valueOf(systemId) + ",";
+    return keyName + ":" + String.valueOf(systemId);
   }
 
   @Override

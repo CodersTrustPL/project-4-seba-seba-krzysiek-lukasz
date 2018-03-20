@@ -13,31 +13,40 @@ import pl.coderstrust.model.Invoice;
 @Configuration
 public class DatabaseProvider {
 
-  @Value("${pl.coderstrust.database.Database}")
-  private String databaseType;
+  @Value("${pl.coderstrust.database.MasterDatabase}")
+  private String masterDbType;
+
+  @Value("${pl.coderstrust.database.FilterDatabase}")
+  private String filterDbType;
+
+  @Value("${pl.coderstrust.database.MasterDatabase.key}")
+  private String masterDbKey;
+
+  @Value("${pl.coderstrust.database.FilterDatabase.key}")
+  private String filterDbKey;
+
 
   @Bean
-  public Database<Invoice> withInvoices() {
-    switch (databaseType) {
+  public Database<Invoice> dbWithInvoices() {
+    switch (masterDbType) {
       case "inFile":
-        return new InFileDatabase<>(Invoice.class);
+        return new InFileDatabase<>(Invoice.class, masterDbKey);
       case "multiFile":
-        return new MultiFileDatabase<>(Invoice.class);
+        return new MultiFileDatabase<>(Invoice.class, masterDbKey);
       default:
         return new InMemoryDatabase<>(Invoice.class);
     }
   }
 
   @Bean
-  public Database<Company> withCompanies() {
-    switch (databaseType) {
+  public Database<Company> dbWithCompanies() {
+    switch (masterDbType) {
       case "inFile":
-        return new InFileDatabase<>(Company.class);
+        return new InFileDatabase<>(Company.class, filterDbKey);
       case "multiFile":
-        return new MultiFileDatabase<>(Company.class);
+        return new MultiFileDatabase<>(Company.class, filterDbKey);
       default:
         return new InMemoryDatabase<>(Company.class);
     }
-
   }
 }

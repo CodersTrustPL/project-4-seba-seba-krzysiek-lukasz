@@ -12,32 +12,32 @@ public abstract class AbstractService<T extends WithNameIdIssueDate> {
   protected static final LocalDate MIN_DATE = LocalDate.of(1500, 11, 12);
   protected static final LocalDate MAX_DATE = LocalDate.of(3000, 11, 12);
 
-  Database<T> database;
+  Database<T> entriesDb;
 
   public long addEntry(T entry) {
     setDefaultEntryNameIfEmpty(entry);
-    return database.addEntry(entry);
+    return entriesDb.addEntry(entry);
   }
 
   public void deleteEntry(long id) {
-    database.deleteEntry(id);
+    entriesDb.deleteEntry(id);
   }
 
   public T findEntry(long id) {
-    return (T) database.getEntryById(id);
+    return (T) entriesDb.getEntryById(id);
   }
 
   public List<T> getEntry() {
-    return database.getEntries();
+    return entriesDb.getEntries();
   }
 
   public boolean idExist(long id) {
-    return database.idExist(id);
+    return entriesDb.idExist(id);
   }
 
   public void updateEntry(T entry) {
     setDefaultEntryNameIfEmpty(entry);
-    database.updateEntry(entry);
+    entriesDb.updateEntry(entry);
   }
 
   public List<T> getEntryByDate(LocalDate beginDate, LocalDate endDate) {
@@ -48,7 +48,7 @@ public abstract class AbstractService<T extends WithNameIdIssueDate> {
       endDate = MAX_DATE;
     }
     List<T> selectedEntries = new ArrayList<>();
-    List<T> allEntries = database.getEntries();
+    List<T> allEntries = entriesDb.getEntries();
     for (T entry : allEntries) {
       if (entry.getIssueDate().isBefore(endDate.plusDays(1)) && entry.getIssueDate()
           .isAfter(beginDate.minusDays(1))) {
@@ -59,7 +59,7 @@ public abstract class AbstractService<T extends WithNameIdIssueDate> {
   }
 
   public List<T> getEntries() {
-    return database.getEntries();
+    return entriesDb.getEntries();
   }
 
   protected void setDefaultEntryNameIfEmpty(T entry) {

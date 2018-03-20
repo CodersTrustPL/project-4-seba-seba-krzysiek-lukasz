@@ -31,7 +31,7 @@ public class MultiFileDatabaseTest extends DatabaseTest {
     FileCache fileCache = new FileCache(objectMapperHelper, config.getJsonFilePath());
     fileCache.getCache().clear();
 
-    Database database = new MultiFileDatabase<Invoice>(Invoice.class);
+    Database database = new MultiFileDatabase<Invoice>(Invoice.class, "\"invoiceId\"");
     return database;
   }
 }
