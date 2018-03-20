@@ -18,7 +18,7 @@ import javax.annotation.Resource;
 @Service
 public class TaxCalculatorService {
 
-  @Resource(name = "dbWithInvoices")
+  @Resource(name = "invoicesDatabase")
   private Database<Invoice> database;
 
   @Autowired

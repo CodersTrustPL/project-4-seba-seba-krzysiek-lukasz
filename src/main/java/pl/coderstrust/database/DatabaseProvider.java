@@ -13,6 +13,9 @@ import pl.coderstrust.model.Invoice;
 @Configuration
 public class DatabaseProvider {
 
+  private static final String IN_FILE = "inFile";
+  private static final String MULTIFILE = "multifile";
+
   @Value("${pl.coderstrust.database.MasterDatabase}")
   private String masterDbType;
 
@@ -27,11 +30,11 @@ public class DatabaseProvider {
 
 
   @Bean
-  public Database<Invoice> dbWithInvoices() {
+  public Database<Invoice> invoicesDatabase() {
     switch (masterDbType) {
-      case "inFile":
+      case IN_FILE:
         return new InFileDatabase<>(Invoice.class, masterDbKey);
-      case "multiFile":
+      case MULTIFILE:
         return new MultiFileDatabase<>(Invoice.class, masterDbKey);
       default:
         return new InMemoryDatabase<>(Invoice.class);
@@ -39,11 +42,11 @@ public class DatabaseProvider {
   }
 
   @Bean
-  public Database<Company> dbWithCompanies() {
+  public Database<Company> companiesDatabase() {
     switch (masterDbType) {
-      case "inFile":
+      case IN_FILE:
         return new InFileDatabase<>(Company.class, filterDbKey);
-      case "multiFile":
+      case MULTIFILE:
         return new MultiFileDatabase<>(Company.class, filterDbKey);
       default:
         return new InMemoryDatabase<>(Company.class);

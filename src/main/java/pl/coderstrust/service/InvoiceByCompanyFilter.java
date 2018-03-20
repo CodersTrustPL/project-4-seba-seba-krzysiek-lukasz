@@ -16,7 +16,7 @@ public class InvoiceByCompanyFilter implements EntriesFilter<Invoice> {
   @Qualifier("filterWithCompanies")
   Database<Company> dbCompanies;
 
-  public InvoiceByCompanyFilter(@Qualifier("dbWithCompanies") Database<Company> dbCompanies) {
+  public InvoiceByCompanyFilter(@Qualifier("companiesDatabase") Database<Company> dbCompanies) {
     this.dbCompanies = dbCompanies;
   }
 

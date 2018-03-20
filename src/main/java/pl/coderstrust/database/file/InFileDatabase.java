@@ -66,7 +66,7 @@ public class InFileDatabase<T extends WithNameIdIssueDate> implements Database<T
     } else {
 
       String jsonEntry = fileHelper.getLine(idToLineKey(systemId));
-      return (T) mapper.toObject(jsonEntry); //TODO can this be avoided unchecked cast?
+      return (T) mapper.toObject(jsonEntry);
     }
   }
 
@@ -86,7 +86,6 @@ public class InFileDatabase<T extends WithNameIdIssueDate> implements Database<T
     return fileHelper.getAllLines().stream()
         .map(line -> (T) mapper.toObject(line))
         .collect(Collectors.toCollection(ArrayList::new));
-    //TODO can this be avoided? unchecked cast
   }
 
   @Override
