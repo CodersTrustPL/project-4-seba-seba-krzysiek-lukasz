@@ -21,8 +21,10 @@ public class InFileDatabase<T extends WithNameIdIssueDate> implements Database<T
   private FileHelper fileHelper;
   private ObjectMapperHelper mapper;
   private HashSet<Long> savedIds;
+  private String keyName;
 
-  public InFileDatabase(Class<T> entryClass) {
+  public InFileDatabase(Class<T> entryClass, String dbKey) {
+    this.keyName = dbKey;
     mapper = new ObjectMapperHelper(entryClass);
     fileHelper = new FileHelper(new Configuration(entryClass.getSimpleName()));
     savedIds = getIdsFromDbFile();
@@ -64,12 +66,12 @@ public class InFileDatabase<T extends WithNameIdIssueDate> implements Database<T
     } else {
 
       String jsonEntry = fileHelper.getLine(idToLineKey(systemId));
-      return (T) mapper.toObject(jsonEntry); //TODO can this be avoided unchecked cast?
+      return (T) mapper.toObject(jsonEntry);
     }
   }
 
   String idToLineKey(long systemId) {
-    return "\"id\":" + String.valueOf(systemId) + ",";
+    return keyName + ":" + String.valueOf(systemId);
   }
 
   @Override
@@ -84,7 +86,6 @@ public class InFileDatabase<T extends WithNameIdIssueDate> implements Database<T
     return fileHelper.getAllLines().stream()
         .map(line -> (T) mapper.toObject(line))
         .collect(Collectors.toCollection(ArrayList::new));
-    //TODO can this be avoided? unchecked cast
   }
 
   @Override

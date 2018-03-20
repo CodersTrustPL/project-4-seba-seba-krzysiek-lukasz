@@ -161,7 +161,6 @@ public abstract class DatabaseTest {
 
   @Test
   public void shouldReturnFalseWhenInvoiceDoesNotExist() {
-    System.out.println(invoiceIds);
     assertThat(givenDatabase.idExist(INVOICES_COUNT + INVOICES_COUNT), is(false));
   }
 
