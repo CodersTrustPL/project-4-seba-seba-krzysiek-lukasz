@@ -150,8 +150,8 @@ public class InvoiceControllerWithCompanyFilterIntegrationTests {
   }
 
   private String getInvoiceUrl(long invoiceId, long companyId) {
-    return DEFAULT_PATH_INVOICE + "/" + String.valueOf(invoiceId) + "/" + String
-        .valueOf(companyId);
+    return DEFAULT_PATH_INVOICE + "/" + String.valueOf(companyId) + "/" + String
+        .valueOf(invoiceId);
   }
 
   @Test
@@ -289,7 +289,7 @@ public class InvoiceControllerWithCompanyFilterIntegrationTests {
   }
 
   String getInvoiceUpdateUrl(long invoiceId, long sellerId) {
-    return DEFAULT_PATH_INVOICE + "/" + invoiceId + "/" + String.valueOf(sellerId);
+    return DEFAULT_PATH_INVOICE + "/" + String.valueOf(sellerId) + "/" + String.valueOf(invoiceId);
   }
 
   @Test
@@ -302,7 +302,7 @@ public class InvoiceControllerWithCompanyFilterIntegrationTests {
   }
 
   String getInvoiceDeleteUrl(long invoiceId, long companyId) {
-    return DEFAULT_PATH_INVOICE + "/" + String.valueOf(invoiceId) + "/" + String.valueOf(companyId);
+    return DEFAULT_PATH_INVOICE + "/" + String.valueOf(companyId) + "/" + String.valueOf(invoiceId);
   }
 
   @Test

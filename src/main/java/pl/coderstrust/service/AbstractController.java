@@ -31,7 +31,7 @@ public abstract class AbstractController<T extends WithNameIdIssueDate & WithVal
 
     if (filterKey.isPresent()) {
       if (!byCustomerFilter.hasObjectById(entry, filterKey.get())) {
-        entryState.add("Specified buyer and/or seller does not match company ID.");
+        entryState.add(Messages.COMPANY_ID_NOT_MATCH);
       }
     }
 
@@ -42,7 +42,7 @@ public abstract class AbstractController<T extends WithNameIdIssueDate & WithVal
     return ResponseEntity.badRequest().body(entryState);
   }
 
-  @RequestMapping(value = {"/{id}", "/{id}/{filterKey}"}, method = RequestMethod.GET)
+  @RequestMapping(value = {"/{id}", "/{filterKey}/{id}"}, method = RequestMethod.GET)
   @ApiOperation(value = "Returns the entry by id in the specified date range")
   public ResponseEntity getEntryById(@PathVariable("id") long id,
       @PathVariable(name = "filterKey", required = false) Optional<Long> filterKey) {
@@ -82,7 +82,7 @@ public abstract class AbstractController<T extends WithNameIdIssueDate & WithVal
         endDate));
   }
 
-  @RequestMapping(value = {"/{id}", "/{id}/{filterKey}"}, method = RequestMethod.PUT)
+  @RequestMapping(value = {"/{id}", "/{filterKey}/{id}"}, method = RequestMethod.PUT)
   @ApiOperation(value = "Updates the entries by id")
   public ResponseEntity updateInvoice(
       @PathVariable(name = "filterKey", required = false) Optional<Long> filterKey,
@@ -91,7 +91,7 @@ public abstract class AbstractController<T extends WithNameIdIssueDate & WithVal
 
     if (filterKey.isPresent()) {
       if (!byCustomerFilter.hasObjectById(entry, filterKey.get())) {
-        entryState.add("Specified buyer and/or seller does not match company ID.");
+        entryState.add(Messages.COMPANY_ID_NOT_MATCH);
       }
     }
 
@@ -104,7 +104,7 @@ public abstract class AbstractController<T extends WithNameIdIssueDate & WithVal
 
   }
 
-  @RequestMapping(value = {"/{id}", "/{id}/{filterKey}"}, method = RequestMethod.DELETE)
+  @RequestMapping(value = {"/{id}", "/{filterKey}/{id}"}, method = RequestMethod.DELETE)
   @ApiOperation(value = "Deletes the entries by id")
   public ResponseEntity removeEntry(@PathVariable("id") long id,
       @PathVariable(name = "filterKey", required = false) Optional<Long> filterKey) {
@@ -116,7 +116,7 @@ public abstract class AbstractController<T extends WithNameIdIssueDate & WithVal
 
     if (filterKey.isPresent()) {
       if (!byCustomerFilter.hasField(service.findEntry(id), filterKey.get())) {
-        entryState.add("Specified buyer and/or seller does not match company ID.");
+        entryState.add(Messages.COMPANY_ID_NOT_MATCH);
         return ResponseEntity.badRequest().body(entryState);
       }
     }
