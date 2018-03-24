@@ -8,20 +8,30 @@ import pl.coderstrust.e2e.TestsConfiguration;
 import pl.coderstrust.e2e.ValidInputTests;
 import pl.coderstrust.e2e.model.Invoice;
 import pl.coderstrust.e2e.testHelpers.ObjectMapperHelper;
+import pl.coderstrust.e2e.testHelpers.TestCasesGenerator;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.equalTo;
 
 public class PerformanceTests extends ValidInputTests {
 
+
+    private TestCasesGenerator generator = new TestCasesGenerator();
+    private LocalDate currentDate = LocalDate.now();
+    private Invoice testInvoice;
+    private ArrayList<Invoice> testInvoices = new ArrayList<>();
     private TestsConfiguration config = new TestsConfiguration();
+    private Pattern extractIntFromString = Pattern.compile(config.getIntFromStringRegexPattern());
     private ObjectMapperHelper mapper = new ObjectMapperHelper();
     private ValidInputTests validInputTests = new ValidInputTests();
     private int THREADS_NUMBER = 5;
@@ -142,17 +152,9 @@ public class PerformanceTests extends ValidInputTests {
     @Test
     public void shouldCheckDatabaseSizeAndNumberOfIds() {
         int databaseSize = getDatabaseSize();
-        String path = config.getBaseUri() + config.getBasePort();
-        String response = given()
-                .body(path)
-                .get("")
-                .body().print();
-        List<Invoice> invoicesFromDatabase = mapper.toInvoiceList(response);
-        Set ids = new TreeSet();
-        for (Invoice invoice : invoicesFromDatabase) {
-            ids.add(invoice.getId());
-        }
-        int idsCount = ids.size();
+        Set isdSet = new TreeSet();
+        isdSet.addAll(getIDsFromDarabase());
+        int idsCount = isdSet.size();
         org.testng.Assert.assertEquals(databaseSize, idsCount);
     }
 
@@ -164,6 +166,71 @@ public class PerformanceTests extends ValidInputTests {
                 .body().print();
         return mapper.toInvoiceList(response).size();
     }
+
+    public ArrayList getIDsFromDarabase(){
+        String path = config.getBaseUri() + config.getBasePort();
+        String response = given()
+                .body(path)
+                .get("")
+                .body().print();
+        List<Invoice> invoicesFromDatabase = mapper.toInvoiceList(response);
+        ArrayList ids = new ArrayList();
+        for (Invoice invoice : invoicesFromDatabase) {
+            ids.add(invoice.getId());
+        }
+        return ids;
+    }
+
+    @Test
+    public void shouldUpdateInvoicesInThreadsAndCheckThem() {
+
+        ArrayList ids = getIDsFromDarabase();
+        int updatedInvoiceCount = 0;
+
+        Invoice updatedInvoice = generator.getTestInvoice(
+                (Integer) ids.get(1)+1, config.getDefaultEntriesCount());
+        long invoiceId = addInvoice(testInvoice);
+        updatedInvoice.setId(invoiceId);
+        updatedInvoice.setInvoiceName("UPDATED INVOICE");
+
+        ArrayList updatedIds = new ArrayList();
+        Runnable test = () -> {
+            given()
+                    .contentType("application/json")
+                    .body(updatedInvoice)
+                    .put("/" + invoiceId);
+                    updatedIds.add(invoiceId);
+
+        };
+
+
+        final ExecutorService newFixedThreadPool = Executors.newFixedThreadPool(THREADS_NUMBER);
+        for (int i = 0; i < THREADS_NUMBER; i++) {
+            newFixedThreadPool.submit(test);
+        }
+        newFixedThreadPool.shutdown();
+        try {
+            newFixedThreadPool.awaitTermination(10, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        newFixedThreadPool.shutdown();
+
+
+        given()
+                .when()
+                .get("/" + invoiceId)
+
+                .then()
+                .assertThat()
+                .body(equalTo(mapper.toJson(updatedInvoice)));
+
+    }
+
+    @Test
+    public void shouldDeleteInvoicesInThreadsAndCheckDatabaseSize(){
+    }
+
 
     @DataProvider(name = "validDates")
     Object[] validDatesProvider() {

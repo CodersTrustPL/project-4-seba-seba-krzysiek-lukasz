@@ -70,7 +70,7 @@ public class ValidInputTests {
                 .body(equalTo(mapper.toJson(testInvoice)));
     }
 
-    long addInvoice(Invoice testInvoice) {
+    public long addInvoice(Invoice testInvoice) {
         Response ServiceResponse = given()
                 .contentType("application/json")
                 .body(testInvoice)
