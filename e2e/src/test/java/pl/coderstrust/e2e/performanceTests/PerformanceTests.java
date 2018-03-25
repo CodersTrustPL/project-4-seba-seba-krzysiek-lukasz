@@ -1,6 +1,7 @@
 package pl.coderstrust.e2e.performanceTests;
 
 
+import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -18,10 +19,10 @@ import java.util.TreeSet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.equalTo;
 
 public class PerformanceTests extends ValidInputTests {
 
@@ -181,28 +182,34 @@ public class PerformanceTests extends ValidInputTests {
         return ids;
     }
 
+    public List getAllInvoicesFromDatabase(){
+        String path = config.getBaseUri() + config.getBasePort();
+        String response = given()
+                .body(path)
+                .get("")
+                .body().print();
+        return mapper.toInvoiceList(response);
+    }
+
     @Test
     public void shouldUpdateInvoicesInThreadsAndCheckThem() {
+        List<Invoice> invoices = getAllInvoicesFromDatabase();
+        List<Invoice> updatedInvoices = new ArrayList();
+        Runnable test = new Runnable() {
+            AtomicInteger updatedInvoiceCount = new AtomicInteger();
 
-        ArrayList ids = getIDsFromDarabase();
-        int updatedInvoiceCount = 0;
-
-        Invoice updatedInvoice = generator.getTestInvoice(
-                (Integer) ids.get(1)+1, config.getDefaultEntriesCount());
-        long invoiceId = addInvoice(testInvoice);
-        updatedInvoice.setId(invoiceId);
-        updatedInvoice.setInvoiceName("UPDATED INVOICE");
-
-        ArrayList updatedIds = new ArrayList();
-        Runnable test = () -> {
-            given()
-                    .contentType("application/json")
-                    .body(updatedInvoice)
-                    .put("/" + invoiceId);
-                    updatedIds.add(invoiceId);
-
+            @Override
+            public void run() {
+                Invoice updatedInvoice = invoices.get(updatedInvoiceCount.incrementAndGet());
+                updatedInvoice.setInvoiceName("UPDATED INVOICE " + updatedInvoiceCount);
+                given()
+                        .when()
+                        .contentType("application/json")
+                        .body(updatedInvoice)
+                        .put("/" + updatedInvoice.getId());
+                updatedInvoices.add(updatedInvoice);
+            }
         };
-
 
         final ExecutorService newFixedThreadPool = Executors.newFixedThreadPool(THREADS_NUMBER);
         for (int i = 0; i < THREADS_NUMBER; i++) {
@@ -216,15 +223,16 @@ public class PerformanceTests extends ValidInputTests {
         }
         newFixedThreadPool.shutdown();
 
+        for (Invoice invoice : updatedInvoices) {
 
-        given()
-                .when()
-                .get("/" + invoiceId)
+            String path = config.getBaseUri() + config.getBasePort();
+            String response = given()
+                    .body(path)
+                    .get("/" + invoice.getId())
+                    .body().print();
 
-                .then()
-                .assertThat()
-                .body(equalTo(mapper.toJson(updatedInvoice)));
-
+            Assert.assertEquals(mapper.toJson(invoice), response);
+        }
     }
 
     @Test
