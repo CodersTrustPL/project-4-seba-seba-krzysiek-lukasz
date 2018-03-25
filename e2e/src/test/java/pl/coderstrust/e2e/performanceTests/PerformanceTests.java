@@ -154,7 +154,7 @@ public class PerformanceTests extends ValidInputTests {
     public void shouldCheckDatabaseSizeAndNumberOfIds() {
         int databaseSize = getDatabaseSize();
         Set isdSet = new TreeSet();
-        isdSet.addAll(getIDsFromDarabase());
+        isdSet.addAll(getIDsFromDatabase());
         int idsCount = isdSet.size();
         org.testng.Assert.assertEquals(databaseSize, idsCount);
     }
@@ -168,7 +168,7 @@ public class PerformanceTests extends ValidInputTests {
         return mapper.toInvoiceList(response).size();
     }
 
-    public ArrayList getIDsFromDarabase(){
+    public ArrayList getIDsFromDatabase() {
         String path = config.getBaseUri() + config.getBasePort();
         String response = given()
                 .body(path)
@@ -182,7 +182,7 @@ public class PerformanceTests extends ValidInputTests {
         return ids;
     }
 
-    public List getAllInvoicesFromDatabase(){
+    public List getAllInvoicesFromDatabase() {
         String path = config.getBaseUri() + config.getBasePort();
         String response = given()
                 .body(path)
@@ -236,7 +236,36 @@ public class PerformanceTests extends ValidInputTests {
     }
 
     @Test
-    public void shouldDeleteInvoicesInThreadsAndCheckDatabaseSize(){
+    public void shouldDeleteInvoicesInThreadsAndCheckDatabaseSize() {
+        long startIDsCount = getIDsFromDatabase().size();
+        Runnable test = new Runnable() {
+            @Override
+            public void run() {
+                synchronized (this) {
+                    for (int i = 0; i < 5; i++) {
+                        long invoiceId = (long) getIDsFromDatabase().get(0);
+                        given()
+                                .delete("" + invoiceId);
+
+                    }
+                }
+            }
+        };
+        final ExecutorService newFixedThreadPool = Executors.newFixedThreadPool(THREADS_NUMBER);
+        for (int i = 0; i < THREADS_NUMBER; i++) {
+            newFixedThreadPool.submit(test);
+        }
+        newFixedThreadPool.shutdown();
+        try {
+            newFixedThreadPool.awaitTermination(10, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        newFixedThreadPool.shutdown();
+
+        long expectedIDsCount = startIDsCount - 25;
+        long actualIDsCount = getIDsFromDatabase().size();
+        org.testng.Assert.assertEquals(actualIDsCount, expectedIDsCount);
     }
 
 
