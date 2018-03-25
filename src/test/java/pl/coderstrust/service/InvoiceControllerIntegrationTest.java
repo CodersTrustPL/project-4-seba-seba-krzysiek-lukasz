@@ -255,7 +255,7 @@ public class InvoiceControllerIntegrationTest {
         .andExpect(status().isOk());
     //when
     String response = this.mockMvc
-        .perform(get(DEFAULT_PATH + "/2"))
+        .perform(get(DEFAULT_PATH + "?id=2"))
         .andExpect(content().contentType(CONTENT_TYPE))
         .andExpect(handler().methodName(GET_INVOICE_BY_ID_METHOD))
         .andExpect(status().isOk())
@@ -271,11 +271,11 @@ public class InvoiceControllerIntegrationTest {
   public void shouldReturnNotFoundError() throws Exception {
     //when
     this.mockMvc
-        .perform(get(DEFAULT_PATH + "/4"))
+        .perform(get(DEFAULT_PATH + "?id=4"))
         .andExpect(handler().methodName(GET_INVOICE_BY_ID_METHOD))
         .andExpect(status().isNotFound());
     this.mockMvc
-        .perform(delete(DEFAULT_PATH + "/4"))
+        .perform(delete(DEFAULT_PATH + "?id=4"))
         .andExpect(handler().methodName(REMOVE_INVOICE_METHOD))
         .andExpect(status().isNotFound());
   }
@@ -293,11 +293,11 @@ public class InvoiceControllerIntegrationTest {
     }
     //when
     this.mockMvc
-        .perform(delete(DEFAULT_PATH + "/10"))
+        .perform(delete(DEFAULT_PATH + "?id=10"))
         .andExpect(handler().methodName(REMOVE_INVOICE_METHOD))
         .andExpect(status().isOk());
     this.mockMvc
-        .perform(delete(DEFAULT_PATH + "/25"))
+        .perform(delete(DEFAULT_PATH + "?id=25"))
         .andExpect(handler().methodName(REMOVE_INVOICE_METHOD))
         .andExpect(status().isOk());
     //then
@@ -330,13 +330,13 @@ public class InvoiceControllerIntegrationTest {
     invoiceToUpdate.setId(3);
     //when
     this.mockMvc
-        .perform(put(DEFAULT_PATH + "/3")
+        .perform(put(DEFAULT_PATH + "?id=3")
             .content(json(InvoicesWithSpecifiedData.getInvoiceWithPolishData()))
             .contentType(CONTENT_TYPE))
         .andExpect(status().isOk());
     //then
     String response = this.mockMvc
-        .perform(get(DEFAULT_PATH + "/3"))
+        .perform(get(DEFAULT_PATH + "?id=3"))
         .andExpect(content().contentType(CONTENT_TYPE))
         .andExpect(handler().methodName(GET_INVOICE_BY_ID_METHOD))
         .andExpect(status().isOk())

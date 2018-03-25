@@ -25,4 +25,3 @@ public interface EntriesFilter<T extends WithNameIdIssueDate & WithValidation> {
   }
 
 }
-

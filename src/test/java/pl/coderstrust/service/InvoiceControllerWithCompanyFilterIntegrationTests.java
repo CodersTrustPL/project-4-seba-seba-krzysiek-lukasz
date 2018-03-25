@@ -46,13 +46,11 @@ public class InvoiceControllerWithCompanyFilterIntegrationTests {
   private static final String DEFAULT_PATH_COMPANY = "/company";
   private static final MediaType CONTENT_TYPE = MediaType.APPLICATION_JSON_UTF8;
   private static final String INT_FROM_STRING_REGEX_PATTERN = "([0-9])+";
-  private static String START_DATE = "2020-01-01";
-  private static String END_DATE = "2060-01-01";
-
   private static final int DEFAULT_INVOICE_NUMBER = 1;
   private static final int DEFAULT_UPDATED_INVOICE_NUMBER = 2;
   private static final int DEFAULT_ENTRIES_COUNT = 1;
-
+  private static String START_DATE = "2020-01-01";
+  private static String END_DATE = "2060-01-01";
   private LocalDate startDate = LocalDate.parse(START_DATE);
   private LocalDate endDate = LocalDate.parse(END_DATE);
 
@@ -100,7 +98,7 @@ public class InvoiceControllerWithCompanyFilterIntegrationTests {
   }
 
   private String addInvoiceUrl(long companyId) {
-    return DEFAULT_PATH_INVOICE + "/" + String.valueOf(companyId);
+    return DEFAULT_PATH_INVOICE + "?filterKey=" + String.valueOf(companyId);
   }
 
   private long registerInvoiceBuyerAtCompanyDb(Invoice invoice) throws Exception {
@@ -150,7 +148,7 @@ public class InvoiceControllerWithCompanyFilterIntegrationTests {
   }
 
   private String getInvoiceUrl(long invoiceId, long companyId) {
-    return DEFAULT_PATH_INVOICE + "/" + String.valueOf(companyId) + "/" + String
+    return DEFAULT_PATH_INVOICE + "?filterKey=" + String.valueOf(companyId) + "&id=" + String
         .valueOf(invoiceId);
   }
 
@@ -289,7 +287,8 @@ public class InvoiceControllerWithCompanyFilterIntegrationTests {
   }
 
   String getInvoiceUpdateUrl(long invoiceId, long sellerId) {
-    return DEFAULT_PATH_INVOICE + "/" + String.valueOf(sellerId) + "/" + String.valueOf(invoiceId);
+    return DEFAULT_PATH_INVOICE + "?filterKey=" + String.valueOf(sellerId) + "&id=" + String
+        .valueOf(invoiceId);
   }
 
   @Test
@@ -302,7 +301,8 @@ public class InvoiceControllerWithCompanyFilterIntegrationTests {
   }
 
   String getInvoiceDeleteUrl(long invoiceId, long companyId) {
-    return DEFAULT_PATH_INVOICE + "/" + String.valueOf(companyId) + "/" + String.valueOf(invoiceId);
+    return DEFAULT_PATH_INVOICE + "?filterKey=" + String.valueOf(companyId) + "&id=" + String
+        .valueOf(invoiceId);
   }
 
   @Test

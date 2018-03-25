@@ -6,7 +6,6 @@ import pl.coderstrust.database.Database;
 import pl.coderstrust.model.Company;
 import pl.coderstrust.model.Invoice;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,7 +38,7 @@ public class InvoiceByCompanyFilter implements EntriesFilter<Invoice> {
   public List<Invoice> filterByField(List<Invoice> entries, long companyId) {
     return entries.stream()
         .filter(line -> hasBuyerOrSeller(line, companyId))
-        .collect(Collectors.toCollection(ArrayList::new));
+        .collect(Collectors.toList());
   }
 
   private boolean hasBuyerOrSeller(Invoice entry, long filterId) {
