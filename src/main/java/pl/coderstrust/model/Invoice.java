@@ -1,5 +1,6 @@
 package pl.coderstrust.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -12,13 +13,13 @@ import java.util.List;
 
 public class Invoice implements WithNameIdIssueDate, WithValidation {
 
+  List<InvoiceEntry> products = new ArrayList<>();
   private long id;
   private String name;
   private Company buyer;
   private Company seller;
   private LocalDate issueDate;
   private LocalDate paymentDate;
-  List<InvoiceEntry> products = new ArrayList<>();
   private PaymentState paymentState;
 
   public Invoice() {
@@ -29,6 +30,7 @@ public class Invoice implements WithNameIdIssueDate, WithValidation {
     return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
   }
 
+  @JsonProperty("invoiceId")
   public long getId() {
     return id;
   }

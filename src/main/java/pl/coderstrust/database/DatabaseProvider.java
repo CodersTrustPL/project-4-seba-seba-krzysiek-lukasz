@@ -13,31 +13,43 @@ import pl.coderstrust.model.Invoice;
 @Configuration
 public class DatabaseProvider {
 
-  @Value("${pl.coderstrust.database.Database}")
-  private String databaseType;
+  private static final String IN_FILE = "inFile";
+  private static final String MULTIFILE = "multifile";
+
+  @Value("${pl.coderstrust.database.MasterDatabase}")
+  private String masterDbType;
+
+  @Value("${pl.coderstrust.database.FilterDatabase}")
+  private String filterDbType;
+
+  @Value("${pl.coderstrust.database.MasterDatabase.key}")
+  private String masterDbKey;
+
+  @Value("${pl.coderstrust.database.FilterDatabase.key}")
+  private String filterDbKey;
+
 
   @Bean
-  public Database<Invoice> withInvoices() {
-    switch (databaseType) {
-      case "inFile":
-        return new InFileDatabase<>(Invoice.class);
-      case "multiFile":
-        return new MultiFileDatabase<>(Invoice.class);
+  public Database<Invoice> invoicesDatabase() {
+    switch (masterDbType) {
+      case IN_FILE:
+        return new InFileDatabase<>(Invoice.class, masterDbKey);
+      case MULTIFILE:
+        return new MultiFileDatabase<>(Invoice.class, masterDbKey);
       default:
         return new InMemoryDatabase<>(Invoice.class);
     }
   }
 
   @Bean
-  public Database<Company> withCompanies() {
-    switch (databaseType) {
-      case "inFile":
-        return new InFileDatabase<>(Company.class);
-      case "multiFile":
-        return new MultiFileDatabase<>(Company.class);
+  public Database<Company> companiesDatabase() {
+    switch (masterDbType) {
+      case IN_FILE:
+        return new InFileDatabase<>(Company.class, filterDbKey);
+      case MULTIFILE:
+        return new MultiFileDatabase<>(Company.class, filterDbKey);
       default:
         return new InMemoryDatabase<>(Company.class);
     }
-
   }
 }

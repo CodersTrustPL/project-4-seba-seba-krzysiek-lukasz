@@ -1,6 +1,7 @@
 package pl.coderstrust.database;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -36,4 +37,25 @@ public class ObjectMapperHelper<T> {
       //TODO add logging.
     }
   }
+
+  public String idToJson(long id) {
+    try {
+      return jsonMapper.writeValueAsString(id);
+    } catch (JsonProcessingException e) {
+      throw new DbException(ExceptionMsg.INTERNAL_PROCESSING_ERROR, e);
+      //TODO add logging.
+    }
+  }
+
+  public long jsonToId(String json) {
+    try {
+      return jsonMapper.readValue(json, new TypeReference<Long>() {
+      });
+    } catch (IOException e) {
+      throw new DbException(ExceptionMsg.INTERNAL_PROCESSING_ERROR, e);
+      //TODO add logging.
+    }
+  }
+
 }
+

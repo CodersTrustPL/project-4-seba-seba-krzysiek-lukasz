@@ -9,7 +9,8 @@ import pl.coderstrust.model.Company;
 @RequestMapping("company")
 public class CompanyController extends AbstractController<Company> {
 
-  public CompanyController(CompanyService companyService) {
+  public CompanyController(CompanyService companyService, CompanyDummyFilter dummyFilter) {
     super.service = companyService;
+    super.byCustomerFilter = dummyFilter;
   }
 }
