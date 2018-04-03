@@ -1,5 +1,7 @@
 package pl.coderstrust.database.file;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pl.coderstrust.database.DbException;
 import pl.coderstrust.database.ExceptionMsg;
 
@@ -16,6 +18,7 @@ import java.util.stream.Stream;
 
 public class FileHelper {
 
+  private final Logger logger = LoggerFactory.getLogger(FileHelper.class);
   private Configuration dbConfig;
   private File dbFile;
   private File tempFile;
@@ -34,9 +37,9 @@ public class FileHelper {
       try {
         dbFile.createNewFile();
       } catch (IOException e) {
-        throw new DbException(
-            ExceptionMsg.IO_ERROR_WHILE_INITIALIZING, e);
-        //TODO add logging.
+        logger.warn(" from initializeDatabaseFile in FileHelper (File): "
+            + ExceptionMsg.IO_ERROR_WHILE_INITIALIZING, e);
+        throw new DbException(ExceptionMsg.IO_ERROR_WHILE_INITIALIZING, e);
       }
     }
   }
@@ -46,9 +49,9 @@ public class FileHelper {
     try {
       Files.write(dbFile.toPath(), lineContent.getBytes(), StandardOpenOption.APPEND);
     } catch (IOException e) {
-      throw new DbException(
-          ExceptionMsg.IO_ERROR_WHILE_ADDING, e);
-      //TODO add logging.
+      logger.warn(" from addLine in FileHelper (File): "
+          + ExceptionMsg.IO_ERROR_WHILE_ADDING, e);
+      throw new DbException(ExceptionMsg.IO_ERROR_WHILE_ADDING, e);
     }
   }
 
@@ -57,11 +60,13 @@ public class FileHelper {
       deleteLineAndSaveToTempFile(lineKey);
       updateDatabaseFromTempFile();
     } catch (InterruptedException e) {
+      logger.warn(" from deleteLine in FileHelper (File): "
+          + ExceptionMsg.INVOICE_PROCESSING_INTERRUPT, e);
       throw new DbException(ExceptionMsg.INVOICE_PROCESSING_INTERRUPT, e);
-      //TODO add logging.
     } catch (IOException e) {
+      logger.warn(" from deleteLine in FileHelper (File): "
+          + ExceptionMsg.IO_ERROR_WHILE_DELETING, e);
       throw new DbException(ExceptionMsg.IO_ERROR_WHILE_DELETING, e);
-      //TODO add logging.
     }
   }
 
@@ -104,9 +109,9 @@ public class FileHelper {
           .collect(Collectors.joining());
       return lineFound;
     } catch (IOException e) {
-      throw new DbException(
-          ExceptionMsg.IO_ERROR_WHILE_READING, e);
-      //TODO add logging.
+      logger.warn(" from getLine in FileHelper (File): "
+          + ExceptionMsg.IO_ERROR_WHILE_READING, e);
+      throw new DbException(ExceptionMsg.IO_ERROR_WHILE_READING, e);
     }
   }
 
@@ -114,9 +119,9 @@ public class FileHelper {
     try (Stream<String> dbStream = Files.lines(dbFile.toPath())) {
       return dbStream.collect(Collectors.toCollection(ArrayList::new));
     } catch (IOException e) {
-      throw new DbException(
-          ExceptionMsg.IO_ERROR_WHILE_READING, e);
-      //TODO add logging.
+      logger.warn(" from getAllLines in FileHelper (File): "
+          + ExceptionMsg.IO_ERROR_WHILE_READING, e);
+      throw new DbException(ExceptionMsg.IO_ERROR_WHILE_READING, e);
     }
   }
 

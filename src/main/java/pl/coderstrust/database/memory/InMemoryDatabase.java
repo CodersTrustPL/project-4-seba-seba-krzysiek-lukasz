@@ -1,5 +1,7 @@
 package pl.coderstrust.database.memory;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pl.coderstrust.database.Database;
 import pl.coderstrust.database.DbException;
 import pl.coderstrust.database.ExceptionMsg;
@@ -14,6 +16,7 @@ public class InMemoryDatabase<T extends WithNameIdIssueDate> implements Database
 
   private static final int INITIAL_ID = 0;
   private static final int INCREMENT_ID = 1;
+  private final Logger logger = LoggerFactory.getLogger(InMemoryDatabase.class);
 
   private HashMap<Long, T> entries = new HashMap<>();
   private long lastId = INITIAL_ID;
@@ -37,18 +40,19 @@ public class InMemoryDatabase<T extends WithNameIdIssueDate> implements Database
   @Override
   public void deleteEntry(long id) {
     if (!idExist(id)) {
+      logger.warn(" from deleteEntry (InMemoryDatabase): "
+          + ExceptionMsg.INVOICE_NOT_EXIST);
       throw new DbException(ExceptionMsg.INVOICE_NOT_EXIST);
-      //TODO add logging.
     }
-
     entries.remove(id);
   }
 
   @Override
   public T getEntryById(long id) {
     if (!idExist(id)) {
+      logger.warn(" from getEntryByiD (InMemoryDatabase): "
+          + ExceptionMsg.INVOICE_NOT_EXIST);
       throw new DbException(ExceptionMsg.INVOICE_NOT_EXIST);
-      //TODO add logging.
     }
     return entries.get(id);
   }
@@ -56,10 +60,10 @@ public class InMemoryDatabase<T extends WithNameIdIssueDate> implements Database
   @Override
   public void updateEntry(T entry) {
     if (!idExist(entry.getId())) {
+      logger.warn(" from updateEntry (InMemoryDatabase): "
+          + ExceptionMsg.INVOICE_NOT_EXIST);
       throw new DbException(ExceptionMsg.INVOICE_NOT_EXIST);
-      //TODO add logging.
     }
-
     entries.replace(entry.getId(), entry);
   }
 
@@ -72,5 +76,4 @@ public class InMemoryDatabase<T extends WithNameIdIssueDate> implements Database
   public boolean idExist(long id) {
     return entries.containsKey(id);
   }
-
 }

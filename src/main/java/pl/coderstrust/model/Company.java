@@ -12,7 +12,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class Company implements WithNameIdIssueDate, WithValidation {
 
   private long id;
@@ -46,7 +45,6 @@ public class Company implements WithNameIdIssueDate, WithValidation {
   public void setId(long id) {
     this.id = id;
   }
-
 
   @Override
   public LocalDate getIssueDate() {
@@ -177,6 +175,4 @@ public class Company implements WithNameIdIssueDate, WithValidation {
 
     return errors;
   }
-
-
 }

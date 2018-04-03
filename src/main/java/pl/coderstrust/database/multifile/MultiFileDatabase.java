@@ -1,5 +1,7 @@
 package pl.coderstrust.database.multifile;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pl.coderstrust.database.Database;
 import pl.coderstrust.database.DbException;
 import pl.coderstrust.database.ExceptionMsg;
@@ -14,6 +16,7 @@ public class MultiFileDatabase<T extends WithNameIdIssueDate> implements Databas
 
   private static final int FIRST_ID = 0;
   private static final int INCREMENT_ID = 1;
+  private final Logger logger = LoggerFactory.getLogger(MultiFileDatabase.class);
 
   private ObjectMapperHelper<T> objectMapper;
   private FileHelper fileHelper;
@@ -45,6 +48,8 @@ public class MultiFileDatabase<T extends WithNameIdIssueDate> implements Databas
   @Override
   synchronized public void deleteEntry(long id) {
     if (!idExist(id)) {
+      logger.warn(" from deleteEntry (MultiFileDatabase): "
+          + ExceptionMsg.INVOICE_NOT_EXIST);
       throw new DbException(ExceptionMsg.INVOICE_NOT_EXIST);
     } else {
       fileHelper.deleteLine(id);
@@ -58,6 +63,8 @@ public class MultiFileDatabase<T extends WithNameIdIssueDate> implements Databas
     if (fileCache.getCache().containsKey(id)) {
       invoice = (T) objectMapper.toObject(fileHelper.getLine(id));
     } else {
+      logger.warn(" from entryById (MultiFileDatabase): "
+          + ExceptionMsg.INVOICE_NOT_EXIST);
       throw new DbException(ExceptionMsg.INVOICE_NOT_EXIST);
     }
     return invoice;
