@@ -74,7 +74,6 @@ public class TaxCalculatorController {
       BigDecimal cost = taxService.calculateCost(companyId, startDate, endDate);
       return ResponseEntity.ok(income.subtract(cost).setScale(2, RoundingMode.HALF_UP));
     }
-
     return ResponseEntity.badRequest().body(Messages.END_BEFORE_START);
   }
 

@@ -1,6 +1,8 @@
 package pl.coderstrust.database.multifile;
 
 import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pl.coderstrust.database.DbException;
 import pl.coderstrust.database.ExceptionMsg;
 import pl.coderstrust.database.ObjectMapperHelper;
@@ -16,6 +18,7 @@ import java.util.List;
 
 public class FileCache<T extends WithNameIdIssueDate> {
 
+  private final Logger logger = LoggerFactory.getLogger(FileCache.class);
   private ObjectMapperHelper objectMapper;
   private HashMap<Long, String> cache;
   private String jsonFilePath;
@@ -48,9 +51,9 @@ public class FileCache<T extends WithNameIdIssueDate> {
           readFiles.add(line);
         }
       } catch (IOException e) {
-        throw new DbException(
-            ExceptionMsg.IO_ERROR_WHILE_READING, e);
-        //TODO add logging.
+        logger.warn(" from getAllFilesEntries in FileCache: "
+            + ExceptionMsg.IO_ERROR_WHILE_READING, e);
+        throw new DbException(ExceptionMsg.IO_ERROR_WHILE_READING, e);
       }
     });
     return readFiles;
