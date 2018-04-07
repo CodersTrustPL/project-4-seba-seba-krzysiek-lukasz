@@ -15,6 +15,7 @@ public class DatabaseProvider {
 
   private static final String IN_FILE = "inFile";
   private static final String MULTIFILE = "multifile";
+  private static final String HIBERNATE = "hibernate";
 
   @Value("${pl.coderstrust.database.MasterDatabase}")
   private String masterDbType;

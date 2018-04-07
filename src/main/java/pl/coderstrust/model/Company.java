@@ -2,7 +2,6 @@ package pl.coderstrust.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
-
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -18,8 +17,6 @@ public class Company implements WithNameIdIssueDate, WithValidation {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  @Column(name="company_id")
-
   private long id;
   private String name;
   private LocalDate issueDate;
@@ -28,8 +25,12 @@ public class Company implements WithNameIdIssueDate, WithValidation {
   private String zipCode;
   private String nip;
   private String bankAccoutNumber;
+
+  @Enumerated(EnumType.ORDINAL)
   private TaxType taxType;
   private boolean personalCarUsage;
+
+  @Transient
   private List<Payment> payments;
 
   public Company() {

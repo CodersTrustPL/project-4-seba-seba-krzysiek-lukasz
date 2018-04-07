@@ -15,18 +15,30 @@ import java.util.List;
 @Entity
 public class Invoice implements WithNameIdIssueDate, WithValidation {
 
+  @Transient
   private List<InvoiceEntry> products = new ArrayList<>();
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  @Column(name="invoice_id")
+  @Column(name = "ID")
   private long id;
 
   private String name;
+
+  @JoinColumn
+  @ManyToOne(cascade=CascadeType.ALL)
   private Company buyer;
+
+  @JoinColumn
+  @ManyToOne(cascade=CascadeType.ALL)
   private Company seller;
+
   private LocalDate issueDate;
+
   private LocalDate paymentDate;
+
+  @Column(name="paymentState")
+  @Enumerated(EnumType.ORDINAL)
   private PaymentState paymentState;
 
   public Invoice() {
