@@ -7,14 +7,21 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 public class Invoice implements WithNameIdIssueDate, WithValidation {
 
   private List<InvoiceEntry> products = new ArrayList<>();
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  @Column(name="invoice_id")
   private long id;
+
   private String name;
   private Company buyer;
   private Company seller;

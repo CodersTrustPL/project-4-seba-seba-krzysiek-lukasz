@@ -8,11 +8,17 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 public class Company implements WithNameIdIssueDate, WithValidation {
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  @Column(name="company_id")
 
   private long id;
   private String name;
