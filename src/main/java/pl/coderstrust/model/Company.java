@@ -30,7 +30,8 @@ public class Company implements WithNameIdIssueDate, WithValidation {
   private TaxType taxType;
   private boolean personalCarUsage;
 
-  @Transient
+  @JoinColumn
+  @ManyToMany(cascade=CascadeType.ALL)
   private List<Payment> payments;
 
   public Company() {

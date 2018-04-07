@@ -3,17 +3,17 @@ package pl.coderstrust.model;
 import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
-import org.springframework.stereotype.Component;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component("product")
+@Entity
 public class Product implements WithValidation {
 
+  @Id
   private String name;
   private String description;
   private BigDecimal netValue;

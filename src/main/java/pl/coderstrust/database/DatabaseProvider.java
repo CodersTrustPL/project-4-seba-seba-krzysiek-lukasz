@@ -29,7 +29,6 @@ public class DatabaseProvider {
   @Value("${pl.coderstrust.database.FilterDatabase.key}")
   private String filterDbKey;
 
-
   @Bean
   public Database<Invoice> invoicesDatabase() {
     switch (masterDbType) {

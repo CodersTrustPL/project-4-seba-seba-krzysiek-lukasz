@@ -6,8 +6,15 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import javax.persistence.*;
+
+@Entity
+@Access(AccessType.FIELD)
 public class InvoiceEntry {
 
+  @Id
+  @Lob
+  @Column(columnDefinition = "text")
   private Product product;
   private int amount;
 

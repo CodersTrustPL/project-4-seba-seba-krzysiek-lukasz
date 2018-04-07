@@ -1,10 +1,5 @@
 package pl.coderstrust.database;
 
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsEqual.equalTo;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -15,6 +10,11 @@ import pl.coderstrust.testhelpers.TestCasesGenerator;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
+
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsEqual.equalTo;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 public abstract class DatabaseTest {
 
