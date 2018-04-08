@@ -1,18 +1,18 @@
 package pl.coderstrust.model;
 
 import io.swagger.annotations.ApiModelProperty;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-
-import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.Embeddable;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 @Embeddable
 public class Product implements WithValidation {
 
-  @Id
   private String name;
   private String description;
   private BigDecimal netValue;
@@ -48,7 +48,6 @@ public class Product implements WithValidation {
   public BigDecimal getNetValue() {
     return netValue;
   }
-
   public void setNetValue(BigDecimal netValue) {
     this.netValue = netValue;
   }
@@ -68,7 +67,7 @@ public class Product implements WithValidation {
   public void setProductType(ProductType productType) {
     this.productType = productType;
   }
-  
+
   @Override
   public boolean equals(Object object) {
     return EqualsBuilder.reflectionEquals(this, object);

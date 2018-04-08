@@ -1,9 +1,11 @@
 package pl.coderstrust.database;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import pl.coderstrust.database.file.InFileDatabase;
+import pl.coderstrust.database.hibernate.HibernateDatabase;
 import pl.coderstrust.database.memory.InMemoryDatabase;
 import pl.coderstrust.database.multifile.MultiFileDatabase;
 import pl.coderstrust.model.Company;
@@ -29,6 +31,9 @@ public class DatabaseProvider {
   @Value("${pl.coderstrust.database.FilterDatabase.key}")
   private String filterDbKey;
 
+  @Autowired
+  HibernateDatabase hibernateDatabase;
+
   @Bean
   public Database<Invoice> invoicesDatabase() {
     switch (masterDbType) {
@@ -36,6 +41,8 @@ public class DatabaseProvider {
         return new InFileDatabase<>(Invoice.class, masterDbKey);
       case MULTIFILE:
         return new MultiFileDatabase<>(Invoice.class, masterDbKey);
+      case HIBERNATE:
+        return hibernateDatabase;
       default:
         return new InMemoryDatabase<>(Invoice.class);
     }
@@ -48,6 +55,8 @@ public class DatabaseProvider {
         return new InFileDatabase<>(Company.class, filterDbKey);
       case MULTIFILE:
         return new MultiFileDatabase<>(Company.class, filterDbKey);
+      case HIBERNATE:
+        return hibernateDatabase;
       default:
         return new InMemoryDatabase<>(Company.class);
     }

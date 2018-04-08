@@ -9,11 +9,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import javax.persistence.*;
 
 @Embeddable
-//@Access(AccessType.FIELD)
 public class InvoiceEntry {
 
-//  @Id
-//  @Lob
   @Column(columnDefinition = "text")
   private Product product;
   private int amount;

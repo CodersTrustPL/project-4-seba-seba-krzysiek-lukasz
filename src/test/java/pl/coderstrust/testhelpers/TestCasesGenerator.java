@@ -69,7 +69,7 @@ public class TestCasesGenerator {
   public Product getTestProduct(int invoiceNumber, int productCount) {
 
     String name = "name_" + Integer.toString(invoiceNumber) + "_" + Integer.toString(productCount);
-    double netValue = invoiceNumber;
+    double netValue = invoiceNumber+0.05;
     ProductBuilder builder = new ProductBuilder(name, netValue);
     builder.setDescription(name + "_" + "description_" + Integer.toString(invoiceNumber));
     builder.setVatRate(Vat.VAT_23);
