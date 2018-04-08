@@ -32,11 +32,7 @@ public class HibernateDatabase<T extends WithNameIdIssueDate> implements Databas
 
     @Override
     public long addEntry(T entry) {
-        repository.save(entry);
-        repository.flush();
-
         Invoice savedInvoice = (Invoice) repository.save(entry);
-
         return savedInvoice.getId();
     }
 

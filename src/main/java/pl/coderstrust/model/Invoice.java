@@ -15,15 +15,13 @@ import java.util.List;
 @Entity
 public class Invoice implements WithNameIdIssueDate, WithValidation {
 
-    @Transient
-  @ManyToMany
-  @JoinColumn
+  @ElementCollection (fetch = FetchType.LAZY)
   private List<InvoiceEntry> products = new ArrayList<>();
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "ID", unique=true, nullable=false, insertable=true, updatable=true)
-  private long id;
+  private Long id;
 
   private String name;
 

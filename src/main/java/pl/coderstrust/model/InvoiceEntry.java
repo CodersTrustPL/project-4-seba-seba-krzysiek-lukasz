@@ -8,12 +8,12 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 import javax.persistence.*;
 
-@Entity
-@Access(AccessType.FIELD)
+@Embeddable
+//@Access(AccessType.FIELD)
 public class InvoiceEntry {
 
-  @Id
-  @Lob
+//  @Id
+//  @Lob
   @Column(columnDefinition = "text")
   private Product product;
   private int amount;

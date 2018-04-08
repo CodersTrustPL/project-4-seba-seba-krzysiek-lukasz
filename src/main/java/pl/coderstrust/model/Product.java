@@ -4,13 +4,12 @@ import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
+@Embeddable
 public class Product implements WithValidation {
 
   @Id
@@ -18,6 +17,8 @@ public class Product implements WithValidation {
   private String description;
   private BigDecimal netValue;
   private Vat vatRate;
+
+  @Enumerated(EnumType.ORDINAL)
   private ProductType productType;
 
   public Product() {
