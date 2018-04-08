@@ -16,6 +16,8 @@ public class Product implements WithValidation {
   private String name;
   private String description;
   private BigDecimal netValue;
+
+  @Enumerated(EnumType.ORDINAL)
   private Vat vatRate;
 
   @Enumerated(EnumType.ORDINAL)

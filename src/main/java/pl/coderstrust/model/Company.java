@@ -31,7 +31,7 @@ public class Company implements WithNameIdIssueDate, WithValidation {
   private boolean personalCarUsage;
 
   @JoinColumn
-  @ManyToMany(cascade=CascadeType.ALL)
+  @OneToMany(cascade=CascadeType.ALL, fetch = FetchType.LAZY)
   private List<Payment> payments;
 
   public Company() {

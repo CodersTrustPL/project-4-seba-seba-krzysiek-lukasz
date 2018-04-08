@@ -197,8 +197,13 @@ public class HibernateDatabaseTest {
             System.out.println(database.addEntry(givenInvoice));
             System.out.println(database.addEntry(givenInvoice));
             System.out.println(database.addEntry(givenInvoice));
-            System.out.println(database.addEntry(givenInvoice));System.out.println(database.addEntry(givenInvoice));
-            System.out.println(database.addEntry(givenInvoice));System.out.println(database.addEntry(givenInvoice));
+            System.out.println(database.addEntry(givenInvoice));
+            System.out.println(database.addEntry(givenInvoice));
+            System.out.println(database.addEntry(givenInvoice));
+            System.out.println(database.addEntry(givenInvoice));
+            long id = database.addEntry(givenInvoice);
+
+            System.out.println(database.getEntryById(id));
 
 
 

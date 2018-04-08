@@ -43,7 +43,7 @@ public class HibernateDatabase<T extends WithNameIdIssueDate> implements Databas
 
     @Override
     public T getEntryById(long id) {
-        return (T) repository.findOne(id);
+        return (T) repository.getOne(id);
     }
 
     @Override

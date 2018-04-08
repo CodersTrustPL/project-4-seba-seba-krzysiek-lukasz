@@ -15,22 +15,22 @@ import java.util.List;
 @Entity
 public class Invoice implements WithNameIdIssueDate, WithValidation {
 
-  @ElementCollection (fetch = FetchType.LAZY)
+  @ElementCollection (fetch = FetchType.EAGER)
   private List<InvoiceEntry> products = new ArrayList<>();
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "ID", unique=true, nullable=false, insertable=true, updatable=true)
   private Long id;
 
   private String name;
 
   @JoinColumn
-  @ManyToOne(cascade=CascadeType.ALL)
+  @ManyToOne(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
   private Company buyer;
 
   @JoinColumn
-  @ManyToOne(cascade=CascadeType.ALL)
+  @ManyToOne(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
   private Company seller;
 
   private LocalDate issueDate;
