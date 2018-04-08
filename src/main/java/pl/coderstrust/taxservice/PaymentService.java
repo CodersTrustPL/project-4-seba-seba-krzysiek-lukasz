@@ -2,6 +2,7 @@ package pl.coderstrust.taxservice;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.coderstrust.model.Company;
 import pl.coderstrust.model.Payment;
 import pl.coderstrust.model.PaymentType;
 import pl.coderstrust.service.CompanyService;
@@ -76,6 +77,9 @@ public class PaymentService {
         break;
       }
     }
+    Company company = companyService.findEntry(companyId);
+    company.setPayments(payments);
+    companyService.updateEntry(company);
   }
 
   public void deletePayment(long companyId, long paymentId) {
@@ -86,6 +90,9 @@ public class PaymentService {
         break;
       }
     }
+    Company company = companyService.findEntry(companyId);
+    company.setPayments(payments);
+    companyService.updateEntry(company);
   }
 
   public boolean idExist(long companyId, long paymentId) {
@@ -103,10 +110,12 @@ public class PaymentService {
   }
 
   private void addPaymentToList(long companyId, Payment payment) {
-    companyService
-        .findEntry(companyId)
-        .getPayments()
-        .add(payment);
+    List<Payment> payments = companyService.findEntry(companyId).getPayments();
+    payments.add(payment);
+    Company company = companyService.findEntry(companyId);
+    company.setPayments(payments);
+    companyService.updateEntry(company);
+
   }
 
   private int getPaymentIndex(long paymentId, List<Payment> payments) {

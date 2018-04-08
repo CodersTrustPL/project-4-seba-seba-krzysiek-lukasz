@@ -13,7 +13,10 @@ import java.time.LocalDate;
 
 public class ValidInputTest extends AbstractValidInputTests {
 
+  private TestsConfiguration config = new TestsConfiguration();
+
   private long testBuyerId;
+
 
   @BeforeClass
   public void setupClass() {

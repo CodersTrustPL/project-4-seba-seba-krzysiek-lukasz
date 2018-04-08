@@ -13,6 +13,8 @@ import java.time.LocalDate;
 
 public class ValidInputTest extends AbstractValidInputTests {
 
+  private TestsConfiguration config = new TestsConfiguration();
+
   @BeforeClass
   public void setupClass() {
     currentDate = LocalDate.now();

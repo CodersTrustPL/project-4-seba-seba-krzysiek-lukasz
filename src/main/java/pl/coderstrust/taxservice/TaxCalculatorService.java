@@ -132,21 +132,22 @@ public class TaxCalculatorService {
     final BigDecimal income = calculateIncome(companyId, startDate, endDate);
     final BigDecimal costs = calculateCost(companyId, startDate, endDate);
     Map<String, BigDecimal> taxesSummary = new LinkedHashMap<>();
-    taxesSummary.put("Income", income);
-    taxesSummary.put("Costs", costs);
-    taxesSummary.put("Income - Costs", income.subtract(costs));
-    taxesSummary.put("Pension Insurance monthly rate", Rates.PENSION_INSURANCE.getValue());
+    taxesSummary.put("Income", income.setScale(2));
+    taxesSummary.put("Costs", costs.setScale(2));
+    taxesSummary.put("Income - Costs", income.subtract(costs).setScale(2));
+    taxesSummary
+        .put("Pension Insurance monthly rate", Rates.PENSION_INSURANCE.getValue().setScale(2));
     taxesSummary.put("Pension insurance paid",
         calculateSpecifiedTypeCostsBetweenDates(companyId,
-            startDate, endDate.plusDays(20), PaymentType.PENSION_INSURANCE));
+            startDate, endDate.plusDays(20), PaymentType.PENSION_INSURANCE).setScale(2));
     BigDecimal taxBase = caluclateTaxBase(companyId, startDate, endDate);
-    taxesSummary.put("Tax calculation base", taxBase);
+    taxesSummary.put("Tax calculation base", taxBase.setScale(2));
     BigDecimal incomeTax = BigDecimal.valueOf(-1);
     switch (companyService.findEntry(companyId).getTaxType()) {
       case LINEAR: {
         incomeTax = taxBase.multiply(Rates.LINEAR_TAX_RATE.getValue())
             .setScale(2, BigDecimal.ROUND_HALF_DOWN);
-        taxesSummary.put("Income tax", incomeTax);
+        taxesSummary.put("Income tax", incomeTax.setScale(2));
         break;
       }
       case PROGRESIVE: {
@@ -161,10 +162,9 @@ public class TaxCalculatorService {
           incomeTax = taxBase.multiply(Rates.PROGRESSIVE_TAX_RATE_THRESHOLD_LOW_PERCENT.getValue())
               .setScale(2, BigDecimal.ROUND_HALF_UP);
           taxesSummary.put("Income tax", incomeTax);
-          taxesSummary.put("Decreasing tax amount", Rates.DECREASING_TAX_AMOUNT.getValue());
+          taxesSummary
+              .put("Decreasing tax amount", Rates.DECREASING_TAX_AMOUNT.getValue().setScale(2));
           incomeTax = incomeTax.subtract(Rates.DECREASING_TAX_AMOUNT.getValue());
-          taxesSummary.put("Income tax - Decreasing tax amount",
-              incomeTax);
         }
         break;
       }
@@ -176,8 +176,8 @@ public class TaxCalculatorService {
         companyId, startDate, endDate.plusDays(20), PaymentType.HEALTH_INSURANCE);
     BigDecimal incomeTaxPaid = calculateSpecifiedTypeCostsBetweenDates(
         companyId, startDate, endDate.plusDays(20), PaymentType.INCOME_TAX_ADVANCE);
-    taxesSummary.put("Income tax paid", incomeTaxPaid);
-    taxesSummary.put("Health insurance paid", healthInsurancePaid);
+    taxesSummary.put("Income tax paid", incomeTaxPaid.setScale(2));
+    taxesSummary.put("Health insurance paid", healthInsurancePaid.setScale(2));
     taxesSummary.put("Health insurance to substract",
         healthInsurancePaid.multiply(BigDecimal.valueOf(7.75)).divide(BigDecimal.valueOf(9))
             .setScale(2, BigDecimal.ROUND_HALF_UP));

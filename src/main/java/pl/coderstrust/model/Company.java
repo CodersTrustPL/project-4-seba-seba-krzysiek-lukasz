@@ -2,7 +2,6 @@ package pl.coderstrust.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
-
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -30,10 +29,9 @@ public class Company implements WithNameIdIssueDate, WithValidation {
   private String bankAccoutNumber;
   private TaxType taxType;
   private boolean personalCarUsage;
-  private List<Payment> payments;
+  private List<Payment> payments = new ArrayList<>();
 
   public Company() {
-    payments = new ArrayList<Payment>();
   }
 
   public Company(String name) {

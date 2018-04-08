@@ -27,11 +27,11 @@ import pl.coderstrust.model.Payment;
 import pl.coderstrust.model.TaxType;
 import pl.coderstrust.service.CompanyService;
 import pl.coderstrust.testhelpers.InvoicesWithSpecifiedData;
+import pl.coderstrust.testhelpers.TaxSummaryMapBuilder;
 import pl.coderstrust.testhelpers.TestCasesGenerator;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -49,6 +49,7 @@ public class TaxCalculatorControllerTest {
   private LocalDate endDate = LocalDate.now().plusYears(1).plusMonths(1).minusDays(1);
   private LocalDate endDateInHalf = LocalDate.now().plusMonths(7).minusDays(1);
 
+  private TaxSummaryMapBuilder mapBuilder = new TaxSummaryMapBuilder();
 
   @Autowired
   private TestCasesGenerator generator;
@@ -260,61 +261,58 @@ public class TaxCalculatorControllerTest {
 
   @Test
   public void shouldCalculateTaxSummaryProgressiveLowThresholdTaxCase() throws Exception {
-    Map<String, BigDecimal> expected = new LinkedHashMap<>();
-    expected.put("Income", BigDecimal.valueOf(97500));
-    expected.put("Costs", BigDecimal.valueOf(11700));
-    expected.put("Income - Costs", BigDecimal.valueOf(85800));
-    expected.put("Pension Insurance monthly rate", Rates.PENSION_INSURANCE.getValue());
-    expected.put("Pension insurance paid", BigDecimal.valueOf(6174.84));
-    expected.put("Tax calculation base", BigDecimal.valueOf(79625.16));
-    expected.put("Income tax", BigDecimal.valueOf(14332.53));
-    expected.put("Decreasing tax amount", Rates.DECREASING_TAX_AMOUNT.getValue());
-    expected.put("Income tax - Decreasing tax amount", BigDecimal.valueOf(13776.51));
-    expected.put("Income tax paid", BigDecimal.valueOf(3900));
-    expected.put("Health insurance paid", BigDecimal.valueOf(3600));
-    expected.put("Health insurance to substract", BigDecimal.valueOf(3100.00).setScale(2));
-    expected.put("Income tax - health insurance to substract - income tax paid",
-        BigDecimal.valueOf(6776.51)
-    );
+    Map<String, BigDecimal> expected = mapBuilder
+        .setIncome(97500)
+        .setCosts(11700)
+        .setIncomeMinusCosts(85800)
+        .setPensionInsuranceMonthlyRate(Rates.PENSION_INSURANCE.getValue().doubleValue())
+        .setPensionInsurancePaid(6174.84)
+        .setTaxCalculationBase(79625.16)
+        .setIncomeTax(14332.53)
+        .setDecresingTaxAmount(Rates.DECREASING_TAX_AMOUNT.getValue().doubleValue())
+        .setIncomeTaxPaid(3900)
+        .setHealthInsurancePaid(3600)
+        .setHealthInsurancetoSusbstract(3100)
+        .setIncomeTaxToPay(6776.51)
+        .build();
 
     taxSummaryTestPattern(TaxType.PROGRESIVE, 300, expected);
   }
 
   @Test
   public void shouldCalculateTaxSummaryProgressiveHighThresholdTaxCase() throws Exception {
-    Map<String, BigDecimal> expected = new LinkedHashMap<>();
-    expected.put("Income", BigDecimal.valueOf(195000));
-    expected.put("Costs", BigDecimal.valueOf(23400));
-    expected.put("Income - Costs", BigDecimal.valueOf(171600));
-    expected.put("Pension Insurance monthly rate", Rates.PENSION_INSURANCE.getValue());
-    expected.put("Pension insurance paid", BigDecimal.valueOf(6174.84));
-    expected.put("Tax calculation base", BigDecimal.valueOf(165425.16));
-    expected.put("Income tax", BigDecimal.valueOf(40962.13));
-    expected.put("Income tax paid", BigDecimal.valueOf(3900));
-    expected.put("Health insurance paid", BigDecimal.valueOf(3600));
-    expected.put("Health insurance to substract", BigDecimal.valueOf(3100.00).setScale(2));
-    expected.put("Income tax - health insurance to substract - income tax paid",
-        BigDecimal.valueOf(33962.13)
-    );
+    Map<String, BigDecimal> expected = mapBuilder
+        .setIncome(195000)
+        .setCosts(23400)
+        .setIncomeMinusCosts(171600)
+        .setPensionInsuranceMonthlyRate(Rates.PENSION_INSURANCE.getValue().doubleValue())
+        .setPensionInsurancePaid(6174.84)
+        .setTaxCalculationBase(165425.16)
+        .setIncomeTax(40962.13)
+        .setIncomeTaxPaid(3900)
+        .setHealthInsurancePaid(3600)
+        .setHealthInsurancetoSusbstract(3100)
+        .setIncomeTaxToPay(33962.13)
+        .build();
+
     taxSummaryTestPattern(TaxType.PROGRESIVE, 600, expected);
   }
 
   @Test
   public void shouldReturnTaxSummaryLinearTaxCase() throws Exception {
-    Map<String, BigDecimal> expected = new LinkedHashMap<>();
-    expected.put("Income", BigDecimal.valueOf(97500));
-    expected.put("Costs", BigDecimal.valueOf(11700));
-    expected.put("Income - Costs", BigDecimal.valueOf(85800));
-    expected.put("Pension Insurance monthly rate", Rates.PENSION_INSURANCE.getValue());
-    expected.put("Pension insurance paid", BigDecimal.valueOf(6174.84));
-    expected.put("Tax calculation base", BigDecimal.valueOf(79625.16));
-    expected.put("Income tax", BigDecimal.valueOf(15128.78));
-    expected.put("Income tax paid", BigDecimal.valueOf(3900));
-    expected.put("Health insurance paid", BigDecimal.valueOf(3600));
-    expected.put("Health insurance to substract", BigDecimal.valueOf(3100.00).setScale(2));
-    expected.put("Income tax - health insurance to substract - income tax paid",
-        BigDecimal.valueOf(8128.78)
-    );
+    Map<String, BigDecimal> expected = mapBuilder
+        .setIncome(97500)
+        .setCosts(11700)
+        .setIncomeMinusCosts(85800)
+        .setPensionInsuranceMonthlyRate(Rates.PENSION_INSURANCE.getValue().doubleValue())
+        .setPensionInsurancePaid(6174.84)
+        .setTaxCalculationBase(79625.16)
+        .setIncomeTax(15128.78)
+        .setIncomeTaxPaid(3900)
+        .setHealthInsurancePaid(3600)
+        .setHealthInsurancetoSusbstract(3100)
+        .setIncomeTaxToPay(8128.78)
+        .build();
 
     taxSummaryTestPattern(TaxType.LINEAR, 300, expected);
   }

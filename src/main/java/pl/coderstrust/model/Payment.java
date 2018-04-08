@@ -88,7 +88,7 @@ public class Payment implements WithValidation {
   public int hashCode() {
     return HashCodeBuilder.reflectionHashCode(this, true);
   }
-  
+
 }
 
 

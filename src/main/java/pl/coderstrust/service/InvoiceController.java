@@ -17,46 +17,46 @@ import java.time.LocalDate;
 @RestController
 public class InvoiceController extends AbstractController<Invoice> {
 
-    public InvoiceController(InvoiceService invoiceService, InvoiceDummyFilter dummyFilter) {
-        super.service = invoiceService;
-        super.filter = dummyFilter;
-    }
+  public InvoiceController(InvoiceService invoiceService, InvoiceDummyFilter dummyFilter) {
+    super.service = invoiceService;
+    super.filter = dummyFilter;
+  }
 
-    @RequestMapping(value = "", method = RequestMethod.POST)
-    @ApiOperation(value = "Adds the invoice and returning id")
-    public synchronized ResponseEntity addInvoice(
-            @RequestBody Invoice invoice) {
-        int test = 1;
-        return super.addEntry(invoice, null);
-    }
+  @RequestMapping(value = "", method = RequestMethod.POST)
+  @ApiOperation(value = "Adds the invoice and returning id")
+  public synchronized ResponseEntity addInvoice(
+      @RequestBody Invoice invoice) {
+    int test = 1;
+    return super.addEntry(invoice, null);
+  }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    @ApiOperation(value = "Returns the invoice by id")
-    public synchronized ResponseEntity getInvoiceById(
-            @PathVariable("id") Long invoiceId) {
-        return super.getEntryById(invoiceId, null);
-    }
+  @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+  @ApiOperation(value = "Returns the invoice by id")
+  public synchronized ResponseEntity getInvoiceById(
+      @PathVariable("id") Long invoiceId) {
+    return super.getEntryById(invoiceId, null);
+  }
 
-    @RequestMapping(value = "", method = RequestMethod.GET)
-    @ApiOperation(value = "Returns the list of invoices in the specified date range")
-    public synchronized ResponseEntity getInvoiceByDate(
-            @RequestParam(name = "startDate", required = false) LocalDate startDate,
-            @RequestParam(name = "endDate", required = false) LocalDate endDate) {
-        return super.getEntryByDate(startDate, endDate, null);
-    }
+  @RequestMapping(value = "", method = RequestMethod.GET)
+  @ApiOperation(value = "Returns the list of invoices in the specified date range")
+  public synchronized ResponseEntity getInvoiceByDate(
+      @RequestParam(name = "startDate", required = false) LocalDate startDate,
+      @RequestParam(name = "endDate", required = false) LocalDate endDate) {
+    return super.getEntryByDate(startDate, endDate, null);
+  }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    @ApiOperation(value = "Updates the invoices by id")
-    public synchronized ResponseEntity updateInvoice(
-            @PathVariable("id") Long id,
-            @RequestBody Invoice invoice) {
-        return super.updateEntry(id, invoice, null);
-    }
+  @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+  @ApiOperation(value = "Updates the invoices by id")
+  public synchronized ResponseEntity updateInvoice(
+      @PathVariable("id") Long id,
+      @RequestBody Invoice invoice) {
+    return super.updateEntry(id, invoice, null);
+  }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    @ApiOperation(value = "Deletes the invoices by id")
-    public synchronized ResponseEntity removeInvoice(
-            @PathVariable("id") Long id) {
-        return removeEntry(id, null);
-    }
+  @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+  @ApiOperation(value = "Deletes the invoices by id")
+  public synchronized ResponseEntity removeInvoice(
+      @PathVariable("id") Long id) {
+    return removeEntry(id, null);
+  }
 }

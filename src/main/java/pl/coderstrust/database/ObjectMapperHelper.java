@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.mongodb.DBObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,28 +27,33 @@ public class ObjectMapperHelper<T> {
   public String toJson(T object) {
     try {
       return jsonMapper.writeValueAsString(object);
-    } catch (JsonProcessingException e) {
+    } catch (JsonProcessingException ex) {
       logger.warn(" from toJson: "
-          + ExceptionMsg.INTERNAL_PROCESSING_ERROR, e);
-      throw new DbException(ExceptionMsg.INTERNAL_PROCESSING_ERROR, e);
+          + ExceptionMsg.INTERNAL_PROCESSING_ERROR, ex);
+      throw new DbException(ExceptionMsg.INTERNAL_PROCESSING_ERROR, ex);
     }
   }
 
   public T toObject(String json) {
     try {
       return jsonMapper.readValue(json, entryClass);
-    } catch (IOException e) {
+    } catch (IOException ex) {
       logger.warn(" from toObject: "
-          + ExceptionMsg.INTERNAL_PROCESSING_ERROR, e);
-      throw new DbException(ExceptionMsg.INTERNAL_PROCESSING_ERROR, e);
+          + ExceptionMsg.INTERNAL_PROCESSING_ERROR, ex);
+      throw new DbException(ExceptionMsg.INTERNAL_PROCESSING_ERROR, ex);
     }
+  }
+
+  public T toObject(DBObject dbObject) {
+    dbObject.removeField("_id");
+    return toObject(dbObject.toString());
   }
 
   public String idToJson(long id) {
     try {
       return jsonMapper.writeValueAsString(id);
-    } catch (JsonProcessingException e) {
-      throw new DbException(ExceptionMsg.INTERNAL_PROCESSING_ERROR, e);
+    } catch (JsonProcessingException ex) {
+      throw new DbException(ExceptionMsg.INTERNAL_PROCESSING_ERROR, ex);
       //TODO add logging.
     }
   }
@@ -56,8 +62,8 @@ public class ObjectMapperHelper<T> {
     try {
       return jsonMapper.readValue(json, new TypeReference<Long>() {
       });
-    } catch (IOException e) {
-      throw new DbException(ExceptionMsg.INTERNAL_PROCESSING_ERROR, e);
+    } catch (IOException ex) {
+      throw new DbException(ExceptionMsg.INTERNAL_PROCESSING_ERROR, ex);
       //TODO add logging.
     }
   }

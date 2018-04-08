@@ -132,9 +132,9 @@ public abstract class DatabaseTest {
       for (int i = 0; i < INVOICES_COUNT; i++) {
         output[i] = mapper.toJson(givenDatabase.getEntryById(invoiceIds[i]));
       }
-    } catch (Exception e) {
+    } catch (Exception ex) {
       fail("Test failed due to object mapper exception during processing invoice to Json.");
-      e.printStackTrace();
+      ex.printStackTrace();
     }
     assertThat(output, is(equalTo(expected)));
   }

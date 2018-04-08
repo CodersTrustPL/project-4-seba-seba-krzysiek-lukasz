@@ -24,16 +24,16 @@ public class ObjectMapperHelper {
   public String toJson(Object value) {
     try {
       return jsonMapper.writeValueAsString(value);
-    } catch (JsonProcessingException e) {
-      throw new RuntimeException("Mapper failed at conversion from object to Json.", e);
+    } catch (JsonProcessingException ex) {
+      throw new RuntimeException("Mapper failed at conversion from object to Json.", ex);
     }
   }
 
   public Invoice toInvoice(String json) {
     try {
       return jsonMapper.readValue(json, Invoice.class);
-    } catch (IOException e) {
-      throw new RuntimeException("Mapper failed at conversion from Json to object.", e);
+    } catch (IOException ex) {
+      throw new RuntimeException("Mapper failed at conversion from Json to object.", ex);
     }
   }
 
@@ -41,16 +41,16 @@ public class ObjectMapperHelper {
     try {
       return jsonMapper.readValue(json,
           jsonMapper.getTypeFactory().constructCollectionType(ArrayList.class, Invoice.class));
-    } catch (IOException e) {
-      throw new RuntimeException("Mapper failed at conversion from Json to list of object.", e);
+    } catch (IOException ex) {
+      throw new RuntimeException("Mapper failed at conversion from Json to list of object.", ex);
     }
   }
   public List<Company> toCompanyList(String json) {
     try {
       return jsonMapper.readValue(json,
           jsonMapper.getTypeFactory().constructCollectionType(ArrayList.class, Company.class));
-    } catch (IOException e) {
-      throw new RuntimeException("Mapper failed at conversion from Json to list of object.", e);
+    } catch (IOException ex) {
+      throw new RuntimeException("Mapper failed at conversion from Json to list of object.", ex);
     }
   }
 }

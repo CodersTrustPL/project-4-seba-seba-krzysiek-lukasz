@@ -37,10 +37,10 @@ public class InFileDatabaseTest extends DatabaseTest {
           checkNumber++;
         }
         Files.createFile(dbFile.toPath());
-      } catch (IOException e) {
-        e.printStackTrace();
-      } catch (InterruptedException e) {
-        e.printStackTrace();
+      } catch (IOException ex) {
+        ex.printStackTrace();
+      } catch (InterruptedException ex) {
+        ex.printStackTrace();
       }
     }
     Database database = new InFileDatabase<Invoice>(Invoice.class, "\"invoiceId\"");
@@ -54,8 +54,8 @@ public class InFileDatabaseTest extends DatabaseTest {
     File tempFile = new File(config.getDbTempFilePath());
     try {
       Thread.sleep(WAIT_TIME_FOR_FILESYSTEM);
-    } catch (InterruptedException e) {
-      e.printStackTrace();
+    } catch (InterruptedException ex) {
+      ex.printStackTrace();
     }
     //then
     assertThat(tempFile.exists(), is(false));
@@ -68,8 +68,8 @@ public class InFileDatabaseTest extends DatabaseTest {
     File dataFile = new File(config.getDbFilePath());
     try {
       Thread.sleep(WAIT_TIME_FOR_FILESYSTEM);
-    } catch (InterruptedException e) {
-      e.printStackTrace();
+    } catch (InterruptedException ex) {
+      ex.printStackTrace();
     }
 
     //then
@@ -149,8 +149,8 @@ public class InFileDatabaseTest extends DatabaseTest {
     try (Stream<String> dbStream = Files.lines(file.toPath())) {
       return dbStream
           .collect(Collectors.toCollection(ArrayList::new));
-    } catch (IOException e) {
-      e.printStackTrace();
+    } catch (IOException ex) {
+      ex.printStackTrace();
     }
     return new ArrayList<>();
   }

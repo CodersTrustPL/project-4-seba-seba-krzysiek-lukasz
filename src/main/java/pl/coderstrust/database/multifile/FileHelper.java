@@ -41,10 +41,10 @@ public class FileHelper {
     try (FileWriter fw = new FileWriter(file, true)) {
       fw.append(lineContent);
       fw.close();
-    } catch (IOException e) {
+    } catch (IOException ex) {
       logger.warn(" from addLine in FileHelper (MultiFile): "
-          + ExceptionMsg.IO_ERROR_WHILE_ADDING, e);
-      throw new DbException(ExceptionMsg.IO_ERROR_WHILE_ADDING, e);
+          + ExceptionMsg.IO_ERROR_WHILE_ADDING, ex);
+      throw new DbException(ExceptionMsg.IO_ERROR_WHILE_ADDING, ex);
     }
   }
 
@@ -54,10 +54,10 @@ public class FileHelper {
     try (Stream<String> stream = Files.lines(new File(pathFile).toPath())) {
       json = stream.filter(line -> line.contains(idToLineKey(id)))
           .collect(Collectors.joining());
-    } catch (IOException e) {
+    } catch (IOException ex) {
       logger.warn(" from getLine in FileHelper (MultiFile): "
-          + ExceptionMsg.IO_ERROR_WHILE_READING, e);
-      throw new DbException(ExceptionMsg.IO_ERROR_WHILE_READING, e);
+          + ExceptionMsg.IO_ERROR_WHILE_READING, ex);
+      throw new DbException(ExceptionMsg.IO_ERROR_WHILE_READING, ex);
     }
     return json;
   }
@@ -91,10 +91,10 @@ public class FileHelper {
       rafTemp.close();
       tempFile.renameTo(inputFile);
       tempFile.delete();
-    } catch (IOException e) {
+    } catch (IOException ex) {
       logger.warn(" from deleteLine in FileHelper (MultiFile): "
-          + ExceptionMsg.IO_ERROR_WHILE_DELETING, e);
-      throw new DbException(ExceptionMsg.IO_ERROR_WHILE_DELETING, e);
+          + ExceptionMsg.IO_ERROR_WHILE_DELETING, ex);
+      throw new DbException(ExceptionMsg.IO_ERROR_WHILE_DELETING, ex);
     }
   }
 }

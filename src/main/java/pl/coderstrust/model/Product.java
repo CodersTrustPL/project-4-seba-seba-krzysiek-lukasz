@@ -3,8 +3,6 @@ package pl.coderstrust.model;
 import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -65,7 +63,7 @@ public class Product implements WithValidation {
   public void setProductType(ProductType productType) {
     this.productType = productType;
   }
-  
+
   @Override
   public boolean equals(Object object) {
     return EqualsBuilder.reflectionEquals(this, object);
