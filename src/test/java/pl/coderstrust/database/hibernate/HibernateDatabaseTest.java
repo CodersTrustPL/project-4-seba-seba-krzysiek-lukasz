@@ -52,7 +52,7 @@ public class HibernateDatabaseTest {
     for (int i = 0; i < INVOICES_COUNT; i++) {
       givenInvoice = generator.getTestInvoice(i, INVOICE_ENTRIES_COUNT);
       invoiceIds[i] = givenDatabase.addEntry(givenInvoice);
-//      givenInvoice.setId(invoiceIds[i]);
+      givenInvoice.setId(invoiceIds[i]);
       expected[i] = mapper.toJson(givenInvoice);
     }
   }
@@ -60,9 +60,8 @@ public class HibernateDatabaseTest {
   @Test
   public void shouldAddAndGetSingleInvoice() {
     //given
-//    givenInvoice = (Invoice) repository.save(givenInvoice);
     long invoiceId = givenDatabase.addEntry(givenInvoice);
-//    givenInvoice.setId(invoiceId);
+    givenInvoice.setId(invoiceId);
 
     //when
     String output = mapper.toJson(givenDatabase.getEntryById(invoiceId));

@@ -24,7 +24,13 @@ public class HibernateDatabase<T extends WithNameIdIssueDate> implements Databas
 
   @Override
   public long addEntry(T entry) {
-    Invoice savedInvoice = (Invoice) repository.save(entry);
+    Invoice savedInvoice;
+    if (idExist(entry.getId())) {
+      entry.setId(repository.getMaxId()+1);
+      savedInvoice = (Invoice) repository.save(entry);
+    } else {
+      savedInvoice = (Invoice) repository.save(entry);
+    }
     return savedInvoice.getId();
   }
 
