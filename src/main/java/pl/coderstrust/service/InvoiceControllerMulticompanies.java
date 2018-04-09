@@ -12,6 +12,8 @@ import pl.coderstrust.model.Invoice;
 import pl.coderstrust.service.filters.InvoiceByCompanyFilter;
 
 import java.time.LocalDate;
+import javax.ws.rs.Consumes;
+
 
 @RequestMapping("v2/company/{companyId}/invoice")
 @RestController
@@ -23,7 +25,7 @@ public class InvoiceControllerMulticompanies extends AbstractController<Invoice>
     super.filter = invoiceByCompanyFilter;
   }
 
-
+  @Consumes("application/json")
   @RequestMapping(value = "", method = RequestMethod.POST)
   @ApiOperation(value = "Adds the invoice and returning id validating company")
   public synchronized ResponseEntity addInvoicePerCompany(
@@ -49,7 +51,8 @@ public class InvoiceControllerMulticompanies extends AbstractController<Invoice>
     return super.getEntryByDate(startDate, endDate, companyId);
   }
 
-  @RequestMapping(value = "/{invoiceId}", method = RequestMethod.PUT)
+  @RequestMapping(value = "/{invoiceId}",
+      method = RequestMethod.PUT, headers = "Accept=application/json")
   @ApiOperation(value = "Updates the invoices by id validating company")
   public synchronized ResponseEntity updateInvoicePerCompany(
       @PathVariable("invoiceId") Long invoiceId,

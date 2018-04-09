@@ -52,8 +52,8 @@ public class InFileDatabase<T extends WithNameIdIssueDate> implements Database<T
   @Override
   public synchronized void deleteEntry(long systemId) {
     if (!idExist(systemId)) {
-      logger.warn(" from deleteEntry (InFileDatabase): "
-          + ExceptionMsg.INVOICE_NOT_EXIST);
+      logger.warn(" from deleteEntry (InFileDatabase): ",
+          ExceptionMsg.INVOICE_NOT_EXIST);
       throw new DbException(ExceptionMsg.INVOICE_NOT_EXIST);
     } else {
       fileHelper.deleteLine(idToLineKey(systemId));

@@ -26,7 +26,7 @@ public abstract class AbstractController<T extends WithNameIdIssueDate & WithVal
     }
     if (entryState.isEmpty()) {
       long id = service.addEntry(entry);
-      return ResponseEntity.ok(Messages.CONTROLLER_ENTRY_ADDED + id);
+      return ResponseEntity.ok(id);
     }
     return ResponseEntity.badRequest().body(entryState);
   }
@@ -71,6 +71,10 @@ public abstract class AbstractController<T extends WithNameIdIssueDate & WithVal
       if (!filter.hasObjectById(entry, filterKey)) {
         entryState.add(Messages.COMPANY_ID_NOT_MATCH);
       }
+    }
+
+    if (!service.idExist(entryId)) {
+      return ResponseEntity.notFound().build();
     }
 
     if (!entryState.isEmpty()) {

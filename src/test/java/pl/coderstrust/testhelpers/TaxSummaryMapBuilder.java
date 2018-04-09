@@ -1,5 +1,7 @@
 package pl.coderstrust.testhelpers;
 
+import pl.coderstrust.model.Messages;
+
 import java.math.BigDecimal;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -9,63 +11,63 @@ public class TaxSummaryMapBuilder {
   private LinkedHashMap<String, BigDecimal> map = new LinkedHashMap<>();
 
   public TaxSummaryMapBuilder setIncome(double income) {
-    map.put("Income", BigDecimal.valueOf(income).setScale(2));
+    map.put(Messages.TAX_SUMMARY_INCOME, BigDecimal.valueOf(income).setScale(2));
     return this;
   }
 
   public TaxSummaryMapBuilder setCosts(double costs) {
-    map.put("Costs", BigDecimal.valueOf(costs).setScale(2));
+    map.put(Messages.TAX_SUMMARY_COSTS, BigDecimal.valueOf(costs).setScale(2));
     return this;
   }
 
   public TaxSummaryMapBuilder setIncomeMinusCosts(double incomeMinusCosts) {
-    map.put("Income - Costs", BigDecimal.valueOf(incomeMinusCosts).setScale(2));
-    return this;
-  }
-
-  public TaxSummaryMapBuilder setPensionInsuranceMonthlyRate(double pensionInsuranceRate) {
-    map.put("Pension Insurance monthly rate", BigDecimal.valueOf(pensionInsuranceRate).setScale(2));
+    map.put(Messages.TAX_SUMMARY_INCOME_MINUS_COSTS,
+        BigDecimal.valueOf(incomeMinusCosts).setScale(2));
     return this;
   }
 
   public TaxSummaryMapBuilder setPensionInsurancePaid(double pensionInsurancePaid) {
-    map.put("Pension insurance paid", BigDecimal.valueOf(pensionInsurancePaid).setScale(2));
+    map.put(Messages.TAX_SUMMARY_PENSION_INSURANCE_PAID,
+        BigDecimal.valueOf(pensionInsurancePaid).setScale(2));
     return this;
   }
 
   public TaxSummaryMapBuilder setTaxCalculationBase(double taxCalculationBase) {
-    map.put("Tax calculation base", BigDecimal.valueOf(taxCalculationBase).setScale(2));
+    map.put(Messages.TAX_SUMMARY_TAX_CALCULATION_BASE,
+        BigDecimal.valueOf(taxCalculationBase).setScale(2));
     return this;
   }
 
   public TaxSummaryMapBuilder setIncomeTax(double incomeTax) {
-    map.put("Income tax", BigDecimal.valueOf(incomeTax).setScale(2));
+    map.put(Messages.TAX_SUMMARY_INCOME_TAX, BigDecimal.valueOf(incomeTax).setScale(2));
     return this;
   }
 
   public TaxSummaryMapBuilder setDecresingTaxAmount(double decresingTaxAmount) {
-    map.put("Decreasing tax amount", BigDecimal.valueOf(decresingTaxAmount).setScale(2));
+    map.put(Messages.TAX_SUMMARY_DECREASING_TAX_AMOUNT,
+        BigDecimal.valueOf(decresingTaxAmount).setScale(2));
     return this;
   }
 
   public TaxSummaryMapBuilder setIncomeTaxPaid(double incomeTaxPaid) {
-    map.put("Income tax paid", BigDecimal.valueOf(incomeTaxPaid).setScale(2));
+    map.put(Messages.TAX_SUMMARY_INCOME_TAX_PAID, BigDecimal.valueOf(incomeTaxPaid).setScale(2));
     return this;
   }
 
   public TaxSummaryMapBuilder setHealthInsurancePaid(double healthInsurancePaid) {
-    map.put("Health insurance paid", BigDecimal.valueOf(healthInsurancePaid).setScale(2));
+    map.put(Messages.TAX_SUMMARY_HEALTH_INSURANCE_PAID,
+        BigDecimal.valueOf(healthInsurancePaid).setScale(2));
     return this;
   }
 
   public TaxSummaryMapBuilder setHealthInsurancetoSusbstract(double healthInsurancetoSusbstract) {
-    map.put("Health insurance to substract",
+    map.put(Messages.TAX_SUMMARY_HEALTH_INSURANCE_TO_SUBSTRACT,
         BigDecimal.valueOf(healthInsurancetoSusbstract).setScale(2));
     return this;
   }
 
   public TaxSummaryMapBuilder setIncomeTaxToPay(double incomeTaxToPay) {
-    map.put("Income tax - health insurance to substract - income tax paid",
+    map.put(Messages.TAX_SUMMARY_INCOME_TAX_TO_PAY,
         BigDecimal.valueOf(incomeTaxToPay).setScale(2));
     return this;
   }

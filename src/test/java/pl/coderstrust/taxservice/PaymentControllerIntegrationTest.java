@@ -23,7 +23,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import pl.coderstrust.model.Messages;
 import pl.coderstrust.model.Payment;
 import pl.coderstrust.model.PaymentType;
 import pl.coderstrust.testhelpers.InvoicesWithSpecifiedData;
@@ -282,8 +281,7 @@ public class PaymentControllerIntegrationTest {
     this.mockMvc
         .perform(get(DEFAULT_PATH + "/2"))
         .andExpect(handler().methodName(GET_PAYMENTS))
-        .andExpect(status().isBadRequest())
-        .andExpect(content().string(Messages.COMPANY_NOT_EXIST));
+        .andExpect(status().isNotFound());
   }
 
   @Test

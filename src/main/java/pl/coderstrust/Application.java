@@ -10,4 +10,6 @@ public class Application {
     SpringApplication.run(Application.class, args);
 
   }
+  //TODO create better examples for swagger (company example + invoice example should be linked)
+  //TODO add spring context for tests with MOGNO to shorten test excecution time
 }

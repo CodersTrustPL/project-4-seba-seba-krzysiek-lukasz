@@ -45,7 +45,7 @@ public class CompanyController extends AbstractController<Company> {
     return super.getEntryByDate(startDate, endDate, null);
   }
 
-  @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+  @RequestMapping(value = "/{id}", method = RequestMethod.PUT, headers = "Accept=application/json")
   @ApiOperation(value = "Updates the company by id")
   public synchronized ResponseEntity updateCompany(
       @PathVariable("id") Long id,
