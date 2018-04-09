@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import pl.coderstrust.model.Messages;
 import pl.coderstrust.model.Payment;
 import pl.coderstrust.model.PaymentType;
 import pl.coderstrust.service.CompanyService;
@@ -30,10 +29,14 @@ public class PaymentController {
     this.companyService = companyService;
   }
 
-  @RequestMapping(value = "/{companyId}", method = RequestMethod.POST)
+  @RequestMapping(value = "/{companyId}", method = RequestMethod.POST,
+      headers = "Accept=application/json")
   @ApiOperation(value = "Adds payments to company payments list.")
   public ResponseEntity addPayment(@PathVariable("companyId") long companyId,
       @RequestBody Payment payment) {
+    if (!companyService.idExist(companyId)) {
+      return ResponseEntity.notFound().build();
+    }
     List<String> paymentState = payment.validate();
     if (!paymentState.isEmpty()) {
       return ResponseEntity.badRequest().body(paymentState);
@@ -51,7 +54,7 @@ public class PaymentController {
       @PathVariable("companyId") long companyId,
       @PathVariable("paymentId") long paymentId) {
     if (!companyService.idExist(companyId)) {
-      return ResponseEntity.badRequest().body(Messages.COMPANY_NOT_EXIST);
+      return ResponseEntity.notFound().build();
     }
     if (!paymentService.idExist(companyId, paymentId)) {
       String companyName = companyService.findEntry(companyId).getName();
@@ -70,7 +73,7 @@ public class PaymentController {
       @RequestParam(value = "endDate", required = false) LocalDate endDate,
       @RequestParam(value = "type", required = false) PaymentType type) {
     if (!companyService.idExist(companyId)) {
-      return ResponseEntity.badRequest().body(Messages.COMPANY_NOT_EXIST);
+      return ResponseEntity.notFound().build();
     }
     if (startDate == null && endDate == null && type == null) {
       return ResponseEntity.ok(paymentService.getPayments(companyId));
@@ -82,14 +85,15 @@ public class PaymentController {
         startDate, endDate, type));
   }
 
-  @RequestMapping(value = "/{companyId}/{paymentId}", method = RequestMethod.PUT)
+  @RequestMapping(value = "/{companyId}/{paymentId}", method = RequestMethod.PUT,
+      headers = "Accept=application/json")
   @ApiOperation(value = "Updates the payment by id.")
   public ResponseEntity updatePayment(
       @PathVariable("companyId") long companyId,
       @PathVariable("paymentId") long paymentId,
       @RequestBody Payment payment) {
     if (!companyService.idExist(companyId)) {
-      return ResponseEntity.badRequest().body(Messages.COMPANY_NOT_EXIST);
+      return ResponseEntity.notFound().build();
     }
     if (!paymentService.idExist(companyId, paymentId)) {
       String companyName = companyService.findEntry(companyId).getName();
@@ -110,7 +114,7 @@ public class PaymentController {
       @PathVariable("companyId") long companyId,
       @PathVariable("paymentId") long paymentId) {
     if (!companyService.idExist(companyId)) {
-      return ResponseEntity.badRequest().body(Messages.COMPANY_NOT_EXIST);
+      return ResponseEntity.notFound().build();
     }
     if (!paymentService.idExist(companyId, paymentId)) {
       String companyName = companyService.findEntry(companyId).getName();

@@ -27,8 +27,22 @@ public class Messages {
   public static final String PRODUCT_INCORRECT_AMOUNT = "Product amount is negative or zero.";
   public static final String COMPANY_ID_NOT_MATCH =
       "Incorrect company ID not matching buyer and/or seller ID at the requested invoice.";
-
   public static final String COMPANY_NOT_EXIST = "Company with this id doesn't exist";
-
   public static final String INCORRECT_YEAR = "Wrong Year";
+
+
+  public static final String TAX_SUMMARY_INCOME = "Income";
+  public static final String TAX_SUMMARY_COSTS = "Costs";
+  public static final String TAX_SUMMARY_INCOME_MINUS_COSTS = "Income - Costs";
+  public static final String TAX_SUMMARY_PENSION_INSURANCE_PAID = "Pension insurance paid";
+  public static final String TAX_SUMMARY_TAX_CALCULATION_BASE = "Tax calculation base";
+  public static final String TAX_SUMMARY_INCOME_TAX = "Income tax";
+  public static final String TAX_SUMMARY_DECREASING_TAX_AMOUNT = "Decreasing tax amount";
+  public static final String TAX_SUMMARY_INCOME_TAX_PAID = "Income tax paid";
+  public static final String TAX_SUMMARY_HEALTH_INSURANCE_PAID = "Health insurance paid";
+  public static final String TAX_SUMMARY_HEALTH_INSURANCE_TO_SUBSTRACT
+      = "Health insurance to substract";
+  public static final String TAX_SUMMARY_INCOME_TAX_TO_PAY
+      = "Income tax - health insurance to substract - income tax paid";
+
 }

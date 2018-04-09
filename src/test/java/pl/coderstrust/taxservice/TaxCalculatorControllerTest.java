@@ -43,12 +43,10 @@ public class TaxCalculatorControllerTest {
 
   private static final MediaType CONTENT_TYPE = MediaType.APPLICATION_JSON_UTF8;
   private static final String DEFAULT_PATH = "/v2/company/1/invoice";
-  private static final String MY_COMPANY_ID =
-      "/1?startDate=";
   private LocalDate startDate = LocalDate.now().plusMonths(1);
   private LocalDate endDate = LocalDate.now().plusYears(1).plusMonths(1).minusDays(1);
   private LocalDate endDateInHalf = LocalDate.now().plusMonths(7).minusDays(1);
-
+  private static final String TAX_DEFAULT_PATH = "/1/tax";
   private TaxSummaryMapBuilder mapBuilder = new TaxSummaryMapBuilder();
 
   @Autowired
@@ -85,7 +83,7 @@ public class TaxCalculatorControllerTest {
     //when
     String response = this.mockMvc
         .perform(
-            get("/income" + MY_COMPANY_ID + startDate + "&endDate=" + endDate))
+            get(TAX_DEFAULT_PATH + "/income?" + startDate + "&endDate=" + endDate))
         .andExpect(handler().methodName("calculateIncome"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", is(1170.0)))
@@ -113,7 +111,7 @@ public class TaxCalculatorControllerTest {
     //when
     String response = this.mockMvc
         .perform(
-            get("/cost" + MY_COMPANY_ID + startDate + "&endDate=" + endDateInHalf))
+            get(TAX_DEFAULT_PATH + "/cost?" + startDate + "&endDate=" + endDateInHalf))
         .andExpect(handler().methodName("calculateCost"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", is(315.0)))
@@ -152,7 +150,7 @@ public class TaxCalculatorControllerTest {
     //when
     String response = this.mockMvc
         .perform(
-            get("/incomeTax" + MY_COMPANY_ID + startDate + "&endDate=" + endDate))
+            get(TAX_DEFAULT_PATH + "/incomeTax?" + startDate + "&endDate=" + endDate))
         .andExpect(handler().methodName("calculateIncomeTax"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", is(855.0)))
@@ -181,7 +179,7 @@ public class TaxCalculatorControllerTest {
     //when
     String response = this.mockMvc
         .perform(
-            get("/incVat" + MY_COMPANY_ID + startDate + "&endDate=" + endDateInHalf))
+            get(TAX_DEFAULT_PATH + "/incVat?" + startDate + "&endDate=" + endDateInHalf))
         .andExpect(handler().methodName("calculateIncomeVat"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", is(72.45)))
@@ -209,7 +207,7 @@ public class TaxCalculatorControllerTest {
     //when
     String response = this.mockMvc
         .perform(
-            get("/outVat" + MY_COMPANY_ID + startDate + "&endDate=" + endDate))
+            get(TAX_DEFAULT_PATH + "/outVat?" + startDate + "&endDate=" + endDate))
         .andExpect(handler().methodName("calculateOutcomeVat"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", is(269.1)))
@@ -248,7 +246,7 @@ public class TaxCalculatorControllerTest {
     //when
     String response = this.mockMvc
         .perform(
-            get("/diffVat" + MY_COMPANY_ID + startDate + "&endDate=" + endDate))
+            get(TAX_DEFAULT_PATH + "/diffVat?" + startDate + "&endDate=" + endDate))
         .andExpect(handler().methodName("calculateDifferenceVat"))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", is(196.65)))
@@ -265,7 +263,6 @@ public class TaxCalculatorControllerTest {
         .setIncome(97500)
         .setCosts(11700)
         .setIncomeMinusCosts(85800)
-        .setPensionInsuranceMonthlyRate(Rates.PENSION_INSURANCE.getValue().doubleValue())
         .setPensionInsurancePaid(6174.84)
         .setTaxCalculationBase(79625.16)
         .setIncomeTax(14332.53)
@@ -285,7 +282,6 @@ public class TaxCalculatorControllerTest {
         .setIncome(195000)
         .setCosts(23400)
         .setIncomeMinusCosts(171600)
-        .setPensionInsuranceMonthlyRate(Rates.PENSION_INSURANCE.getValue().doubleValue())
         .setPensionInsurancePaid(6174.84)
         .setTaxCalculationBase(165425.16)
         .setIncomeTax(40962.13)
@@ -304,7 +300,6 @@ public class TaxCalculatorControllerTest {
         .setIncome(97500)
         .setCosts(11700)
         .setIncomeMinusCosts(85800)
-        .setPensionInsuranceMonthlyRate(Rates.PENSION_INSURANCE.getValue().doubleValue())
         .setPensionInsurancePaid(6174.84)
         .setTaxCalculationBase(79625.16)
         .setIncomeTax(15128.78)
@@ -396,7 +391,7 @@ public class TaxCalculatorControllerTest {
     }
     String response = this.mockMvc
         .perform(
-            get("/taxSummary/2/" + String.valueOf(startDate.getYear())))
+            get("/2/tax/summary/" + String.valueOf(startDate.getYear())))
         .andExpect(status().isOk())
         .andReturn()
         .getResponse()
