@@ -6,6 +6,8 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.Proxy;
 
 import java.time.LocalDate;
@@ -17,7 +19,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Transient;
+import javax.persistence.OneToMany;
 
 @Entity
 @Proxy(lazy = false)
@@ -39,7 +41,8 @@ public class Company implements WithNameIdIssueDate, WithValidation {
 
   private boolean personalCarUsage;
 
-  @Transient
+  @OneToMany
+  @LazyCollection(LazyCollectionOption.FALSE)
   private List<Payment> payments;
 
   public Company() {

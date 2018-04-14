@@ -98,9 +98,9 @@ public class PaymentControllerIntegrationTest {
   public void shouldAddPayments() throws Exception {
     //given
     clearDefaultGiven();
-    pensionInsurance.setId(0);
-    incomeTaxAdvance.setId(0);
-    healthInsurance.setId(0);
+    pensionInsurance.setId((long) 0);
+    incomeTaxAdvance.setId((long) 0);
+    healthInsurance.setId((long) 0);
     //when
     this.mockMvc
         .perform(post(DEFAULT_PATH + "/1")
@@ -121,9 +121,9 @@ public class PaymentControllerIntegrationTest {
         .andExpect(handler().methodName(ADD_PAYMENT_METHOD))
         .andExpect(status().isOk());
     //then
-    pensionInsurance.setId(1);
-    incomeTaxAdvance.setId(2);
-    healthInsurance.setId(3);
+    pensionInsurance.setId((long) 1);
+    incomeTaxAdvance.setId((long) 2);
+    healthInsurance.setId((long) 3);
 
     String response = this.mockMvc
         .perform(get(DEFAULT_PATH + "/1"))

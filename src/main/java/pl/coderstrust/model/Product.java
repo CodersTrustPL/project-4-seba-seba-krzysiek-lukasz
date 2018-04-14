@@ -20,10 +20,10 @@ public class Product implements WithValidation {
   private String description;
   private BigDecimal netValue;
 
-  @Enumerated(EnumType.ORDINAL)
+  @Enumerated(EnumType.STRING)
   private Vat vatRate;
 
-  @Enumerated(EnumType.ORDINAL)
+  @Enumerated(EnumType.STRING)
   private ProductType productType;
 
   public Product() {

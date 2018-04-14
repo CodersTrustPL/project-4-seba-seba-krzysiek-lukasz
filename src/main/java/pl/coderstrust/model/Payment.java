@@ -6,23 +6,28 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hibernate.annotations.Proxy;
 
-import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 @Entity
 @Proxy(lazy = false)
 public class Payment implements WithValidation {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private long id;
+  @GeneratedValue(strategy = GenerationType.TABLE)
+  private Long id;
   private LocalDate issueDate;
   private BigDecimal amount;
 
-  @Enumerated(EnumType.ORDINAL)
+  @Enumerated(EnumType.STRING)
   private PaymentType type;
 
   public Payment(long id, LocalDate issueDate, BigDecimal amount,
@@ -51,11 +56,11 @@ public class Payment implements WithValidation {
     return errors;
   }
 
-  public long getId() {
+  public Long getId() {
     return id;
   }
 
-  public void setId(long id) {
+  public void setId(Long id) {
     this.id = id;
   }
 
