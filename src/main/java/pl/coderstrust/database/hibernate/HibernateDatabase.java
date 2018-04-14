@@ -1,6 +1,5 @@
 package pl.coderstrust.database.hibernate;
 
-import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +9,8 @@ import pl.coderstrust.database.DbException;
 import pl.coderstrust.database.ExceptionMsg;
 import pl.coderstrust.model.Invoice;
 import pl.coderstrust.model.WithNameIdIssueDate;
+
+import java.util.List;
 
 @Service
 public class HibernateDatabase<T extends WithNameIdIssueDate> implements Database<T> {
@@ -24,13 +25,8 @@ public class HibernateDatabase<T extends WithNameIdIssueDate> implements Databas
 
   @Override
   public long addEntry(T entry) {
-    Invoice savedInvoice;
-    if (idExist(entry.getId())) {
-      entry.setId(repository.getMaxId()+1);
-      savedInvoice = (Invoice) repository.save(entry);
-    } else {
-      savedInvoice = (Invoice) repository.save(entry);
-    }
+    entry.setId(null);
+    Invoice  savedInvoice = (Invoice) repository.save(entry);
     return savedInvoice.getId();
   }
 
@@ -64,6 +60,6 @@ public class HibernateDatabase<T extends WithNameIdIssueDate> implements Databas
 
   @Override
   public boolean idExist(long id) {
-    return repository.exists(id);
+    return repository.exists((Long)id);
   }
 }

@@ -8,10 +8,22 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hibernate.annotations.Proxy;
 
-import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
 @Entity
 @Proxy(lazy = false)
@@ -22,15 +34,17 @@ public class Invoice implements WithNameIdIssueDate, WithValidation {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  @Column(name = "ID", unique=true, nullable=false, insertable=true, updatable=true)
+  @Column(name = "ID", unique=true, nullable=false)
   private Long id;
 
   private String name;
 
+  @Transient
   @JoinColumn
   @ManyToOne(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
   private Company buyer;
 
+  @Transient
   @JoinColumn
   @ManyToOne(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
   private Company seller;
@@ -52,11 +66,11 @@ public class Invoice implements WithNameIdIssueDate, WithValidation {
   }
 
   @JsonProperty("invoiceId")
-  public long getId() {
+  public Long getId() {
     return id;
   }
 
-  public void setId(long id) {
+  public void setId(Long id) {
     this.id = id;
   }
 

@@ -8,9 +8,9 @@ public interface WithNameIdIssueDate {
 
   void setName(String name);
 
-  long getId();
+  Long getId();
 
-  void setId(long id);
+  void setId(Long id);
 
   LocalDate getIssueDate();
 

@@ -324,7 +324,7 @@ public class TaxCalculatorControllerTest {
     LocalDate endDate = LocalDate.of(LocalDate.now().plusYears(1).getYear(), 12, 31);
     //given
     Company company = InvoicesWithSpecifiedData.getPolishCompanySeller();
-    company.setId(2);
+    company.setId((long) 2);
     switch (type) {
       case LINEAR: {
         company.setTaxType(TaxType.LINEAR);

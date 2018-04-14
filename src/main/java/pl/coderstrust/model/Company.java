@@ -6,14 +6,29 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.hibernate.annotations.Proxy;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
 
+@Entity
+@Proxy(lazy = false)
 public class Company implements WithNameIdIssueDate, WithValidation {
 
-  private long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Long id;
   private String name;
   private LocalDate issueDate;
   private String address;
@@ -21,9 +36,15 @@ public class Company implements WithNameIdIssueDate, WithValidation {
   private String zipCode;
   private String nip;
   private String bankAccoutNumber;
+
+  @Enumerated(EnumType.ORDINAL)
   private TaxType taxType;
   private boolean personalCarUsage;
-  private List<Payment> payments = new ArrayList<>();
+
+  @Transient
+  @ElementCollection(fetch = FetchType.LAZY)
+  @NotNull
+  private List<Payment> payments;
 
   public Company() {
   }
@@ -35,12 +56,12 @@ public class Company implements WithNameIdIssueDate, WithValidation {
 
   @Override
   @JsonProperty("companyId")
-  public long getId() {
+  public Long getId() {
     return id;
   }
 
   @Override
-  public void setId(long id) {
+  public void setId(Long id) {
     this.id = id;
   }
 

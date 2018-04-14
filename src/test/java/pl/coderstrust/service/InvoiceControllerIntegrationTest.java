@@ -327,7 +327,7 @@ public class InvoiceControllerIntegrationTest {
           .andExpect(status().isOk());
     }
     Invoice invoiceToUpdate = InvoicesWithSpecifiedData.getInvoiceWithPolishData();
-    invoiceToUpdate.setId(3);
+    invoiceToUpdate.setId((long) 3);
     //when
     this.mockMvc
         .perform(put(DEFAULT_PATH + "/3")
