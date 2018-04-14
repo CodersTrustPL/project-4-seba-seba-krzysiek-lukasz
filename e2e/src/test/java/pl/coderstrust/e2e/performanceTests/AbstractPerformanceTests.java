@@ -80,7 +80,7 @@ public abstract class AbstractPerformanceTests {
         newFixedThreadPool.shutdown();
         try {
             newFixedThreadPool.awaitTermination(10, TimeUnit.SECONDS);
-        } catch (InterruptedException e) {
+        } catch (InterruptedException ex) {
             e.printStackTrace();
         }
         newFixedThreadPool.shutdown();
@@ -126,7 +126,7 @@ public abstract class AbstractPerformanceTests {
         newFixedThreadPool.shutdown();
         try {
             newFixedThreadPool.awaitTermination(10, TimeUnit.SECONDS);
-        } catch (InterruptedException e) {
+        } catch (InterruptedException ex) {
             e.printStackTrace();
         }
         newFixedThreadPool.shutdown();
@@ -162,7 +162,7 @@ public abstract class AbstractPerformanceTests {
         newFixedThreadPool.shutdown();
         try {
             newFixedThreadPool.awaitTermination(10, TimeUnit.SECONDS);
-        } catch (InterruptedException e) {
+        } catch (InterruptedException ex) {
             e.printStackTrace();
         }
         newFixedThreadPool.shutdown();
@@ -196,7 +196,7 @@ public abstract class AbstractPerformanceTests {
         newFixedThreadPool.shutdown();
         try {
             newFixedThreadPool.awaitTermination(10, TimeUnit.SECONDS);
-        } catch (InterruptedException e) {
+        } catch (InterruptedException ex) {
             e.printStackTrace();
         }
         newFixedThreadPool.shutdown();
@@ -230,7 +230,7 @@ public abstract class AbstractPerformanceTests {
         newFixedThreadPool.shutdown();
         try {
             newFixedThreadPool.awaitTermination(10, TimeUnit.SECONDS);
-        } catch (InterruptedException e) {
+        } catch (InterruptedException ex) {
             e.printStackTrace();
         }
         newFixedThreadPool.shutdown();
@@ -259,7 +259,7 @@ public abstract class AbstractPerformanceTests {
         newFixedThreadPool.shutdown();
         try {
             newFixedThreadPool.awaitTermination(10, TimeUnit.SECONDS);
-        } catch (InterruptedException e) {
+        } catch (InterruptedException ex) {
             e.printStackTrace();
         }
         newFixedThreadPool.shutdown();

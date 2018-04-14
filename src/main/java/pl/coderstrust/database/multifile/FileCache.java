@@ -50,10 +50,10 @@ public class FileCache<T extends WithNameIdIssueDate> {
         while ((line = bufferedReader.readLine()) != null) {
           readFiles.add(line);
         }
-      } catch (IOException e) {
+      } catch (IOException ex) {
         logger.warn(" from getAllFilesEntries in FileCache: "
-            + ExceptionMsg.IO_ERROR_WHILE_READING, e);
-        throw new DbException(ExceptionMsg.IO_ERROR_WHILE_READING, e);
+            + ExceptionMsg.IO_ERROR_WHILE_READING, ex);
+        throw new DbException(ExceptionMsg.IO_ERROR_WHILE_READING, ex);
       }
     });
     return readFiles;

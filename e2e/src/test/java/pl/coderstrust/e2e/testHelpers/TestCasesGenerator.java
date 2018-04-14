@@ -8,6 +8,7 @@ import pl.coderstrust.e2e.model.PaymentState;
 import pl.coderstrust.e2e.model.PaymentType;
 import pl.coderstrust.e2e.model.Product;
 import pl.coderstrust.e2e.model.ProductType;
+import pl.coderstrust.e2e.model.Rates;
 import pl.coderstrust.e2e.model.TaxType;
 import pl.coderstrust.e2e.model.Vat;
 
@@ -18,6 +19,7 @@ import java.util.List;
 
 
 public class TestCasesGenerator {
+
 
   public Invoice getTestInvoice(int invoiceNumber, int entriesCount) {
     LocalDate dateIssue = LocalDate.of(2018, 10, 1);
@@ -88,4 +90,43 @@ public class TestCasesGenerator {
         .productType(ProductType.ELECTRIONICS)
         .build();
   }
+
+  public List<Payment> createPensionInsurancePaymentsForYear(int year) {
+    LocalDate date = LocalDate.of(year, 1, 10).minusMonths(1);
+    List<Payment> paymentsList = new ArrayList<>();
+
+    for (int i = 1; i <= 12; i++) {
+      Payment payment = new Payment(i, date.plusMonths(i), Rates.PENSION_INSURANCE.getValue(),
+          PaymentType.PENSION_INSURANCE);
+      paymentsList.add(payment);
+    }
+    return paymentsList;
+  }
+
+  public List<Payment> createHealthInsurancePaymentsForYear(int year) {
+    LocalDate date = LocalDate.of(year, 1, 10);
+    List<Payment> paymentsList = new ArrayList<>();
+
+    for (int i = 1; i <= 12; i++) {
+      Payment payment = new Payment(i, date.plusMonths(i), BigDecimal.valueOf(300),
+          PaymentType.HEALTH_INSURANCE);
+      paymentsList.add(payment);
+    }
+    return paymentsList;
+  }
+
+  public List<Payment> createIncomeTaxAdvancePaymentsForYear(int year) {
+    LocalDate date = LocalDate.of(year, 1, 20).minusMonths(1);
+    List<Payment> paymentsList = new ArrayList<>();
+
+    for (int i = 1; i <= 12; i++) {
+      Payment payment = new Payment(i, date.plusMonths(i), BigDecimal.valueOf(i * 50),
+          PaymentType.INCOME_TAX_ADVANCE);
+      paymentsList.add(payment);
+    }
+    return paymentsList;
+  }
+
+
+
 }

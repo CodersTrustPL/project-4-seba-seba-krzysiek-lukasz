@@ -34,7 +34,7 @@ public class InFileDatabase<T extends WithNameIdIssueDate> implements Database<T
   }
 
   @Override
-  synchronized public long addEntry(T entry) {
+  public synchronized long addEntry(T entry) {
     entry.setId(getNextId());
     fileHelper.addLine(mapper.toJson(entry));
     savedIds.add(entry.getId());
@@ -50,7 +50,7 @@ public class InFileDatabase<T extends WithNameIdIssueDate> implements Database<T
   }
 
   @Override
-  synchronized public void deleteEntry(long systemId) {
+  public synchronized void deleteEntry(long systemId) {
     if (!idExist(systemId)) {
       logger.warn(" from deleteEntry (InFileDatabase): "
           + ExceptionMsg.INVOICE_NOT_EXIST);
@@ -62,7 +62,7 @@ public class InFileDatabase<T extends WithNameIdIssueDate> implements Database<T
   }
 
   @Override
-  synchronized public T getEntryById(long systemId) {
+  public synchronized T getEntryById(long systemId) {
     if (!idExist(systemId)) {
       logger.warn(" from getEntryById (InFileDatabase): "
           + ExceptionMsg.INVOICE_NOT_EXIST);
@@ -78,7 +78,7 @@ public class InFileDatabase<T extends WithNameIdIssueDate> implements Database<T
   }
 
   @Override
-  synchronized public void updateEntry(WithNameIdIssueDate entry) {
+  public synchronized void updateEntry(WithNameIdIssueDate entry) {
     deleteEntry(entry.getId());
     fileHelper.addLine(mapper.toJson(entry));
     savedIds.add(entry.getId());

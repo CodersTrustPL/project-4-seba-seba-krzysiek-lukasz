@@ -19,13 +19,13 @@ public class MultiFileDatabaseTest extends DatabaseTest {
     Configuration config = new Configuration(Invoice.class.getSimpleName());
     try {
       FileUtils.forceMkdir(new File(config.getJsonFilePath()));
-    } catch (IOException e) {
-      e.printStackTrace();
+    } catch (IOException ex) {
+      ex.printStackTrace();
     }
     try {
       FileUtils.cleanDirectory(new File(config.getJsonFilePath()));
-    } catch (IOException e) {
-      e.printStackTrace();
+    } catch (IOException ex) {
+      ex.printStackTrace();
     }
     ObjectMapperHelper objectMapperHelper = new ObjectMapperHelper(Invoice.class);
     FileCache fileCache = new FileCache(objectMapperHelper, config.getJsonFilePath());

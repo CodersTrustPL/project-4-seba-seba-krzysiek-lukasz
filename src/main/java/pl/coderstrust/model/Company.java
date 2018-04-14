@@ -2,31 +2,17 @@ package pl.coderstrust.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Transient;
-import javax.validation.constraints.NotNull;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.hibernate.annotations.Proxy;
 
-@Entity
-@Proxy(lazy = false)
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 public class Company implements WithNameIdIssueDate, WithValidation {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
   private long id;
   private String name;
   private LocalDate issueDate;
@@ -35,18 +21,11 @@ public class Company implements WithNameIdIssueDate, WithValidation {
   private String zipCode;
   private String nip;
   private String bankAccoutNumber;
-
-  @Enumerated(EnumType.ORDINAL)
   private TaxType taxType;
   private boolean personalCarUsage;
-
-  @Transient
-  @ElementCollection(fetch = FetchType.LAZY)
-  @NotNull
-  private List<Payment> payments;
+  private List<Payment> payments = new ArrayList<>();
 
   public Company() {
-    payments = new ArrayList<Payment>();
   }
 
   public Company(String name) {

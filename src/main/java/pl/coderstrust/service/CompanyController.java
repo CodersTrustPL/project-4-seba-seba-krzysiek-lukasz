@@ -18,45 +18,45 @@ import java.time.LocalDate;
 @RestController
 public class CompanyController extends AbstractController<Company> {
 
-    public CompanyController(CompanyService companyService, CompanyDummyFilter dummyFilter) {
-        super.service = companyService;
-        super.filter = dummyFilter;
-    }
+  public CompanyController(CompanyService companyService, CompanyDummyFilter dummyFilter) {
+    super.service = companyService;
+    super.filter = dummyFilter;
+  }
 
-    @RequestMapping(value = "", method = RequestMethod.POST)
-    @ApiOperation(value = "Adds the company and returning id")
-    public synchronized ResponseEntity addCompany(
-            @RequestBody Company company) {
-        return super.addEntry(company, null);
-    }
+  @RequestMapping(value = "", method = RequestMethod.POST)
+  @ApiOperation(value = "Adds the company and returning id")
+  public synchronized ResponseEntity addCompany(
+      @RequestBody Company company) {
+    return super.addEntry(company, null);
+  }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    @ApiOperation(value = "Returns the company by id")
-    public synchronized ResponseEntity getCompanyById(
-            @PathVariable("id") Long companyId) {
-        return super.getEntryById(companyId, null);
-    }
+  @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+  @ApiOperation(value = "Returns the company by id")
+  public synchronized ResponseEntity getCompanyById(
+      @PathVariable("id") Long companyId) {
+    return super.getEntryById(companyId, null);
+  }
 
-    @RequestMapping(value = "", method = RequestMethod.GET)
-    @ApiOperation(value = "Returns the list of companies in the specified date range")
-    public synchronized ResponseEntity getCompanyByDate(
-            @RequestParam(name = "startDate", required = false) LocalDate startDate,
-            @RequestParam(name = "endDate", required = false) LocalDate endDate) {
-        return super.getEntryByDate(startDate, endDate, null);
-    }
+  @RequestMapping(value = "", method = RequestMethod.GET)
+  @ApiOperation(value = "Returns the list of companies in the specified date range")
+  public synchronized ResponseEntity getCompanyByDate(
+      @RequestParam(name = "startDate", required = false) LocalDate startDate,
+      @RequestParam(name = "endDate", required = false) LocalDate endDate) {
+    return super.getEntryByDate(startDate, endDate, null);
+  }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-    @ApiOperation(value = "Updates the company by id")
-    public synchronized ResponseEntity updateCompany(
-            @PathVariable("id") Long id,
-            @RequestBody Company company) {
-        return super.updateEntry(id, company, null);
-    }
+  @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+  @ApiOperation(value = "Updates the company by id")
+  public synchronized ResponseEntity updateCompany(
+      @PathVariable("id") Long id,
+      @RequestBody Company company) {
+    return super.updateEntry(id, company, null);
+  }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    @ApiOperation(value = "Deletes the company by id")
-    public synchronized ResponseEntity removeCompany(
-            @PathVariable("id") Long id) {
-        return removeEntry(id, null);
-    }
+  @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+  @ApiOperation(value = "Deletes the company by id")
+  public synchronized ResponseEntity removeCompany(
+      @PathVariable("id") Long id) {
+    return removeEntry(id, null);
+  }
 }
