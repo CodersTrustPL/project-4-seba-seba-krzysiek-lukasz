@@ -6,8 +6,12 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import javax.persistence.*;
+
+@Embeddable
 public class InvoiceEntry {
 
+  @Column(columnDefinition = "text")
   private Product product;
   private int amount;
 

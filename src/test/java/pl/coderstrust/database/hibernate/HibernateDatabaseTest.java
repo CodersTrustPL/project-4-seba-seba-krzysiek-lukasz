@@ -1,22 +1,37 @@
-package pl.coderstrust.database;
-
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import pl.coderstrust.model.Invoice;
-import pl.coderstrust.testhelpers.TestCasesGenerator;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Random;
+package pl.coderstrust.database.hibernate;
 
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
-public abstract class DatabaseTest {
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Random;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+import pl.coderstrust.database.Database;
+import pl.coderstrust.database.DbException;
+import pl.coderstrust.database.ExceptionMsg;
+import pl.coderstrust.database.ObjectMapperHelper;
+import pl.coderstrust.model.Invoice;
+import pl.coderstrust.testhelpers.TestCasesGenerator;
+
+@RunWith(SpringRunner.class)
+@SpringBootTest
+public class HibernateDatabaseTest {
+
+  @Autowired
+  HibernateDatabase database;
+
+  @Autowired
+  InvoiceRepository repository;
 
   protected static final int INVOICES_COUNT = 2;
   private static final int INVOICE_ENTRIES_COUNT = 1;
@@ -30,11 +45,10 @@ public abstract class DatabaseTest {
   private String[] expected = new String[INVOICES_COUNT];
   private String[] output = new String[INVOICES_COUNT];
 
-  public abstract Database getCleanDatabase();
-
   @Before
   public void defaultGiven() {
-    givenDatabase = getCleanDatabase();
+    repository.deleteAll();
+    givenDatabase = database;
     for (int i = 0; i < INVOICES_COUNT; i++) {
       givenInvoice = generator.getTestInvoice(i, INVOICE_ENTRIES_COUNT);
       invoiceIds[i] = givenDatabase.addEntry(givenInvoice);
@@ -46,8 +60,8 @@ public abstract class DatabaseTest {
   @Test
   public void shouldAddAndGetSingleInvoice() {
     //given
-    givenDatabase = getCleanDatabase();
     long invoiceId = givenDatabase.addEntry(givenInvoice);
+    givenInvoice.setId(invoiceId);
 
     //when
     String output = mapper.toJson(givenDatabase.getEntryById(invoiceId));
@@ -55,6 +69,11 @@ public abstract class DatabaseTest {
 
     //then
     assertThat(output, is(equalTo(expected)));
+  }
+
+  public Database getCleanDatabase() {
+    repository.deleteAll();
+    return database;
   }
 
   @Test
@@ -132,9 +151,9 @@ public abstract class DatabaseTest {
       for (int i = 0; i < INVOICES_COUNT; i++) {
         output[i] = mapper.toJson(givenDatabase.getEntryById(invoiceIds[i]));
       }
-    } catch (Exception ex) {
+    } catch (Exception e) {
       fail("Test failed due to object mapper exception during processing invoice to Json.");
-      ex.printStackTrace();
+      e.printStackTrace();
     }
     assertThat(output, is(equalTo(expected)));
   }
@@ -168,5 +187,23 @@ public abstract class DatabaseTest {
   public void shouldReturnFalseForRemovedInvoice() {
     givenDatabase.deleteEntry(INVOICES_COUNT - 1);
     assertThat(givenDatabase.idExist(INVOICES_COUNT - 1), is(false));
+  }
+
+  @Test
+  public void addAndPrintId() {
+
+    System.out.println(database.addEntry(givenInvoice));
+    System.out.println(database.addEntry(givenInvoice));
+    System.out.println(database.addEntry(givenInvoice));
+    System.out.println(database.addEntry(givenInvoice));
+    System.out.println(database.addEntry(givenInvoice));
+    System.out.println(database.addEntry(givenInvoice));
+    System.out.println(database.addEntry(givenInvoice));
+    System.out.println(database.addEntry(givenInvoice));
+    long id = database.addEntry(givenInvoice);
+
+    System.out.println(database.getEntryById(id));
+
+
   }
 }

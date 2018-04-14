@@ -6,6 +6,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.hibernate.annotations.Proxy;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -13,20 +14,33 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Proxy(lazy = false)
 public class Invoice implements WithNameIdIssueDate, WithValidation {
 
+  @ElementCollection (fetch = FetchType.EAGER)
   private List<InvoiceEntry> products = new ArrayList<>();
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  @Column(name="invoice_id")
-  private long id;
+  @Column(name = "ID", unique=true, nullable=false, insertable=true, updatable=true)
+  private Long id;
 
   private String name;
+
+  @JoinColumn
+  @ManyToOne(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
   private Company buyer;
+
+  @JoinColumn
+  @ManyToOne(cascade=CascadeType.ALL, fetch = FetchType.EAGER)
   private Company seller;
+
   private LocalDate issueDate;
+
   private LocalDate paymentDate;
+
+  @Column(name="paymentState")
+  @Enumerated(EnumType.ORDINAL)
   private PaymentState paymentState;
 
   public Invoice() {
