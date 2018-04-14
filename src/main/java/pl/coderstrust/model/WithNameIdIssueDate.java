@@ -1,6 +1,6 @@
 package pl.coderstrust.model;
 
-import java.time.LocalDate;
+    import java.time.LocalDate;
 
 public interface WithNameIdIssueDate {
 

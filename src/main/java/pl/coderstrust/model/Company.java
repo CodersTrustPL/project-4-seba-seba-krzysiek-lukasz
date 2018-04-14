@@ -8,26 +8,23 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hibernate.annotations.Proxy;
 
-import javax.persistence.ElementCollection;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Transient;
-import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Proxy(lazy = false)
 public class Company implements WithNameIdIssueDate, WithValidation {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.TABLE)
   private Long id;
   private String name;
   private LocalDate issueDate;
@@ -39,11 +36,10 @@ public class Company implements WithNameIdIssueDate, WithValidation {
 
   @Enumerated(EnumType.ORDINAL)
   private TaxType taxType;
+
   private boolean personalCarUsage;
 
   @Transient
-  @ElementCollection(fetch = FetchType.LAZY)
-  @NotNull
   private List<Payment> payments;
 
   public Company() {

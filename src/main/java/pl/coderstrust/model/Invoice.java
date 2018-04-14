@@ -8,6 +8,9 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hibernate.annotations.Proxy;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -20,10 +23,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Transient;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Proxy(lazy = false)
@@ -33,20 +32,18 @@ public class Invoice implements WithNameIdIssueDate, WithValidation {
   private List<InvoiceEntry> products = new ArrayList<>();
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.TABLE)
   @Column(name = "ID", unique = true, nullable = false)
   private Long id;
 
   private String name;
 
-  @Transient
   @JoinColumn
-  @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+  @ManyToOne(cascade = CascadeType.PERSIST)
   private Company buyer;
 
-  @Transient
   @JoinColumn
-  @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+  @ManyToOne(cascade = CascadeType.PERSIST)
   private Company seller;
 
   private LocalDate issueDate;
