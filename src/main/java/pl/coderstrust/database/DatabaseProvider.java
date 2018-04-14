@@ -1,9 +1,11 @@
 package pl.coderstrust.database;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import pl.coderstrust.database.file.InFileDatabase;
+import pl.coderstrust.database.hibernate.HibernateDatabase;
 import pl.coderstrust.database.memory.InMemoryDatabase;
 import pl.coderstrust.database.mongo.MongoDatabase;
 import pl.coderstrust.database.multifile.MultiFileDatabase;
@@ -18,6 +20,7 @@ public class DatabaseProvider {
   private static final String MULTIFILE = "multifile";
   private static final String MONGO = "mongo";
   private static final String MONGO_EMB = "mongo_emb";
+  private static final String HIBERNATE = "hibernate";
 
   @Value("${pl.coderstrust.database.MasterDatabase}")
   private String masterDbType;
@@ -31,6 +34,11 @@ public class DatabaseProvider {
   @Value("${pl.coderstrust.database.FilterDatabase.key}")
   private String filterDbKey;
 
+  @Autowired
+  HibernateDatabase<Invoice> databaseInvoice;
+
+  @Autowired
+  HibernateDatabase<Company> databaseCompany;
 
   @Bean
   public Database<Invoice> invoicesDatabase() {
@@ -43,6 +51,8 @@ public class DatabaseProvider {
         return new MongoDatabase<>(Invoice.class, masterDbKey, false);
       case MONGO_EMB:
         return new MongoDatabase<>(Invoice.class, masterDbKey, true);
+      case HIBERNATE:
+        return databaseInvoice;
       default:
         return new InMemoryDatabase<>(Invoice.class);
     }
@@ -59,6 +69,8 @@ public class DatabaseProvider {
         return new MongoDatabase<>(Company.class, filterDbKey, false);
       case MONGO_EMB:
         return new MongoDatabase<>(Company.class, filterDbKey, true);
+      case HIBERNATE:
+        return databaseCompany;
       default:
         return new InMemoryDatabase<>(Company.class);
     }

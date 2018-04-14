@@ -39,11 +39,11 @@ public class Invoice implements WithNameIdIssueDate, WithValidation {
   private String name;
 
   @JoinColumn
-  @ManyToOne(cascade = CascadeType.PERSIST)
+  @ManyToOne(cascade = CascadeType.ALL)
   private Company buyer;
 
   @JoinColumn
-  @ManyToOne(cascade = CascadeType.PERSIST)
+  @ManyToOne(cascade = CascadeType.ALL)
   private Company seller;
 
   private LocalDate issueDate;
