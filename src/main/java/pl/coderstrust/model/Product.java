@@ -18,12 +18,13 @@ public class Product implements WithValidation {
 
   private String name;
   private String description;
+
   private BigDecimal netValue;
 
   @Enumerated(EnumType.STRING)
   private Vat vatRate;
 
-  @Enumerated(EnumType.STRING)
+  @Enumerated
   private ProductType productType;
 
   public Product() {

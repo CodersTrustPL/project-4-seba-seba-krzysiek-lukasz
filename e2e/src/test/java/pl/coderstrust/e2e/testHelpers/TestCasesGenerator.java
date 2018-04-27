@@ -84,7 +84,7 @@ public class TestCasesGenerator {
     String name = "name_" + Integer.toString(invoiceNumber) + "_" + Integer.toString(productCount);
     return Product.builder()
         .name(name)
-        .netValue(BigDecimal.valueOf(invoiceNumber))
+        .netValue(BigDecimal.valueOf(invoiceNumber+0.04))
         .vatRate(Vat.VAT_23)
         .description(name + "_" + "description_" + Integer.toString(invoiceNumber))
         .productType(ProductType.ELECTRIONICS)

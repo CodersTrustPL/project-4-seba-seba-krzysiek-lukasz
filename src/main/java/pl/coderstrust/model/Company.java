@@ -49,7 +49,7 @@ public class Company implements WithNameIdIssueDate, WithValidation {
 
   @JoinColumn
   @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-  private List<Payment> payments;
+  private List<Payment> payments = new ArrayList<>();
 
   public Company() {
   }

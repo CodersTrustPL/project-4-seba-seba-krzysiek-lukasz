@@ -3,7 +3,7 @@ package pl.coderstrust.database.hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 import pl.coderstrust.database.Database;
 import pl.coderstrust.database.DbException;
 import pl.coderstrust.database.ExceptionMsg;
@@ -12,20 +12,20 @@ import pl.coderstrust.model.WithNameIdIssueDate;
 
 import java.util.List;
 
-@Repository
+@Component
 public class HibernateCompanyDatabase<T extends WithNameIdIssueDate> implements Database<T> {
 
-  private final Logger logger = LoggerFactory.getLogger(HibernateInvoiceDatabase.class);
+  private final Logger logger = LoggerFactory.getLogger(HibernateCompanyDatabase.class);
 
   public HibernateCompanyDatabase() {
   }
 
   @Autowired
-  CompanyRepository repository;
+  CompanyRepository companyRepository;
 
   @Override
-  public long addEntry(T entry) {
-    Company savedCompany = (Company) repository.save(entry);
+  public synchronized long addEntry(T entry) {
+    Company savedCompany = (Company) companyRepository.save(entry);
     return savedCompany.getId();
   }
 
@@ -36,7 +36,7 @@ public class HibernateCompanyDatabase<T extends WithNameIdIssueDate> implements 
           + ExceptionMsg.INVOICE_NOT_EXIST);
       throw new DbException(ExceptionMsg.INVOICE_NOT_EXIST);
     } else {
-      repository.delete(id);
+      companyRepository.delete(id);
     }
   }
 
@@ -47,22 +47,22 @@ public class HibernateCompanyDatabase<T extends WithNameIdIssueDate> implements 
           + ExceptionMsg.INVOICE_NOT_EXIST);
       throw new DbException(ExceptionMsg.INVOICE_NOT_EXIST);
     } else {
-      return (T) repository.findOne(id);
+      return (T) companyRepository.findOne(id);
     }
   }
 
   @Override
   public void updateEntry(T entry) {
-    repository.save(entry);
+    companyRepository.save(entry);
   }
 
   @Override
   public List<T> getEntries() {
-    return (List<T>) repository.findAll();
+    return (List<T>) companyRepository.findAll();
   }
 
   @Override
   public boolean idExist(long id) {
-    return repository.exists((Long) id);
+    return companyRepository.exists((Long) id);
   }
 }

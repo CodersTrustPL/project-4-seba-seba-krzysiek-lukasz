@@ -3,7 +3,7 @@ package pl.coderstrust.database.hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 import pl.coderstrust.database.Database;
 import pl.coderstrust.database.DbException;
 import pl.coderstrust.database.ExceptionMsg;
@@ -12,7 +12,7 @@ import pl.coderstrust.model.WithNameIdIssueDate;
 
 import java.util.List;
 
-@Repository
+@Component
 public class HibernateInvoiceDatabase<T extends WithNameIdIssueDate> implements Database<T> {
 
   private final Logger logger = LoggerFactory.getLogger(HibernateInvoiceDatabase.class);
@@ -21,25 +21,24 @@ public class HibernateInvoiceDatabase<T extends WithNameIdIssueDate> implements 
   }
 
   @Autowired
-  InvoiceRepository repository;
+  InvoiceRepository invoiceRepository;
 
   @Autowired
-  CompanyRepository companyRepository;
+  HibernateCompanyDatabase hibernateCompanyDatabase;
 
 
   @Override
-  public long addEntry(T entry) {
-//    entry.setId(null);
+  public synchronized long addEntry(T entry) {
+
     Invoice invoice = (Invoice) entry;
-    companyRepository.save(invoice.getBuyer());
-    long buyerId = invoice.getBuyer().getId();
-    companyRepository.save(invoice.getSeller());
-    long sellerId = invoice.getBuyer().getId();
+
+    Long buyerId = hibernateCompanyDatabase.addEntry(invoice.getBuyer());
+    Long sellerId = hibernateCompanyDatabase.addEntry(invoice.getSeller());
 
     invoice.getBuyer().setId(buyerId);
     invoice.getSeller().setId(sellerId);
 
-    Invoice savedInvoice = (Invoice) repository.save(invoice);
+    Invoice savedInvoice = (Invoice) invoiceRepository.save(invoice);
     return savedInvoice.getId();
   }
 
@@ -49,7 +48,7 @@ public class HibernateInvoiceDatabase<T extends WithNameIdIssueDate> implements 
       logger.warn(" from deleteEntry (hibernateDatabase): "
           + ExceptionMsg.INVOICE_NOT_EXIST);
       throw new DbException(ExceptionMsg.INVOICE_NOT_EXIST);
-    } else repository.delete(id);
+    } else invoiceRepository.delete(id);
   }
 
   @Override
@@ -58,21 +57,21 @@ public class HibernateInvoiceDatabase<T extends WithNameIdIssueDate> implements 
       logger.warn(" from getEntryByiD (hibernateDatabase): "
           + ExceptionMsg.INVOICE_NOT_EXIST);
       throw new DbException(ExceptionMsg.INVOICE_NOT_EXIST);
-    }else return (T) repository.findOne(id);
+    }else return (T) invoiceRepository.findOne(id);
   }
 
   @Override
   public void updateEntry(T entry) {
-    repository.save(entry);
+    invoiceRepository.save(entry);
   }
 
   @Override
   public List<T> getEntries() {
-    return (List<T>) repository.findAll();
+    return (List<T>) invoiceRepository.findAll();
   }
 
   @Override
   public boolean idExist(long id) {
-    return repository.exists((Long)id);
+    return invoiceRepository.exists((Long)id);
   }
 }
