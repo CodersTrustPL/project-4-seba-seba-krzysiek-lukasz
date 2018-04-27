@@ -3,17 +3,21 @@ package pl.coderstrust.database.hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import pl.coderstrust.database.Database;
 import pl.coderstrust.database.DbException;
 import pl.coderstrust.database.ExceptionMsg;
 import pl.coderstrust.model.Company;
 import pl.coderstrust.model.WithNameIdIssueDate;
 
+import java.io.Serializable;
 import java.util.List;
+import javax.transaction.Transactional;
 
-@Component
-public class HibernateCompanyDatabase<T extends WithNameIdIssueDate> implements Database<T> {
+@Transactional
+@Service
+public class HibernateCompanyDatabase<T extends WithNameIdIssueDate> implements Database<T>,
+    Serializable {
 
   private final Logger logger = LoggerFactory.getLogger(HibernateCompanyDatabase.class);
 
@@ -63,6 +67,6 @@ public class HibernateCompanyDatabase<T extends WithNameIdIssueDate> implements 
 
   @Override
   public boolean idExist(long id) {
-    return companyRepository.exists((Long) id);
+    return companyRepository.exists(id);
   }
 }

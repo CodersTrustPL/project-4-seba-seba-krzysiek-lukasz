@@ -5,6 +5,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hibernate.annotations.Proxy;
+import org.springframework.format.annotation.NumberFormat;
 import pl.coderstrust.database.hibernate.LocalDateTimeConverter;
 
 import java.math.BigDecimal;
@@ -30,6 +31,7 @@ public class Payment implements WithValidation {
   @Convert(converter = LocalDateTimeConverter.class)
   private LocalDate issueDate;
 
+  @NumberFormat(pattern = "#,###,###,###.##")
   private BigDecimal amount;
 
   @Enumerated(EnumType.STRING)

@@ -3,17 +3,22 @@ package pl.coderstrust.database.hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import pl.coderstrust.database.Database;
 import pl.coderstrust.database.DbException;
 import pl.coderstrust.database.ExceptionMsg;
+import pl.coderstrust.model.Company;
 import pl.coderstrust.model.Invoice;
 import pl.coderstrust.model.WithNameIdIssueDate;
 
+import java.io.Serializable;
 import java.util.List;
+import javax.transaction.Transactional;
 
-@Component
-public class HibernateInvoiceDatabase<T extends WithNameIdIssueDate> implements Database<T> {
+@Transactional
+@Service
+public class HibernateInvoiceDatabase<T extends WithNameIdIssueDate> implements Database<T>,
+    Serializable {
 
   private final Logger logger = LoggerFactory.getLogger(HibernateInvoiceDatabase.class);
 
@@ -31,12 +36,22 @@ public class HibernateInvoiceDatabase<T extends WithNameIdIssueDate> implements 
   public synchronized long addEntry(T entry) {
 
     Invoice invoice = (Invoice) entry;
+    Long buyerId = null;
+    Long sellerId = null;
 
-    Long buyerId = hibernateCompanyDatabase.addEntry(invoice.getBuyer());
-    Long sellerId = hibernateCompanyDatabase.addEntry(invoice.getSeller());
-
-    invoice.getBuyer().setId(buyerId);
-    invoice.getSeller().setId(sellerId);
+    if (hibernateCompanyDatabase.idExist(invoice.getBuyer().getId())) {
+      invoice.setBuyer((Company) hibernateCompanyDatabase.getEntryById(invoice.getBuyer().getId()));
+      invoice.getBuyer().setId(invoice.getBuyer().getId());
+    } else {
+      buyerId = Long.valueOf(hibernateCompanyDatabase.addEntry(invoice.getBuyer()));
+    }
+    if (hibernateCompanyDatabase.idExist(invoice.getSeller().getId())) {
+      invoice
+          .setSeller((Company) hibernateCompanyDatabase.getEntryById(invoice.getSeller().getId()));
+      invoice.getSeller().setId(invoice.getSeller().getId());
+    } else {
+      buyerId = Long.valueOf(hibernateCompanyDatabase.addEntry(invoice.getSeller()));
+    }
 
     Invoice savedInvoice = (Invoice) invoiceRepository.save(invoice);
     return savedInvoice.getId();

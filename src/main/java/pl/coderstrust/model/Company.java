@@ -9,6 +9,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hibernate.annotations.Proxy;
 import pl.coderstrust.database.hibernate.LocalDateTimeConverter;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +27,7 @@ import javax.persistence.OneToMany;
 
 @Entity
 @Proxy(lazy = false)
-public class Company implements WithNameIdIssueDate, WithValidation {
+public class Company implements WithNameIdIssueDate, WithValidation,Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.TABLE)

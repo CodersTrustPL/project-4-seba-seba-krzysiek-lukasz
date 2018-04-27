@@ -5,6 +5,7 @@ import static net.javacrumbs.jsonunit.JsonMatchers.jsonEquals;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 
+import org.springframework.test.annotation.DirtiesContext;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -37,6 +38,7 @@ public abstract class AbstractValidInputTests {
   protected abstract String getInvoicePath();
 
   @Test
+  @DirtiesContext
   public void shouldCorrectlyAddAndGetInvoiceById() {
     long invoiceId = addInvoice(testInvoice);
     testInvoice.setId(invoiceId);
