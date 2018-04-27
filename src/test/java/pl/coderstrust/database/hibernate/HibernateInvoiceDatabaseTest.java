@@ -9,10 +9,10 @@ import pl.coderstrust.database.DatabaseTest;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class HibernateDatabaseTest extends DatabaseTest {
+public class HibernateInvoiceDatabaseTest extends DatabaseTest {
 
   @Autowired
-  HibernateDatabase database;
+  HibernateInvoiceDatabase database;
 
   @Autowired
   InvoiceRepository repository;

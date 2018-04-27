@@ -7,12 +7,14 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hibernate.annotations.Proxy;
+import pl.coderstrust.database.hibernate.LocalDateTimeConverter;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -46,8 +48,10 @@ public class Invoice implements WithNameIdIssueDate, WithValidation {
   @ManyToOne(cascade = CascadeType.ALL)
   private Company seller;
 
+  @Convert(converter = LocalDateTimeConverter.class)
   private LocalDate issueDate;
 
+  @Convert(converter = LocalDateTimeConverter.class)
   private LocalDate paymentDate;
 
   @Column(name = "paymentState")

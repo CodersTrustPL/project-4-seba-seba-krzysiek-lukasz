@@ -5,7 +5,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import pl.coderstrust.database.file.InFileDatabase;
-import pl.coderstrust.database.hibernate.HibernateDatabase;
+import pl.coderstrust.database.hibernate.HibernateCompanyDatabase;
+import pl.coderstrust.database.hibernate.HibernateInvoiceDatabase;
 import pl.coderstrust.database.memory.InMemoryDatabase;
 import pl.coderstrust.database.mongo.MongoDatabase;
 import pl.coderstrust.database.multifile.MultiFileDatabase;
@@ -35,10 +36,10 @@ public class DatabaseProvider {
   private String filterDbKey;
 
   @Autowired
-  HibernateDatabase<Invoice> databaseInvoice;
+  HibernateInvoiceDatabase databaseInvoice;
 
   @Autowired
-  HibernateDatabase<Company> databaseCompany;
+  HibernateCompanyDatabase databaseCompany;
 
   @Bean
   public Database<Invoice> invoicesDatabase() {

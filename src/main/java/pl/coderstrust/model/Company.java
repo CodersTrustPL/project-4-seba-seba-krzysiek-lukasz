@@ -6,19 +6,22 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.Proxy;
+import pl.coderstrust.database.hibernate.LocalDateTimeConverter;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -29,7 +32,10 @@ public class Company implements WithNameIdIssueDate, WithValidation {
   @GeneratedValue(strategy = GenerationType.TABLE)
   private Long id;
   private String name;
+
+  @Convert(converter = LocalDateTimeConverter.class)
   private LocalDate issueDate;
+
   private String address;
   private String city;
   private String zipCode;
@@ -41,8 +47,8 @@ public class Company implements WithNameIdIssueDate, WithValidation {
 
   private boolean personalCarUsage;
 
-  @OneToMany
-  @LazyCollection(LazyCollectionOption.FALSE)
+  @JoinColumn
+  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
   private List<Payment> payments;
 
   public Company() {

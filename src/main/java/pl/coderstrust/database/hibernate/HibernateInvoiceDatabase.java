@@ -3,7 +3,7 @@ package pl.coderstrust.database.hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 import pl.coderstrust.database.Database;
 import pl.coderstrust.database.DbException;
 import pl.coderstrust.database.ExceptionMsg;
@@ -12,21 +12,34 @@ import pl.coderstrust.model.WithNameIdIssueDate;
 
 import java.util.List;
 
-@Service
-public class HibernateDatabase<T extends WithNameIdIssueDate> implements Database<T> {
+@Repository
+public class HibernateInvoiceDatabase<T extends WithNameIdIssueDate> implements Database<T> {
 
-  private final Logger logger = LoggerFactory.getLogger(HibernateDatabase.class);
+  private final Logger logger = LoggerFactory.getLogger(HibernateInvoiceDatabase.class);
 
-  public HibernateDatabase() {
+  public HibernateInvoiceDatabase() {
   }
 
   @Autowired
   InvoiceRepository repository;
 
+  @Autowired
+  CompanyRepository companyRepository;
+
+
   @Override
   public long addEntry(T entry) {
-    entry.setId(null);
-    Invoice  savedInvoice = (Invoice) repository.save(entry);
+//    entry.setId(null);
+    Invoice invoice = (Invoice) entry;
+    companyRepository.save(invoice.getBuyer());
+    long buyerId = invoice.getBuyer().getId();
+    companyRepository.save(invoice.getSeller());
+    long sellerId = invoice.getBuyer().getId();
+
+    invoice.getBuyer().setId(buyerId);
+    invoice.getSeller().setId(sellerId);
+
+    Invoice savedInvoice = (Invoice) repository.save(invoice);
     return savedInvoice.getId();
   }
 

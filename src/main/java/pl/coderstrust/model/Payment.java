@@ -5,11 +5,13 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hibernate.annotations.Proxy;
+import pl.coderstrust.database.hibernate.LocalDateTimeConverter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -22,9 +24,12 @@ import javax.persistence.Id;
 public class Payment implements WithValidation {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.TABLE)
-  private Long id;
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private long id;
+
+  @Convert(converter = LocalDateTimeConverter.class)
   private LocalDate issueDate;
+
   private BigDecimal amount;
 
   @Enumerated(EnumType.STRING)
@@ -56,11 +61,11 @@ public class Payment implements WithValidation {
     return errors;
   }
 
-  public Long getId() {
+  public long getId() {
     return id;
   }
 
-  public void setId(Long id) {
+  public void setId(long id) {
     this.id = id;
   }
 
