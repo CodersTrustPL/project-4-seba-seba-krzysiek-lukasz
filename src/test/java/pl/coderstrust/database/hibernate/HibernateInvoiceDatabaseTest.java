@@ -14,12 +14,12 @@ public class HibernateInvoiceDatabaseTest extends DatabaseTest {
   @Autowired
   HibernateInvoiceDatabase database;
 
-//  @Autowired
-//  InvoiceRepository repository;
+  @Autowired
+  InvoiceRepository repository;
 
   @Override
   public Database getCleanDatabase() {
-//    repository.deleteAll();
+    repository.deleteAll();
     return database;
   }
 }

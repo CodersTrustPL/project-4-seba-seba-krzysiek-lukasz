@@ -81,7 +81,16 @@ public class HibernateInvoiceDatabase<T extends WithNameIdIssueDate> implements 
 
   @Override
   public void updateEntry(T entry) {
-    invoiceRepository.save(entry);
+    Invoice invoice = (Invoice) entry;
+    Long buyerId = null;
+    Long sellerId = null;
+
+    buyerId=hibernateCompanyDatabase.addEntry(invoice.getBuyer());
+    sellerId=hibernateCompanyDatabase.addEntry(invoice.getSeller());
+    invoice.getBuyer().setId(buyerId);
+    invoice.getSeller().setId(sellerId);
+
+    invoiceRepository.save(invoice);
   }
 
   @Override
