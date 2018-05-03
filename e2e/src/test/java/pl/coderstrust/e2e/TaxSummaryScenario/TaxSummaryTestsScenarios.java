@@ -41,7 +41,7 @@ public class TaxSummaryTestsScenarios {
     //given
     Company company = TestUtils.getTestCompany();
     company.setIssueDate(startDate);
-    long companyId = addCompany(company);
+    Long companyId = addCompany(company);
     company.setId(companyId);
     addInvoices(company, 300);
     createAndAddPayments(companyId);
@@ -78,7 +78,7 @@ public class TaxSummaryTestsScenarios {
     Company company = TestUtils.getTestCompany();
     company.setTaxType(TaxType.PROGRESIVE);
     company.setIssueDate(startDate);
-    long companyId = addCompany(company);
+    Long companyId = addCompany(company);
     company.setId(companyId);
     addInvoices(company, 300);
     createAndAddPayments(companyId);
@@ -114,7 +114,7 @@ public class TaxSummaryTestsScenarios {
     Company company = TestUtils.getTestCompany();
     company.setTaxType(TaxType.PROGRESIVE);
     company.setIssueDate(startDate);
-    long companyId = addCompany(company);
+    Long companyId = addCompany(company);
     company.setId(companyId);
     addInvoices(company, 600);
     createAndAddPayments(companyId);
@@ -143,7 +143,7 @@ public class TaxSummaryTestsScenarios {
         .body(jsonEquals(objectMapperHelper.toJson(expected)));
   }
 
-  private long addCompany(Company company) {
+  private Long addCompany(Company company) {
     Response serviceRespone =
         given()
             .contentType("application/json")
@@ -189,7 +189,7 @@ public class TaxSummaryTestsScenarios {
     addPayments(generator.createIncomeTaxAdvancePaymentsForYear(startDate.getYear()), companyId);
   }
 
-  private void addPayments(List<Payment> payments, long companyId) {
+  private void addPayments(List<Payment> payments, Long companyId) {
     payments.forEach(payment -> {
       given()
           .contentType("application/json")
