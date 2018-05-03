@@ -41,11 +41,11 @@ public class PaymentServiceTest {
   public void givenForAllTests() {
     when(companyService.findEntry(1))
         .thenReturn(InvoicesWithSpecifiedData.getPolishCompanySeller());
-    healthInsurance = new Payment(-1, LocalDate.now().plusMonths(1),
+    healthInsurance = new Payment((long) -1, LocalDate.now().plusMonths(1),
         BigDecimal.valueOf(300), PaymentType.HEALTH_INSURANCE);
-    pensionInsurance = new Payment(-1, LocalDate.now().plusMonths(2),
+    pensionInsurance = new Payment((long) -1, LocalDate.now().plusMonths(2),
         BigDecimal.valueOf(500), PaymentType.PENSION_INSURANCE);
-    incomeTaxAdvance = new Payment(-1, LocalDate.now().plusMonths(3),
+    incomeTaxAdvance = new Payment((long) -1, LocalDate.now().plusMonths(3),
         BigDecimal.valueOf(1000), PaymentType.INCOME_TAX_ADVANCE);
     paymentService.addPayment(1, healthInsurance);
     paymentService.addPayment(1, pensionInsurance);

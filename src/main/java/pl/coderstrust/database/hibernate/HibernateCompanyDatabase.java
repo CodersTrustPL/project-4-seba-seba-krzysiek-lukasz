@@ -29,7 +29,15 @@ public class HibernateCompanyDatabase<T extends WithNameIdIssueDate> implements 
 
   @Override
   public synchronized long addEntry(T entry) {
-    Company savedCompany = (Company) companyRepository.save(entry);
+
+    Company company = (Company) entry;
+    Company savedCompany;
+
+    if (companyRepository.exists(company.getId())) {
+      savedCompany = (Company) companyRepository.findOne(company.getId());
+    } else {
+      savedCompany = (Company) companyRepository.save(entry);
+    }
     return savedCompany.getId();
   }
 
@@ -37,8 +45,8 @@ public class HibernateCompanyDatabase<T extends WithNameIdIssueDate> implements 
   public void deleteEntry(long id) {
     if (!idExist(id)) {
       logger.warn(" from deleteEntry (hibernateDatabase): "
-          + ExceptionMsg.INVOICE_NOT_EXIST);
-      throw new DbException(ExceptionMsg.INVOICE_NOT_EXIST);
+          + ExceptionMsg.COMPANY_NOT_EXIST);
+      throw new DbException(ExceptionMsg.COMPANY_NOT_EXIST);
     } else {
       companyRepository.delete(id);
     }

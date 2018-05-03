@@ -4,6 +4,8 @@ public class ExceptionMsg {
 
   public static final String INVOICE_NOT_EXIST =
       "Entry does not exist in database.";
+  public static final String COMPANY_NOT_EXIST =
+      "Entry does not exist in database.";
   public static final String IO_ERROR_WHILE_DELETING =
       "Filesystem I/O error during deleting entry. Please try again later.";
   public static final String INVOICE_PROCESSING_INTERRUPT =

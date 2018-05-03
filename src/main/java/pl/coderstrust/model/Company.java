@@ -1,6 +1,5 @@
 package pl.coderstrust.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -14,17 +13,14 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Convert;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 
 @Entity
 @Proxy(lazy = false)
@@ -49,10 +45,9 @@ public class Company implements WithNameIdIssueDate, WithValidation,Serializable
 
   private boolean personalCarUsage;
 
-  @JsonIgnore
-  @JoinColumn
-  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-  private List<Payment> payments = new ArrayList<>();
+//  @OneToMany
+  @ElementCollection
+  private List<Payment> payments;
 
   public Company() {
   }

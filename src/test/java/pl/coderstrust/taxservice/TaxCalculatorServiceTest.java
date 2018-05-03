@@ -295,11 +295,11 @@ public class TaxCalculatorServiceTest {
       invoices.add(invoice);
     }
 
-    Payment pensionInsurance = new Payment(1, startDate,
+    Payment pensionInsurance = new Payment((long) 1, startDate,
         BigDecimal.valueOf(500), PaymentType.PENSION_INSURANCE);
-    Payment healthInsurance = new Payment(2, startDate,
+    Payment healthInsurance = new Payment((long) 2, startDate,
         BigDecimal.valueOf(300), PaymentType.HEALTH_INSURANCE);
-    Payment incomeTaxAdvance = new Payment(3, startDate,
+    Payment incomeTaxAdvance = new Payment((long) 3, startDate,
         BigDecimal.valueOf(1100), PaymentType.INCOME_TAX_ADVANCE);
 
     when(database.getEntries()).thenReturn(invoices);
@@ -383,11 +383,11 @@ public class TaxCalculatorServiceTest {
       invoices.add(invoice);
     }
 
-    Payment pensionInsurance = new Payment(1, startDate,
+    Payment pensionInsurance = new Payment((long) 1, startDate,
         BigDecimal.valueOf(500), PaymentType.PENSION_INSURANCE);
-    Payment healthInsurance = new Payment(2, startDate,
+    Payment healthInsurance = new Payment((long) 2, startDate,
         BigDecimal.valueOf(300), PaymentType.HEALTH_INSURANCE);
-    Payment incomeTaxAdvance = new Payment(3, startDate,
+    Payment incomeTaxAdvance = new Payment((long) 3, startDate,
         BigDecimal.valueOf(1100), PaymentType.INCOME_TAX_ADVANCE);
 
     when(database.getEntries()).thenReturn(invoices);

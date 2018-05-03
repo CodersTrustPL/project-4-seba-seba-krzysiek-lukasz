@@ -66,7 +66,7 @@ public class TestCasesGenerator {
     return Payment.builder()
         .id(id)
         .issueDate(LocalDate.now().plusYears(id))
-        .amount(BigDecimal.valueOf(count))
+        .amount(BigDecimal.valueOf(count+0.04))
         .type(PaymentType.HEALTH_INSURANCE)
         .build();
   }

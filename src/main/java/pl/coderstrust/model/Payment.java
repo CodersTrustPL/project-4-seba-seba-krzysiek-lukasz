@@ -4,7 +4,6 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.hibernate.annotations.Proxy;
 import org.springframework.format.annotation.NumberFormat;
 import pl.coderstrust.database.hibernate.LocalDateTimeConverter;
 
@@ -13,20 +12,18 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Convert;
-import javax.persistence.Entity;
+import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 
-@Entity
-@Proxy(lazy = false)
+//@Entity
+//@Proxy(lazy = false)
+@Embeddable
 public class Payment implements WithValidation {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private long id;
+//  @Id
+//  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Long id;
 
   @Convert(converter = LocalDateTimeConverter.class)
   private LocalDate issueDate;
@@ -37,7 +34,7 @@ public class Payment implements WithValidation {
   @Enumerated(EnumType.STRING)
   private PaymentType type;
 
-  public Payment(long id, LocalDate issueDate, BigDecimal amount,
+  public Payment(Long id, LocalDate issueDate, BigDecimal amount,
       PaymentType type) {
     this.id = id;
     this.issueDate = issueDate;
@@ -63,11 +60,11 @@ public class Payment implements WithValidation {
     return errors;
   }
 
-  public long getId() {
+  public Long getId() {
     return id;
   }
 
-  public void setId(long id) {
+  public void setId(Long id) {
     this.id = id;
   }
 

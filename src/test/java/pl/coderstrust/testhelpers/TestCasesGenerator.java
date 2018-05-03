@@ -82,7 +82,7 @@ public class TestCasesGenerator {
     List<Payment> paymentsList = new ArrayList<>();
 
     for (int i = 1; i <= 12; i++) {
-      Payment payment = new Payment(i, date.plusMonths(i), Rates.PENSION_INSURANCE.getValue(),
+      Payment payment = new Payment((long) i, date.plusMonths(i), Rates.PENSION_INSURANCE.getValue(),
           PaymentType.PENSION_INSURANCE);
       paymentsList.add(payment);
     }
@@ -94,7 +94,7 @@ public class TestCasesGenerator {
     List<Payment> paymentsList = new ArrayList<>();
 
     for (int i = 1; i <= 12; i++) {
-      Payment payment = new Payment(i, date.plusMonths(i), BigDecimal.valueOf(300),
+      Payment payment = new Payment((long) i, date.plusMonths(i), BigDecimal.valueOf(300),
           PaymentType.HEALTH_INSURANCE);
       paymentsList.add(payment);
     }
@@ -106,7 +106,7 @@ public class TestCasesGenerator {
     List<Payment> paymentsList = new ArrayList<>();
 
     for (int i = 1; i <= 12; i++) {
-      Payment payment = new Payment(i, date.plusMonths(i), BigDecimal.valueOf(i * 50),
+      Payment payment = new Payment((long) i, date.plusMonths(i), BigDecimal.valueOf(i * 50),
           PaymentType.INCOME_TAX_ADVANCE);
       paymentsList.add(payment);
     }

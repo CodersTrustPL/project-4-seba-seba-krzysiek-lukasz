@@ -35,7 +35,7 @@ public class ValidInputTest extends AbstractValidInputTests {
   }
 
   @Override
-  protected long addInvoice(Invoice testInvoice) {
+  protected Long addInvoice(Invoice testInvoice) {
     Response ServiceResponse = given()
         .contentType("application/json")
         .body(testInvoice)

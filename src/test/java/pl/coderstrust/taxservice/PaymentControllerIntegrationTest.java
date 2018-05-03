@@ -47,13 +47,13 @@ public class PaymentControllerIntegrationTest {
   private static final String ADD_PAYMENT_METHOD = "addPayment";
   private static final String DEFAULT_PATH = "/payment";
   private static final MediaType CONTENT_TYPE = MediaType.APPLICATION_JSON_UTF8;
-  private static final Payment pensionInsurance = new Payment(1, LocalDate.now().plusMonths(2),
+  private static final Payment pensionInsurance = new Payment((long) 1, LocalDate.now().plusMonths(2),
       BigDecimal.valueOf(500),
       PaymentType.PENSION_INSURANCE);
-  private static final Payment incomeTaxAdvance = new Payment(2, LocalDate.now().plusMonths(4),
+  private static final Payment incomeTaxAdvance = new Payment((long) 2, LocalDate.now().plusMonths(4),
       BigDecimal.valueOf(1000),
       PaymentType.INCOME_TAX_ADVANCE);
-  private static final Payment healthInsurance = new Payment(3, LocalDate.now().plusMonths(6),
+  private static final Payment healthInsurance = new Payment((long) 3, LocalDate.now().plusMonths(6),
       BigDecimal.valueOf(300),
       PaymentType.HEALTH_INSURANCE);
 
@@ -142,7 +142,7 @@ public class PaymentControllerIntegrationTest {
 
   @Test
   public void shouldReturnErrorCausedByEmptyField() throws Exception {
-    Payment wrongPayment = new Payment(4, LocalDate.now(), BigDecimal.valueOf(100),
+    Payment wrongPayment = new Payment((long) 4, LocalDate.now(), BigDecimal.valueOf(100),
         PaymentType.PENSION_INSURANCE);
     wrongPayment.setAmount(null);
     //then

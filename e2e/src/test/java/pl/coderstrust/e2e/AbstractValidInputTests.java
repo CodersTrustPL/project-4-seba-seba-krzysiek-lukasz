@@ -40,7 +40,7 @@ public abstract class AbstractValidInputTests {
   @Test
   @DirtiesContext
   public void shouldCorrectlyAddAndGetInvoiceById() {
-    long invoiceId = addInvoice(testInvoice);
+    Long invoiceId = addInvoice(testInvoice);
     testInvoice.setId(invoiceId);
     given()
         .when()
@@ -54,7 +54,7 @@ public abstract class AbstractValidInputTests {
 
   protected abstract String getInvoicePathWithInvoiceId(long invoiceId);
 
-  protected abstract long addInvoice(Invoice testInvoice);
+  protected abstract Long addInvoice(Invoice testInvoice);
 
   @Test
   public void shouldCorrectlyUpdateInvoice() {
