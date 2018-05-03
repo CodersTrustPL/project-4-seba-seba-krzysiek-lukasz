@@ -145,7 +145,7 @@ public abstract class AbstractPerformanceTests {
         Runnable test = () -> {
             for (int i = 0; i < 10; i++) {
                 expected.add("");
-                long invoiceId = addInvoice(testInvoice);
+                Long invoiceId = addInvoice(testInvoice);
                 ids.add(invoiceId);
                 given()
                         .contentType("application/json")

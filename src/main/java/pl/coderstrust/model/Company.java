@@ -6,10 +6,8 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.hibernate.annotations.Proxy;
 import pl.coderstrust.database.hibernate.LocalDateTimeConverter;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,11 +21,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-@Proxy(lazy = false)
-public class Company implements WithNameIdIssueDate, WithValidation,Serializable {
+public class Company implements WithNameIdIssueDate, WithValidation{
 
   @Id
-  @GeneratedValue(strategy = GenerationType.TABLE)
+  @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
   private String name;
 
@@ -45,7 +42,6 @@ public class Company implements WithNameIdIssueDate, WithValidation,Serializable
 
   private boolean personalCarUsage;
 
-//  @OneToMany
   @ElementCollection
   private List<Payment> payments;
 

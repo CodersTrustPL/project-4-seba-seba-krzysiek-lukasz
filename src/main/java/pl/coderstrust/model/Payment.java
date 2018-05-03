@@ -16,13 +16,9 @@ import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
-//@Entity
-//@Proxy(lazy = false)
 @Embeddable
 public class Payment implements WithValidation {
 
-//  @Id
-//  @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
 
   @Convert(converter = LocalDateTimeConverter.class)
