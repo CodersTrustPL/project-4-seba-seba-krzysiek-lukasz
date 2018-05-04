@@ -1,16 +1,19 @@
 package pl.coderstrust.e2e.performanceTests;
 
+import static io.restassured.RestAssured.given;
+
 import io.restassured.response.Response;
+import org.springframework.test.annotation.DirtiesContext;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import pl.coderstrust.e2e.model.Company;
 import pl.coderstrust.e2e.model.Invoice;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static io.restassured.RestAssured.given;
-
+@DirtiesContext
 public class PerformanceTestV1 extends AbstractPerformanceTests {
 
   @BeforeClass

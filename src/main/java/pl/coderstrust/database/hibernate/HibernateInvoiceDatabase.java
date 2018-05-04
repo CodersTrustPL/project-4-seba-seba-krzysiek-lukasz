@@ -11,14 +11,12 @@ import pl.coderstrust.model.Company;
 import pl.coderstrust.model.Invoice;
 import pl.coderstrust.model.WithNameIdIssueDate;
 
-import java.io.Serializable;
 import java.util.List;
 import javax.transaction.Transactional;
 
 @Transactional
 @Service
-public class HibernateInvoiceDatabase<T extends WithNameIdIssueDate> implements Database<T>,
-    Serializable {
+public class HibernateInvoiceDatabase<T extends WithNameIdIssueDate> implements Database<T>{
 
   private final Logger logger = LoggerFactory.getLogger(HibernateInvoiceDatabase.class);
 
