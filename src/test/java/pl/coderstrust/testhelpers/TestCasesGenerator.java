@@ -32,7 +32,9 @@ public class TestCasesGenerator {
     InvoiceBuilder builder = new InvoiceBuilder(invoiceNumber, buyer.getName(), seller.getName());
     builder.setVisibleId(idVisible);
     builder.setBuyer(buyer);
+    buyer.setId((long) 0);
     builder.setSeller(seller);
+    seller.setId((long) 0);
     LocalDate dateIssue = LocalDate.of(2019, 3, 1);
     builder.setIssueDate(dateIssue);
     builder.setPaymentDate(dateIssue.plusDays(15));
@@ -69,7 +71,7 @@ public class TestCasesGenerator {
   public Product getTestProduct(int invoiceNumber, int productCount) {
 
     String name = "name_" + Integer.toString(invoiceNumber) + "_" + Integer.toString(productCount);
-    double netValue = invoiceNumber+0.05;
+    double netValue = invoiceNumber;
     ProductBuilder builder = new ProductBuilder(name, netValue);
     builder.setDescription(name + "_" + "description_" + Integer.toString(invoiceNumber));
     builder.setVatRate(Vat.VAT_23);
