@@ -25,7 +25,7 @@ public abstract class DatabaseTest {
   protected TestCasesGenerator generator = new TestCasesGenerator();
   protected Invoice givenInvoice;
   protected Database givenDatabase;
-  protected Long[] invoiceIds = new Long[INVOICES_COUNT];
+  protected long[] invoiceIds = new long[INVOICES_COUNT];
   private ObjectMapperHelper mapper = new ObjectMapperHelper<Invoice>(Invoice.class);
   private String[] expected = new String[INVOICES_COUNT];
   private String[] output = new String[INVOICES_COUNT];
@@ -47,8 +47,7 @@ public abstract class DatabaseTest {
   public void shouldAddAndGetSingleInvoice() {
     //given
     givenDatabase = getCleanDatabase();
-    Long invoiceId = givenDatabase.addEntry(givenInvoice);
-    givenInvoice.setId(invoiceId);
+    long invoiceId = givenDatabase.addEntry(givenInvoice);
 
     //when
     String output = mapper.toJson(givenDatabase.getEntryById(invoiceId));
@@ -167,8 +166,7 @@ public abstract class DatabaseTest {
 
   @Test
   public void shouldReturnFalseForRemovedInvoice() {
-    long addedInvoice = givenDatabase.addEntry(givenInvoice);
-    givenDatabase.deleteEntry(addedInvoice);
+    givenDatabase.deleteEntry(INVOICES_COUNT - 1);
     assertThat(givenDatabase.idExist(INVOICES_COUNT - 1), is(false));
   }
 }
