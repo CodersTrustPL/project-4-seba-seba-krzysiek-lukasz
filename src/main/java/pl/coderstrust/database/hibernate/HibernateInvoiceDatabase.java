@@ -12,11 +12,9 @@ import pl.coderstrust.model.Invoice;
 import pl.coderstrust.model.WithNameIdIssueDate;
 
 import java.util.List;
-import javax.transaction.Transactional;
 
-@Transactional
 @Service
-public class HibernateInvoiceDatabase<T extends WithNameIdIssueDate> implements Database<T>{
+public class HibernateInvoiceDatabase<T extends WithNameIdIssueDate> implements Database<T> {
 
   private final Logger logger = LoggerFactory.getLogger(HibernateInvoiceDatabase.class);
 
@@ -34,13 +32,12 @@ public class HibernateInvoiceDatabase<T extends WithNameIdIssueDate> implements 
   public synchronized long addEntry(T entry) {
 
     Invoice invoice = (Invoice) entry;
-    Long buyerId = null;
-    Long sellerId = null;
+    Long buyerId;
+    Long sellerId;
 
     if (hibernateCompanyDatabase.idExist(invoice.getBuyer().getId())) {
       invoice.setBuyer((Company) hibernateCompanyDatabase.getEntryById(invoice.getBuyer().getId()));
       invoice.getBuyer().setId(invoice.getBuyer().getId());
-      invoice.getBuyer().getPayments();
     } else {
       buyerId = Long.valueOf(hibernateCompanyDatabase.addEntry(invoice.getBuyer()));
     }
@@ -48,11 +45,10 @@ public class HibernateInvoiceDatabase<T extends WithNameIdIssueDate> implements 
       invoice
           .setSeller((Company) hibernateCompanyDatabase.getEntryById(invoice.getSeller().getId()));
       invoice.getSeller().setId(invoice.getSeller().getId());
-      invoice.getSeller().getPayments();
     } else {
       buyerId = Long.valueOf(hibernateCompanyDatabase.addEntry(invoice.getSeller()));
     }
-    Invoice savedInvoice = (Invoice) invoiceRepository.saveAndFlush(invoice);
+    Invoice savedInvoice = (Invoice) invoiceRepository.save(invoice);
     return savedInvoice.getId();
   }
 
@@ -62,7 +58,9 @@ public class HibernateInvoiceDatabase<T extends WithNameIdIssueDate> implements 
       logger.warn(" from deleteEntry (hibernateDatabase): "
           + ExceptionMsg.INVOICE_NOT_EXIST);
       throw new DbException(ExceptionMsg.INVOICE_NOT_EXIST);
-    } else invoiceRepository.delete(id);
+    } else {
+      invoiceRepository.delete(id);
+    }
   }
 
   @Override
@@ -71,17 +69,19 @@ public class HibernateInvoiceDatabase<T extends WithNameIdIssueDate> implements 
       logger.warn(" from getEntryByiD (hibernateDatabase): "
           + ExceptionMsg.INVOICE_NOT_EXIST);
       throw new DbException(ExceptionMsg.INVOICE_NOT_EXIST);
-    }else return (T) invoiceRepository.findOne(id);
+    } else {
+      return (T) invoiceRepository.findOne(id);
+    }
   }
 
   @Override
   public void updateEntry(T entry) {
     Invoice invoice = (Invoice) entry;
-    Long buyerId = null;
-    Long sellerId = null;
+    Long buyerId;
+    Long sellerId;
 
-    buyerId=hibernateCompanyDatabase.addEntry(invoice.getBuyer());
-    sellerId=hibernateCompanyDatabase.addEntry(invoice.getSeller());
+    buyerId = hibernateCompanyDatabase.addEntry(invoice.getBuyer());
+    sellerId = hibernateCompanyDatabase.addEntry(invoice.getSeller());
     invoice.getBuyer().setId(buyerId);
     invoice.getSeller().setId(sellerId);
 
@@ -95,6 +95,6 @@ public class HibernateInvoiceDatabase<T extends WithNameIdIssueDate> implements 
 
   @Override
   public boolean idExist(long id) {
-    return invoiceRepository.exists((Long)id);
+    return invoiceRepository.exists((Long) id);
   }
 }

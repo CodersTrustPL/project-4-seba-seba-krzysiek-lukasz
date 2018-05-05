@@ -11,11 +11,9 @@ import pl.coderstrust.model.Company;
 import pl.coderstrust.model.WithNameIdIssueDate;
 
 import java.util.List;
-import javax.transaction.Transactional;
 
-@Transactional
 @Service
-public class HibernateCompanyDatabase<T extends WithNameIdIssueDate> implements Database<T>{
+public class HibernateCompanyDatabase<T extends WithNameIdIssueDate> implements Database<T> {
 
   private final Logger logger = LoggerFactory.getLogger(HibernateCompanyDatabase.class);
 

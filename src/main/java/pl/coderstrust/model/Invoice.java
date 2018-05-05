@@ -31,7 +31,7 @@ import javax.persistence.ManyToOne;
 public class Invoice implements WithNameIdIssueDate, WithValidation {
 
   @ElementCollection(fetch = FetchType.EAGER)
-  private List<InvoiceEntry> products = new ArrayList<>();
+  private List<InvoiceEntry> products;
 
   @Id
   @GeneratedValue(strategy = GenerationType.TABLE)
