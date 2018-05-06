@@ -35,18 +35,18 @@ public class HibernateInvoiceDatabase<T extends WithNameIdIssueDate> implements 
     Long buyerId;
     Long sellerId;
 
-    if (hibernateCompanyDatabase.idExist(invoice.getBuyer().getId())) {
+    if (invoice.getBuyer().getId()!=null&&hibernateCompanyDatabase.idExist(invoice.getBuyer().getId())) {
       invoice.setBuyer((Company) hibernateCompanyDatabase.getEntryById(invoice.getBuyer().getId()));
-      invoice.getBuyer().setId(invoice.getBuyer().getId());
     } else {
       buyerId = Long.valueOf(hibernateCompanyDatabase.addEntry(invoice.getBuyer()));
+      invoice.getBuyer().setId(buyerId);
     }
-    if (hibernateCompanyDatabase.idExist(invoice.getSeller().getId())) {
+    if (invoice.getSeller().getId()!=null&&hibernateCompanyDatabase.idExist(invoice.getSeller().getId())) {
       invoice
           .setSeller((Company) hibernateCompanyDatabase.getEntryById(invoice.getSeller().getId()));
-      invoice.getSeller().setId(invoice.getSeller().getId());
     } else {
-      buyerId = Long.valueOf(hibernateCompanyDatabase.addEntry(invoice.getSeller()));
+      sellerId = Long.valueOf(hibernateCompanyDatabase.addEntry(invoice.getSeller()));
+      invoice.getSeller().setId(sellerId);
     }
     Invoice savedInvoice = (Invoice) invoiceRepository.save(invoice);
     return savedInvoice.getId();

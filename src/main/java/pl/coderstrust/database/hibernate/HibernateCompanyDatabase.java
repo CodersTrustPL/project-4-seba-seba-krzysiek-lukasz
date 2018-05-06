@@ -29,7 +29,7 @@ public class HibernateCompanyDatabase<T extends WithNameIdIssueDate> implements 
     Company company = (Company) entry;
     Company savedCompany;
 
-    if (companyRepository.exists(company.getId())) {
+    if (company.getId() != null && companyRepository.exists(company.getId())) {
       savedCompany = (Company) companyRepository.findOne(company.getId());
     } else {
       savedCompany = (Company) companyRepository.save(entry);
