@@ -46,7 +46,7 @@ In out project you can choose between six databases
 - mongo
 - mongoEMB (in memory)
 - SQL
-- and the InMemmory database by deafult.
+- and the InMemmory database by default.
 
   ```
   private static final String IN_FILE = "inFile";
