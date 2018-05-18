@@ -1,10 +1,12 @@
 package pl.coderstrust.database.hibernate;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import pl.coderstrust.database.Database;
 import pl.coderstrust.model.Company;
 
 import java.util.List;
+
 
 public class HibernateCompanyDatabase implements Database<Company> {
 
@@ -12,33 +14,32 @@ public class HibernateCompanyDatabase implements Database<Company> {
   CompanyRepository companyRepository;
 
   @Override
-  public long addEntry(Company entry) {
-    companyRepository.findA
-    return 0;
+  public long addEntry(Company company) {
+    return companyRepository.save(company).getId();
   }
 
   @Override
   public void deleteEntry(long id) {
-
+    companyRepository.delete(id);
   }
 
   @Override
   public Company getEntryById(long id) {
-    return null;
+    return companyRepository.findOne(id);
   }
 
   @Override
-  public void updateEntry(Company entry) {
-
+  public void updateEntry(Company company) {
+    companyRepository.save(company);
   }
 
   @Override
   public List<Company> getEntries() {
-    return null;
+    return companyRepository.findAll();
   }
 
   @Override
   public boolean idExist(long id) {
-    return false;
+    return companyRepository.exists(id);
   }
 }

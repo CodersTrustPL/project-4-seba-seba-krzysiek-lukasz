@@ -9,12 +9,17 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.Embeddable;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 
+@Embeddable
 public class Payment implements WithValidation {
 
   private long id;
   private LocalDate issueDate;
   private BigDecimal amount;
+  @Enumerated(EnumType.STRING)
   private PaymentType type;
 
   public Payment(long id, LocalDate issueDate, BigDecimal amount,

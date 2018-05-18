@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import pl.coderstrust.database.file.InFileDatabase;
+import pl.coderstrust.database.hibernate.HibernateCompanyDatabase;
 import pl.coderstrust.database.memory.InMemoryDatabase;
 import pl.coderstrust.database.mongo.MongoDatabase;
 import pl.coderstrust.database.multifile.MultiFileDatabase;
@@ -20,6 +21,7 @@ public class DatabaseProvider {
   private static final String MONGO = "mongo";
   private static final String MONGO_EMB = "mongo_emb";
   private static final String SQL_DB = "sql_db";
+  private static final String HIBERNATE = "hibernate";
 
   @Value("${pl.coderstrust.database.MasterDatabase}")
   private String masterDbType;
@@ -64,6 +66,8 @@ public class DatabaseProvider {
         return new MongoDatabase<>(Company.class, filterDbKey, false);
       case MONGO_EMB:
         return new MongoDatabase<>(Company.class, filterDbKey, true);
+      case HIBERNATE:
+        return new HibernateCompanyDatabase();
       case SQL_DB:
         return new CompaniesSqlDb();
       default:
