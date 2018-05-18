@@ -44,7 +44,7 @@ In out project you can choose between six databases
 - inFile
 - multifile
 - mongo
-- mongoEMB (in memmory)
+- mongoEMB (in memory)
 - SQL
 - and the InMemmory database by deafult.
 
