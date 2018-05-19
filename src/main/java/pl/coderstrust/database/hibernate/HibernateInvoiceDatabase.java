@@ -11,10 +11,15 @@ public class HibernateInvoiceDatabase implements Database<Invoice> {
   @Autowired
   InvoiceRepository invoiceRepository;
 
+  @Autowired
+  CompanyRepository companyRepository;
+
   @Override
   public long addEntry(Invoice invoice) {
-
-    return invoiceRepository.save(invoice).getId();
+    Invoice invoiceToSave = invoice;
+    invoiceToSave.setBuyer(companyRepository.save(invoice.getBuyer()));
+    invoiceToSave.setSeller(companyRepository.save(invoice.getSeller()));
+    return invoiceRepository.save(invoiceToSave).getId();
   }
 
   @Override

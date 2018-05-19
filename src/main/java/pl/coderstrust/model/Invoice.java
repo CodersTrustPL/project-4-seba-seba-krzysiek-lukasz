@@ -10,6 +10,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -27,7 +28,7 @@ public class Invoice implements WithNameIdIssueDate, WithValidation {
   private String name;
   @ManyToOne
   private Company buyer;
-  @Transient
+  @ManyToOne
   private Company seller;
   private LocalDate issueDate;
   private LocalDate paymentDate;
