@@ -10,18 +10,31 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
+@Entity
 public class Invoice implements WithNameIdIssueDate, WithValidation {
 
-  private List<InvoiceEntry> products = new ArrayList<>();
+  @Id
+  @GeneratedValue
   private long id;
   private String name;
+  @ManyToOne
   private Company buyer;
+  @Transient
   private Company seller;
   private LocalDate issueDate;
   private LocalDate paymentDate;
+  @Enumerated(EnumType.STRING)
   private PaymentState paymentState;
-
+  @Transient
+  private List<InvoiceEntry> products = new ArrayList<>();
 
   public Invoice() {
   }

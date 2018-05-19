@@ -7,7 +7,6 @@ import pl.coderstrust.model.Company;
 
 import java.util.List;
 
-
 public class HibernateCompanyDatabase implements Database<Company> {
 
   @Autowired

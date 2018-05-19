@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import pl.coderstrust.database.file.InFileDatabase;
 import pl.coderstrust.database.hibernate.HibernateCompanyDatabase;
+import pl.coderstrust.database.hibernate.HibernateInvoiceDatabase;
 import pl.coderstrust.database.memory.InMemoryDatabase;
 import pl.coderstrust.database.mongo.MongoDatabase;
 import pl.coderstrust.database.multifile.MultiFileDatabase;
@@ -47,6 +48,8 @@ public class DatabaseProvider {
         return new MongoDatabase<>(Invoice.class, masterDbKey, false);
       case MONGO_EMB:
         return new MongoDatabase<>(Invoice.class, masterDbKey, true);
+      case HIBERNATE:
+        return new HibernateInvoiceDatabase();
       //TODO SQL db for Invoices
       // case SQL_DB:
       // return new CompaniesSqlDb<>(Invoice.class);
