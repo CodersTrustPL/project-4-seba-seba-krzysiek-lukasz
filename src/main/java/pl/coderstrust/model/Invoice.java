@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -34,7 +35,7 @@ public class Invoice implements WithNameIdIssueDate, WithValidation {
   private LocalDate paymentDate;
   @Enumerated(EnumType.STRING)
   private PaymentState paymentState;
-  @Transient
+  @ElementCollection
   private List<InvoiceEntry> products = new ArrayList<>();
 
   public Invoice() {

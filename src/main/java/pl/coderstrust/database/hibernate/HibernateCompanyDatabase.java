@@ -14,6 +14,9 @@ public class HibernateCompanyDatabase implements Database<Company> {
 
   @Override
   public long addEntry(Company company) {
+    if (companyRepository.findByNip(company.getNip()) != null) {
+      return -1;
+    }
     return companyRepository.save(company).getId();
   }
 

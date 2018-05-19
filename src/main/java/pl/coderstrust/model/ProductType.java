@@ -9,6 +9,9 @@ public enum ProductType {
 
   private String type;
 
+  ProductType() {
+  }
+
   ProductType(String type) {
     this.type = type;
   }

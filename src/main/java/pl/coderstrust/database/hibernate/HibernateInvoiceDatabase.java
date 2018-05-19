@@ -2,6 +2,7 @@ package pl.coderstrust.database.hibernate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import pl.coderstrust.database.Database;
+import pl.coderstrust.model.Company;
 import pl.coderstrust.model.Invoice;
 
 import java.util.List;

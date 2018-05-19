@@ -8,14 +8,21 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.Embeddable;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Transient;
 
 @Component("product")
+@Embeddable
 public class Product implements WithValidation {
 
   private String name;
   private String description;
   private BigDecimal netValue;
+  @Transient
   private Vat vatRate;
+  @Enumerated(EnumType.STRING)
   private ProductType productType;
 
   public Product() {
