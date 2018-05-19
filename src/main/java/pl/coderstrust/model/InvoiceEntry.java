@@ -13,7 +13,6 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class InvoiceEntry {
 
-  @Column()
   private Product product;
   private int amount;
 

@@ -3,6 +3,8 @@ package pl.coderstrust.model;
 import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -20,7 +22,7 @@ public class Product implements WithValidation {
   private String name;
   private String description;
   private BigDecimal netValue;
-  @Enumerated(EnumType.STRING)
+  @Enumerated
   private Vat vatRate;
   @Enumerated
   private ProductType productType;
@@ -69,6 +71,11 @@ public class Product implements WithValidation {
 
   public void setProductType(ProductType productType) {
     this.productType = productType;
+  }
+
+  @Override
+  public String toString() {
+    return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
   }
 
   @Override
