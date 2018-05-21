@@ -15,7 +15,9 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
@@ -24,18 +26,18 @@ import javax.persistence.Transient;
 public class Invoice implements WithNameIdIssueDate, WithValidation {
 
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.TABLE)
   private long id;
   private String name;
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.ALL)
   private Company buyer;
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.ALL)
   private Company seller;
   private LocalDate issueDate;
   private LocalDate paymentDate;
   @Enumerated(EnumType.STRING)
   private PaymentState paymentState;
-  @ElementCollection
+  @ElementCollection(fetch = FetchType.EAGER)
   private List<InvoiceEntry> products = new ArrayList<>();
 
   public Invoice() {

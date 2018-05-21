@@ -22,12 +22,21 @@ public class Product implements WithValidation {
   private String name;
   private String description;
   private BigDecimal netValue;
-  @Enumerated
+  @Enumerated(EnumType.STRING)
   private Vat vatRate;
-  @Enumerated
+  @Enumerated(EnumType.STRING)
   private ProductType productType;
 
   public Product() {
+  }
+
+  public Product(String name, String description, BigDecimal netValue, Vat vatRate,
+      ProductType productType) {
+    this.name = name;
+    this.description = description;
+    this.netValue = netValue;
+    this.vatRate = vatRate;
+    this.productType = productType;
   }
 
   @ApiModelProperty(example = "Apple")

@@ -8,9 +8,6 @@ public enum Vat {
 
   private double vatPercent;
 
-  Vat() {
-  }
-
   Vat(double vatPercent) {
     this.vatPercent = vatPercent;
   }
