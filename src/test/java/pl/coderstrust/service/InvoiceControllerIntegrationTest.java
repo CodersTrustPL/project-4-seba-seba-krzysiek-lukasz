@@ -143,10 +143,9 @@ public class InvoiceControllerIntegrationTest {
     invoiceEntry.setProduct(product);
     givenInvoice.setProducts(Arrays.asList(invoiceEntry));
     //then
-    this.mockMvc
-        .perform(post(DEFAULT_PATH).content(json(givenInvoice)).contentType(CONTENT_TYPE_JSON))
-        .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-        .andExpect(handler().methodName(ADD_INVOICE_METHOD)).andExpect(content().string(
+    this.mockMvc.perform(
+        post(DEFAULT_PATH).content(json(givenInvoice)).contentType(MediaType.APPLICATION_JSON_UTF8))
+        .andExpect(content().string(
         "[\"Product amount is negative or zero.\""
             + ",\"Product name is empty.\",\"Product description is empty.\","
             + "\"Product vat rate is empty\",\"Product net value is empty.\"]"));
@@ -159,7 +158,6 @@ public class InvoiceControllerIntegrationTest {
       Invoice invoice = generator.getTestInvoice(i, 5);
       invoice.setIssueDate(LocalDate.of(2020, 1, 1).plusMonths(i));
       this.mockMvc.perform(post(DEFAULT_PATH).content(json(invoice)).contentType(CONTENT_TYPE_JSON))
-
           .andExpect(status().isOk());
     }
     //when
@@ -305,7 +303,7 @@ public class InvoiceControllerIntegrationTest {
     invoiceToUpdate.getBuyer().setId(11);
     invoiceToUpdate.getSeller().setId(12);
     Invoice returnedInvoice = jsonToInvoice(response);
-    assertThat(returnedInvoice,is(equalTo(invoiceToUpdate)));
+    assertThat(returnedInvoice, is(equalTo(invoiceToUpdate)));
   }
 
   @Test

@@ -32,9 +32,12 @@ public class Product implements WithValidation {
 
   public Product(String name, String description, BigDecimal netValue, Vat vatRate,
       ProductType productType) {
+    if (netValue != null) {
+      netValue.setScale(2);
+    }
     this.name = name;
     this.description = description;
-    this.netValue = netValue.setScale(2);
+    this.netValue = netValue;
     this.vatRate = vatRate;
     this.productType = productType;
   }
@@ -63,7 +66,10 @@ public class Product implements WithValidation {
   }
 
   public void setNetValue(BigDecimal netValue) {
-    this.netValue = netValue.setScale(2);
+    if (netValue != null) {
+      netValue.setScale(2);
+    }
+    this.netValue = netValue;
   }
 
   public Vat getVatRate() {

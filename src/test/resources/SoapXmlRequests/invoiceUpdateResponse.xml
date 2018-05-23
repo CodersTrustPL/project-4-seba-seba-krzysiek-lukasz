@@ -6,7 +6,7 @@
       <ns2:address>buyer_address_1</ns2:address>
       <ns2:bankAccoutNumber>buyer_bankAccoutNumber_1</ns2:bankAccoutNumber>
       <ns2:city>buyer_city_1</ns2:city>
-      <ns2:id>0</ns2:id>
+      <ns2:id>3</ns2:id>
       <ns2:customerIssueDate>2019-03-01</ns2:customerIssueDate>
       <ns2:name>buyer_name_1</ns2:name>
       <ns2:nip>buyer_name_1</ns2:nip>
@@ -18,7 +18,7 @@
       <ns2:address>seller_address_1</ns2:address>
       <ns2:bankAccoutNumber>seller_bankAccoutNumber_1</ns2:bankAccoutNumber>
       <ns2:city>seller_city_1</ns2:city>
-      <ns2:id>0</ns2:id>
+      <ns2:id>4</ns2:id>
       <ns2:customerIssueDate>2019-03-01</ns2:customerIssueDate>
       <ns2:name>seller_name_1</ns2:name>
       <ns2:nip>seller_name_1</ns2:nip>

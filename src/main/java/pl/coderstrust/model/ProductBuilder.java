@@ -15,8 +15,9 @@ public class ProductBuilder {
    * @param netValue = Product net value.
    */
   public ProductBuilder(String name, double netValue) {
+
     product.setName(name);
-    product.setNetValue(BigDecimal.valueOf(netValue));
+    product.setNetValue((BigDecimal.valueOf(netValue)));
     product.setVatRate(VAT_23);
   }
 

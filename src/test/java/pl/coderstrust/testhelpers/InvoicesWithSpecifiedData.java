@@ -62,7 +62,7 @@ public class InvoicesWithSpecifiedData {
   }
 
   public static final Invoice getInvoiceWithPolishData() {
-    return new InvoiceBuilder(1, "", "Ferdynand Kiepski i Syn Sp.zoo")
+    return new InvoiceBuilder(0, "", "Ferdynand Kiepski i Syn Sp.zoo")
         .setBuyer(getPolishCompanyBuyer())
         .setSeller(getPolishCompanySeller())
         .setIssueDate(LocalDate.of(2025, 12, 24))

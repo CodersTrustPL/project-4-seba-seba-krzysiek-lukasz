@@ -23,19 +23,19 @@ public class InvoiceService extends AbstractService<Invoice> {
 
   @Override
   public long addEntry(Invoice entry) {
-    checkIfCompaniesExistInDbAndIfNot(entry);
+    checkIfCompaniesExistInDbAndAddIfNot(entry);
     super.setDefaultEntryNameIfEmpty(entry);
     return entriesDb.addEntry(entry);
   }
 
   @Override
   public void updateEntry(Invoice entry) {
-    checkIfCompaniesExistInDbAndIfNot(entry);
+    checkIfCompaniesExistInDbAndAddIfNot(entry);
     super.setDefaultEntryNameIfEmpty(entry);
     super.updateEntry(entry);
   }
 
-  private void checkIfCompaniesExistInDbAndIfNot(Invoice invoice) {
+  private void checkIfCompaniesExistInDbAndAddIfNot(Invoice invoice) {
     if (companyDatabase.idExist(invoice.getBuyer().getId())) {
       invoice.setBuyer(companyDatabase.getEntryById(invoice.getBuyer().getId()));
     } else {

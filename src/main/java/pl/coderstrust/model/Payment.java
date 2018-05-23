@@ -24,6 +24,9 @@ public class Payment implements WithValidation {
   private PaymentType type;
 
   public Payment(long id, LocalDate issueDate, BigDecimal amount, PaymentType type) {
+    if (amount != null) {
+      amount.setScale(2);
+    }
     this.id = id;
     this.issueDate = issueDate;
     this.amount = amount;
@@ -64,12 +67,14 @@ public class Payment implements WithValidation {
     this.issueDate = issueDate;
   }
 
-
   public BigDecimal getAmount() {
     return amount;
   }
 
   public void setAmount(BigDecimal amount) {
+    if (amount != null) {
+      amount.setScale(2);
+    }
     this.amount = amount;
   }
 
