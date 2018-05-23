@@ -80,6 +80,9 @@ public abstract class AbstractController<T extends WithNameIdIssueDate & WithVal
     if (!entryState.isEmpty()) {
       return ResponseEntity.badRequest().body(entryState);
     }
+    if(!service.idExist(entryId)){
+     return ResponseEntity.badRequest().body(Messages.ENTRY_NOT_EXIST);
+    }
     entry.setId(entryId);
     service.updateEntry(entry);
     return ResponseEntity.ok().build();

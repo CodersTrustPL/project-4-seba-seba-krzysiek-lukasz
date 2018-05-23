@@ -21,14 +21,15 @@ public class Messages {
   public static final String PRODUCT_NO_NAME = "Product name is empty.";
   public static final String PRODUCT_NO_DESCRIPTION = "Product description is empty.";
   public static final String PRODUCT_NO_NET_VALUE = "Product net value is empty.";
-  public static final String PRODUCT_WRONG_NET_VALUE = "Product "
-      + "net value is negative or equal to zero.";
+  public static final String PRODUCT_WRONG_NET_VALUE =
+      "Product " + "net value is negative or equal to zero.";
   public static final String PRODUCT_NO_VAT = "Product vat rate is empty";
   public static final String PRODUCT_INCORRECT_AMOUNT = "Product amount is negative or zero.";
-  public static final String COMPANY_ID_NOT_MATCH =
-      "Incorrect company ID not matching buyer and/or seller ID at the requested invoice.";
+  public static final String COMPANY_ID_NOT_MATCH = "Incorrect company ID not matching buyer and/or seller ID at the requested invoice.";
 
   public static final String COMPANY_NOT_EXIST = "Company with this id doesn't exist";
+
+  public static final String ENTRY_NOT_EXIST = "Entry with this id not exist. Update not possible";
 
   public static final String INCORRECT_YEAR = "Wrong Year";
 

@@ -8,13 +8,17 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import pl.coderstrust.database.Database;
+import pl.coderstrust.model.Company;
 import pl.coderstrust.model.Invoice;
+import pl.coderstrust.service.pdfservice.PdfGenerator;
+import pl.coderstrust.testhelpers.InvoicesWithSpecifiedData;
 
 import java.time.LocalDate;
 import java.util.Collections;
@@ -23,17 +27,29 @@ import java.util.Collections;
 public class InvoiceBookTest {
 
   @Mock
-  private Database database;
+  private Database<Company> databaseCompany;
 
   @Mock
-  private Invoice invoice;
+  private Database<Invoice> database;
 
-  @InjectMocks
+  @Mock
+  private PdfGenerator pdfGenerator;
+
+  private Invoice invoice = InvoicesWithSpecifiedData.getInvoiceWithPolishData();
   private InvoiceService invoiceBook;
+
+  @Before
+  public void setup() {
+    invoiceBook = new InvoiceService(databaseCompany, database, pdfGenerator);
+  }
 
   @Test
   public void shouldAddInvoice() {
     //given
+    when(databaseCompany.idExist(invoice.getBuyer().getId())).thenReturn(true);
+    when(databaseCompany.getEntryById(invoice.getBuyer().getId())).thenReturn(invoice.getBuyer());
+    when(databaseCompany.idExist(invoice.getSeller().getId())).thenReturn(true);
+    when(databaseCompany.getEntryById(invoice.getSeller().getId())).thenReturn(invoice.getSeller());
     when(database.addEntry(invoice)).thenReturn(1L);
     //when
     invoiceBook.addEntry(invoice);

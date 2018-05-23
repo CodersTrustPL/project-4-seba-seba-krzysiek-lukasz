@@ -70,6 +70,7 @@ public class CompanyControllerIntegrationTests {
     List<Company> companies = getCompaniesFromResponse(response);
 
     assertThat(companies.size(), is(1));
+    testComapny.setId(1L);
     assertThat(companies.get(0), is(equalTo(testComapny)));
   }
 
@@ -101,7 +102,7 @@ public class CompanyControllerIntegrationTests {
         .andReturn().getResponse().getContentAsString();
 
     Company returnedCompany = jsonToCompany(response);
-
+    testComapny.setId(1);
     assertThat(returnedCompany, is(equalTo(testComapny)));
   }
 
@@ -112,6 +113,7 @@ public class CompanyControllerIntegrationTests {
         .andExpect(status().isOk());
 
     Company companyToUpdate = testComapny;
+    companyToUpdate.setId(1);
     companyToUpdate.setName("Szpital dla roślin");
     //when
     this.mockMvc
@@ -124,6 +126,7 @@ public class CompanyControllerIntegrationTests {
         .andReturn().getResponse().getContentAsString();
 
     Company returnedCompany = jsonToCompany(response);
+
     assertTrue(returnedCompany.equals(companyToUpdate));
   }
 

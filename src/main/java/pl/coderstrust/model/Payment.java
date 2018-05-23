@@ -1,5 +1,6 @@
 package pl.coderstrust.model;
 
+import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -22,8 +23,7 @@ public class Payment implements WithValidation {
   @Enumerated(EnumType.STRING)
   private PaymentType type;
 
-  public Payment(long id, LocalDate issueDate, BigDecimal amount,
-      PaymentType type) {
+  public Payment(long id, LocalDate issueDate, BigDecimal amount, PaymentType type) {
     this.id = id;
     this.issueDate = issueDate;
     this.amount = amount;
@@ -63,6 +63,7 @@ public class Payment implements WithValidation {
   public void setIssueDate(LocalDate issueDate) {
     this.issueDate = issueDate;
   }
+
 
   public BigDecimal getAmount() {
     return amount;

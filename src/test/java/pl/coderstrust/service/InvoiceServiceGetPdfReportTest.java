@@ -47,7 +47,7 @@ public class InvoiceServiceGetPdfReportTest {
     database = Mockito.mock(Database.class);
     pdfDateTimeProvider = Mockito.mock(PdfDateTimeProvider.class);
     PdfGenerator pdfGenerator = new PdfGenerator(pdfDateTimeProvider, new PdfFontsProvider());
-    invoiceService = new InvoiceService(database, pdfGenerator);
+    invoiceService = new InvoiceService(database,database, pdfGenerator);
   }
 
   @Test

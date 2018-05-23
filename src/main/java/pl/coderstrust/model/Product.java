@@ -34,7 +34,7 @@ public class Product implements WithValidation {
       ProductType productType) {
     this.name = name;
     this.description = description;
-    this.netValue = netValue;
+    this.netValue = netValue.setScale(2);
     this.vatRate = vatRate;
     this.productType = productType;
   }
@@ -63,7 +63,7 @@ public class Product implements WithValidation {
   }
 
   public void setNetValue(BigDecimal netValue) {
-    this.netValue = netValue;
+    this.netValue = netValue.setScale(2);
   }
 
   public Vat getVatRate() {

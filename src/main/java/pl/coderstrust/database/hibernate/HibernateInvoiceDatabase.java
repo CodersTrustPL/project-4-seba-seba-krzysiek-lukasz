@@ -17,10 +17,7 @@ public class HibernateInvoiceDatabase implements Database<Invoice> {
 
   @Override
   public long addEntry(Invoice invoice) {
-    Invoice invoiceToSave = invoice;
-    invoiceToSave.setBuyer(companyRepository.save(invoice.getBuyer()));
-    invoiceToSave.setSeller(companyRepository.save(invoice.getSeller()));
-    return invoiceRepository.save(invoiceToSave).getId();
+    return invoiceRepository.save(invoice).getId();
   }
 
   @Override
