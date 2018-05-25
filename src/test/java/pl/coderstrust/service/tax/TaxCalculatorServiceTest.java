@@ -12,15 +12,15 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import pl.coderstrust.database.Database;
+import pl.coderstrust.helpers.InvoicesWithSpecifiedData;
+import pl.coderstrust.helpers.TaxSummaryMapBuilder;
+import pl.coderstrust.helpers.TestCasesGenerator;
 import pl.coderstrust.model.Company;
 import pl.coderstrust.model.Invoice;
 import pl.coderstrust.model.Payment;
 import pl.coderstrust.model.PaymentType;
 import pl.coderstrust.model.TaxType;
 import pl.coderstrust.service.CompanyService;
-import pl.coderstrust.helpers.InvoicesWithSpecifiedData;
-import pl.coderstrust.helpers.TaxSummaryMapBuilder;
-import pl.coderstrust.helpers.TestCasesGenerator;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -151,7 +151,6 @@ public class TaxCalculatorServiceTest {
       Invoice invoice = generator.getTestInvoice(i, 5);
       invoice.setIssueDate(LocalDate.now().plusMonths(i));
       invoice.setBuyer(InvoicesWithSpecifiedData.getPolishCompanySeller());
-      ;
       invoicesBuyer.add(invoice);
     }
     when(companyService.findEntry(1))
@@ -276,7 +275,7 @@ public class TaxCalculatorServiceTest {
   @Test
   public void shouldCalculateIncomeTaxAdvanceLinearTax() {
     //given
-    final LocalDate startDate = LocalDate.of(LocalDate.now().getYear(), 03, 1);
+    final LocalDate startDate = LocalDate.of(LocalDate.now().getYear(), 3, 1);
     final LocalDate endDate = LocalDate.of(LocalDate.now().getYear(), 3, 31);
 
     List<Invoice> invoices = new ArrayList<>();
@@ -350,7 +349,7 @@ public class TaxCalculatorServiceTest {
   private void incomeTaxAdvanceCalculatorTestPattern(TaxType type, int amountMultiplier,
       BigDecimal expectedValue) {
     //given
-    final LocalDate startDate = LocalDate.of(LocalDate.now().getYear(), 03, 1);
+    final LocalDate startDate = LocalDate.of(LocalDate.now().getYear(), 3, 1);
     final LocalDate endDate = LocalDate.of(LocalDate.now().getYear(), 3, 31);
     Company company = InvoicesWithSpecifiedData.getPolishCompanySeller();
     switch (type) {

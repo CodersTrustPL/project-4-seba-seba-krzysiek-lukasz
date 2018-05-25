@@ -1,4 +1,4 @@
-package pl.coderstrust.configurations;
+package pl.coderstrust.configuration;
 
 import org.springframework.boot.autoconfigure.web.DispatcherServletAutoConfiguration;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;

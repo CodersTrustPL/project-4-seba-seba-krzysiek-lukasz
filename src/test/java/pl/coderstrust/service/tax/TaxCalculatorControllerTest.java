@@ -23,15 +23,15 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import pl.coderstrust.helpers.InvoicesWithSpecifiedData;
+import pl.coderstrust.helpers.TaxSummaryMapBuilder;
+import pl.coderstrust.helpers.TestCasesGenerator;
 import pl.coderstrust.model.Company;
 import pl.coderstrust.model.Invoice;
 import pl.coderstrust.model.Messages;
 import pl.coderstrust.model.Payment;
 import pl.coderstrust.model.TaxType;
 import pl.coderstrust.service.CompanyService;
-import pl.coderstrust.helpers.InvoicesWithSpecifiedData;
-import pl.coderstrust.helpers.TaxSummaryMapBuilder;
-import pl.coderstrust.helpers.TestCasesGenerator;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -388,7 +388,7 @@ public class TaxCalculatorControllerTest {
         .getContentAsString();
     //then
 
-    System.out.println("@@@@@@##@!#!#@!!@@#@!#@!" + response.toString());
+    System.out.println("@@@@@@##@!#!#@!!@@#@!#@!" + response);
     assertThat(response, is(equalTo("5434.00")));
   }
 

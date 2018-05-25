@@ -24,9 +24,9 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import pl.coderstrust.helpers.TestCasesGenerator;
 import pl.coderstrust.model.Company;
 import pl.coderstrust.model.Invoice;
-import pl.coderstrust.helpers.TestCasesGenerator;
 
 import java.time.LocalDate;
 import java.util.List;

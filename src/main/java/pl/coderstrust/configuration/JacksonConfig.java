@@ -1,4 +1,4 @@
-package pl.coderstrust.configurations;
+package pl.coderstrust.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;

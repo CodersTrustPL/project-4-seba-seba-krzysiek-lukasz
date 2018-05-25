@@ -24,11 +24,11 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import pl.coderstrust.helpers.InvoicesWithSpecifiedData;
+import pl.coderstrust.helpers.TestCasesGenerator;
 import pl.coderstrust.model.Messages;
 import pl.coderstrust.model.Payment;
 import pl.coderstrust.model.PaymentType;
-import pl.coderstrust.helpers.InvoicesWithSpecifiedData;
-import pl.coderstrust.helpers.TestCasesGenerator;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

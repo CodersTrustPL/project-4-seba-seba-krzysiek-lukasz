@@ -9,8 +9,8 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import pl.coderstrust.model.Invoice;
 import pl.coderstrust.helpers.TestCasesGenerator;
+import pl.coderstrust.model.Invoice;
 
 import java.util.ArrayList;
 import java.util.Arrays;

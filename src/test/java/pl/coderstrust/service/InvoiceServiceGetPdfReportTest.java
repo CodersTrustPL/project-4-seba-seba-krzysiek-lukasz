@@ -2,8 +2,6 @@ package pl.coderstrust.service;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
 
@@ -17,11 +15,11 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import pl.coderstrust.database.Database;
+import pl.coderstrust.helpers.TestCasesGenerator;
 import pl.coderstrust.model.Invoice;
 import pl.coderstrust.service.pdf.PdfDateTimeProvider;
 import pl.coderstrust.service.pdf.PdfFontsProvider;
 import pl.coderstrust.service.pdf.PdfGenerator;
-import pl.coderstrust.helpers.TestCasesGenerator;
 
 import java.io.InputStream;
 

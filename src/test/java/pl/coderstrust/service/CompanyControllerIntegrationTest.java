@@ -23,10 +23,10 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import pl.coderstrust.model.Company;
-import pl.coderstrust.model.CompanyBuilder;
 import pl.coderstrust.helpers.InvoicesWithSpecifiedData;
 import pl.coderstrust.helpers.TestCasesGenerator;
+import pl.coderstrust.model.Company;
+import pl.coderstrust.model.CompanyBuilder;
 
 import java.util.List;
 

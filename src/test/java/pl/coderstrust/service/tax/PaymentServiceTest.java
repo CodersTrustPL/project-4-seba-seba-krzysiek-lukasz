@@ -13,10 +13,10 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import pl.coderstrust.helpers.InvoicesWithSpecifiedData;
 import pl.coderstrust.model.Payment;
 import pl.coderstrust.model.PaymentType;
 import pl.coderstrust.service.CompanyService;
-import pl.coderstrust.helpers.InvoicesWithSpecifiedData;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
