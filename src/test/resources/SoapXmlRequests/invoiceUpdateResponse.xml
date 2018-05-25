@@ -34,7 +34,7 @@
       <ns2:product>
         <ns2:description>name_1_1_description_1</ns2:description>
         <ns2:name>name_1_1</ns2:name>
-        <ns2:netValue>1.0</ns2:netValue>
+        <ns2:netValue>1.00</ns2:netValue>
         <ns2:productType>OTHER</ns2:productType>
         <ns2:vatRate>VAT_23</ns2:vatRate>
       </ns2:product>

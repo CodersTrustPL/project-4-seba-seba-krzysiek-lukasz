@@ -53,6 +53,7 @@ public abstract class DatabaseTest {
     String output = mapper.toJson(givenDatabase.getEntryById(invoiceId));
     String expected = mapper.toJson(givenInvoice);
 
+    System.out.println("@@@@@@ - " + output);
     //then
     assertThat(output, is(equalTo(expected)));
   }

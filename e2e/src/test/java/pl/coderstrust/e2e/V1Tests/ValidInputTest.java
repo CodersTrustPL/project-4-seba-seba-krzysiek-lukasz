@@ -41,7 +41,7 @@ public class ValidInputTest extends AbstractValidInputTests {
         .body(testInvoice)
         .when()
         .post(getInvoicePath());
-    return TestUtils.getInvoiceIdFromServiceResponse(ServiceResponse.print());
+    return TestUtils.getEntryIdFromServiceResponse(ServiceResponse.print());
   }
 
   @Override

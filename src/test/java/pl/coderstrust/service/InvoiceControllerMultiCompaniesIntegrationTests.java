@@ -293,6 +293,7 @@ public class InvoiceControllerMultiCompaniesIntegrationTests {
   @Test
   public void shouldNotUpdateInvoiceWhenSellerBuyerNotMatchId() throws Exception {
     //then
+    System.out.println("@@@@-" + anotherCompanyId);
     this.mockMvc
         .perform(put(getInvoiceUpdateUrl(invoiceId, anotherCompanyId))
             .content(mapper.writeValueAsString(updatedInvoice))

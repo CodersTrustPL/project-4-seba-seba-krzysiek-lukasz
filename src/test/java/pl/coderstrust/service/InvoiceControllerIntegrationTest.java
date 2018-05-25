@@ -96,12 +96,12 @@ public class InvoiceControllerIntegrationTest {
         .andExpect(jsonPath("$.[0].paymentDate ", is("2019-03-16")))
         .andExpect(jsonPath("$.[0].products.[0].product.name", is("name_1_1")))
         .andExpect(jsonPath("$.[0].products.[0].product.description", is("name_1_1_description_1")))
-        .andExpect(jsonPath("$.[0].products.[0].product.netValue", is(1.0)))
+        .andExpect(jsonPath("$.[0].products.[0].product.netValue", is("1.00")))
         .andExpect(jsonPath("$.[0].products.[0].product.vatRate", is("VAT_23")))
         .andExpect(jsonPath("$.[0].products.[0].amount", is(1)))
         .andExpect(jsonPath("$.[0].paymentState", is("NOT_PAID")))
         .andExpect(jsonPath("$.[1].invoiceId ", is(2)))
-        .andExpect(jsonPath("$.[1].name", is("1 / 2025-12-24")))
+        .andExpect(jsonPath("$.[1].name", is("N/A")))
         .andExpect(jsonPath("$.[1].buyer.companyId", is(3)))
         .andExpect(jsonPath("$.[1].buyer.name", is("P.H. Marian Paździoch")))
         .andExpect(jsonPath("$.[1].buyer.address", is("Bazarowa 3/6")))
@@ -120,7 +120,7 @@ public class InvoiceControllerIntegrationTest {
         .andExpect(jsonPath("$.[1].paymentDate ", is("2025-12-31")))
         .andExpect(jsonPath("$.[1].products.[0].product.name", is("Mocny Full")))
         .andExpect(jsonPath("$.[1].products.[0].product.description", is("Piwo Jasne")))
-        .andExpect(jsonPath("$.[1].products.[0].product.netValue", is(1.99)))
+        .andExpect(jsonPath("$.[1].products.[0].product.netValue", is("1.99")))
         .andExpect(jsonPath("$.[1].products.[0].product.vatRate", is("VAT_23")))
         .andExpect(jsonPath("$.[1].products.[0].amount", is(100)))
         .andExpect(jsonPath("$.[1].paymentState", is("NOT_PAID")));
@@ -299,7 +299,7 @@ public class InvoiceControllerIntegrationTest {
         .andExpect(content().contentType(CONTENT_TYPE_JSON))
         .andExpect(handler().methodName(GET_INVOICE_BY_ID_METHOD)).andExpect(status().isOk())
         .andReturn().getResponse().getContentAsString();
-    invoiceToUpdate.setName("3 / 2025-12-24");
+    invoiceToUpdate.setName("N/A");
     invoiceToUpdate.getBuyer().setId(11);
     invoiceToUpdate.getSeller().setId(12);
     Invoice returnedInvoice = jsonToInvoice(response);

@@ -16,7 +16,7 @@ class TestUtils {
   private static Pattern extractIntFromString = Pattern
       .compile(TestsConfiguration.INT_FROM_STRING_REGEX_PATTERN);
 
-  public static long getInvoiceIdFromServiceResponse(String response) {
+  public static long getEntryIdFromServiceResponse(String response) {
     Matcher matcher = extractIntFromString.matcher(response);
     matcher.find();
     return Long.parseLong(matcher.group(0));
@@ -40,7 +40,7 @@ class TestUtils {
         .body(testCompany)
         .when()
         .post(getV2CompanyPath());
-    return getInvoiceIdFromServiceResponse(ServiceResponse.print());
+    return getEntryIdFromServiceResponse(ServiceResponse.print());
   }
 
   public static Invoice getTestInvoiceWithRegisteredBuyerSeller() {

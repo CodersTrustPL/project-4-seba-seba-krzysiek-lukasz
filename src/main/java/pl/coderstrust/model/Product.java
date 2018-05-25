@@ -1,13 +1,16 @@
 package pl.coderstrust.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.stereotype.Component;
+import pl.coderstrust.configurations.MoneySerializer;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Embeddable;
@@ -21,6 +24,7 @@ public class Product implements WithValidation {
 
   private String name;
   private String description;
+  @JsonSerialize(using = MoneySerializer.class)
   private BigDecimal netValue;
   @Enumerated(EnumType.STRING)
   private Vat vatRate;
@@ -32,12 +36,14 @@ public class Product implements WithValidation {
 
   public Product(String name, String description, BigDecimal netValue, Vat vatRate,
       ProductType productType) {
-    if (netValue != null) {
-      netValue.setScale(2);
-    }
     this.name = name;
     this.description = description;
-    this.netValue = netValue;
+    if (netValue != null) {
+      this.netValue = netValue.setScale(2, BigDecimal.ROUND_HALF_UP);
+    } else {
+      this.netValue = null;
+    }
+
     this.vatRate = vatRate;
     this.productType = productType;
   }
@@ -67,9 +73,10 @@ public class Product implements WithValidation {
 
   public void setNetValue(BigDecimal netValue) {
     if (netValue != null) {
-      netValue.setScale(2);
+      this.netValue = netValue.setScale(2, BigDecimal.ROUND_HALF_UP);
+    } else {
+      this.netValue = null;
     }
-    this.netValue = netValue;
   }
 
   public Vat getVatRate() {

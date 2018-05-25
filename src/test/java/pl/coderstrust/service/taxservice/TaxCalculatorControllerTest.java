@@ -55,6 +55,7 @@ public class TaxCalculatorControllerTest {
   private LocalDate endDate = LocalDate.now().plusYears(1).plusMonths(1).minusDays(1);
   private LocalDate endDateInHalf = LocalDate.now().plusMonths(7).minusDays(1);
   private TaxSummaryMapBuilder mapBuilder = new TaxSummaryMapBuilder();
+  private Company testCompany = InvoicesWithSpecifiedData.getPolishCompanySeller();
 
   @Autowired
   private TestCasesGenerator generator;
@@ -70,7 +71,8 @@ public class TaxCalculatorControllerTest {
 
   @Before
   public void defaultGiven() {
-    companyService.addEntry(InvoicesWithSpecifiedData.getPolishCompanySeller());
+    long id = companyService.addEntry(InvoicesWithSpecifiedData.getPolishCompanySeller());
+    testCompany.setId(id);
   }
 
   @Test
@@ -79,7 +81,7 @@ public class TaxCalculatorControllerTest {
     for (int i = 1; i <= 12; i++) {
       Invoice invoice = generator.getTestInvoice(i, 5);
       invoice.setIssueDate(LocalDate.now().plusMonths(i));
-      invoice.setSeller(companyService.findEntry(1));
+      invoice.setSeller(testCompany);
 
       this.mockMvc.perform(post(DEFAULT_PATH).content(json(invoice)).contentType(CONTENT_TYPE))
           .andExpect(status().isOk());
@@ -107,7 +109,7 @@ public class TaxCalculatorControllerTest {
     for (int i = 1; i <= 6; i++) {
       Invoice invoice = generator.getTestInvoice(i, 5);
       invoice.setIssueDate(LocalDate.now().plusMonths(i));
-      invoice.setBuyer(companyService.findEntry(1));
+      invoice.setBuyer(testCompany);
 
       this.mockMvc.perform(post(DEFAULT_PATH).content(json(invoice)).contentType(CONTENT_TYPE))
           .andExpect(status().isOk());
@@ -127,7 +129,7 @@ public class TaxCalculatorControllerTest {
     for (int i = 1; i <= 12; i++) {
       Invoice invoice = generator.getTestInvoice(i, 5);
       invoice.setIssueDate(LocalDate.now().plusMonths(i));
-      invoice.setSeller(companyService.findEntry(1));
+      invoice.setSeller(testCompany);
 
       this.mockMvc.perform(post(DEFAULT_PATH).content(json(invoice)).contentType(CONTENT_TYPE))
           .andExpect(status().isOk());
@@ -135,7 +137,7 @@ public class TaxCalculatorControllerTest {
     for (int i = 1; i <= 6; i++) {
       Invoice invoice = generator.getTestInvoice(i, 5);
       invoice.setIssueDate(LocalDate.now().plusMonths(i));
-      invoice.setBuyer(companyService.findEntry(1));
+      invoice.setBuyer(testCompany);
 
       this.mockMvc.perform(post(DEFAULT_PATH).content(json(invoice)).contentType(CONTENT_TYPE))
           .andExpect(status().isOk());
@@ -156,7 +158,7 @@ public class TaxCalculatorControllerTest {
     for (int i = 1; i <= 6; i++) {
       Invoice invoice = generator.getTestInvoice(i, 5);
       invoice.setIssueDate(LocalDate.now().plusMonths(i));
-      invoice.setBuyer(companyService.findEntry(1));
+      invoice.setBuyer(testCompany);
 
       this.mockMvc.perform(post(DEFAULT_PATH).content(json(invoice)).contentType(CONTENT_TYPE))
           .andExpect(status().isOk());
@@ -176,7 +178,7 @@ public class TaxCalculatorControllerTest {
     for (int i = 1; i <= 12; i++) {
       Invoice invoice = generator.getTestInvoice(i, 5);
       invoice.setIssueDate(LocalDate.now().plusMonths(i));
-      invoice.setSeller(companyService.findEntry(1));
+      invoice.setSeller(testCompany);
 
       this.mockMvc.perform(post(DEFAULT_PATH).content(json(invoice)).contentType(CONTENT_TYPE))
           .andExpect(status().isOk());
@@ -196,7 +198,7 @@ public class TaxCalculatorControllerTest {
     for (int i = 1; i <= 12; i++) {
       Invoice invoice = generator.getTestInvoice(i, 5);
       invoice.setIssueDate(LocalDate.now().plusMonths(i));
-      invoice.setSeller(companyService.findEntry(1));
+      invoice.setSeller(testCompany);
 
       this.mockMvc.perform(post(DEFAULT_PATH).content(json(invoice)).contentType(CONTENT_TYPE))
           .andExpect(status().isOk());
@@ -204,7 +206,7 @@ public class TaxCalculatorControllerTest {
     for (int i = 1; i <= 6; i++) {
       Invoice invoice = generator.getTestInvoice(i, 5);
       invoice.setIssueDate(LocalDate.now().plusMonths(i));
-      invoice.setBuyer(companyService.findEntry(1));
+      invoice.setBuyer(testCompany);
 
       this.mockMvc.perform(post(DEFAULT_PATH).content(json(invoice)).contentType(CONTENT_TYPE))
           .andExpect(status().isOk());

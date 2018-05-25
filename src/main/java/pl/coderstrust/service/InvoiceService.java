@@ -23,6 +23,7 @@ public class InvoiceService extends AbstractService<Invoice> {
 
   @Override
   public long addEntry(Invoice entry) {
+    entry.setId(-1);
     checkIfCompaniesExistInDbAndAddIfNot(entry);
     super.setDefaultEntryNameIfEmpty(entry);
     return entriesDb.addEntry(entry);

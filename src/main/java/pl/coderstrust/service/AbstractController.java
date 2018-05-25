@@ -21,6 +21,13 @@ public abstract class AbstractController<T extends WithNameIdIssueDate & WithVal
 
 
   public ResponseEntity addEntry(T entry, Long filterId) {
+    //TODO discuss how it should work?
+    // if we recieve entry with id which already exist in DB,what to do?
+    // 1) should we add next entry with new id?
+    // 2) should we update existing entry?
+    // 3) should we return error that entry with this id already exist? Now i set everything to work
+    // like was before so to add next one
+
     List<String> entryState = entry.validate();
 
     if (filterId != null) {
@@ -52,19 +59,17 @@ public abstract class AbstractController<T extends WithNameIdIssueDate & WithVal
   public ResponseEntity getEntryByDate(LocalDate startDate, LocalDate endDate, Long filterKey) {
     if (startDate == null && endDate == null) {
       if (filterKey != null) {
-        return ResponseEntity
-            .ok(filter.filterByField(service.getEntry(), filterKey));
+        return ResponseEntity.ok(filter.filterByField(service.getEntry(), filterKey));
       }
       return ResponseEntity.ok(service.getEntry());
     }
 
     if (filterKey != null) {
-      return ResponseEntity.ok(filter.filterByField(service.getEntryByDate(startDate,
-          endDate), filterKey));
+      return ResponseEntity
+          .ok(filter.filterByField(service.getEntryByDate(startDate, endDate), filterKey));
     }
 
-    return ResponseEntity.ok(service.getEntryByDate(startDate,
-        endDate));
+    return ResponseEntity.ok(service.getEntryByDate(startDate, endDate));
   }
 
 
@@ -80,8 +85,8 @@ public abstract class AbstractController<T extends WithNameIdIssueDate & WithVal
     if (!entryState.isEmpty()) {
       return ResponseEntity.badRequest().body(entryState);
     }
-    if(!service.idExist(entryId)){
-     return ResponseEntity.badRequest().body(Messages.ENTRY_NOT_EXIST);
+    if (!service.idExist(entryId)) {
+      return ResponseEntity.badRequest().body(Messages.ENTRY_NOT_EXIST);
     }
     entry.setId(entryId);
     service.updateEntry(entry);
@@ -121,10 +126,7 @@ public abstract class AbstractController<T extends WithNameIdIssueDate & WithVal
     HttpHeaders headers = new HttpHeaders();
     String fileName = "invoice_" + Long.toString(entryId) + ".pdf";
     headers.add("Content-Disposition", "inline; filename=" + fileName);
-    return ResponseEntity
-        .ok()
-        .headers(headers)
-        .contentType(MediaType.APPLICATION_PDF)
+    return ResponseEntity.ok().headers(headers).contentType(MediaType.APPLICATION_PDF)
         .body(new InputStreamResource(pdfContent));
 
   }

@@ -41,12 +41,12 @@ public class PaymentServiceTest {
   public void givenForAllTests() {
     when(companyService.findEntry(1))
         .thenReturn(InvoicesWithSpecifiedData.getPolishCompanySeller());
-    healthInsurance = new Payment(-1, LocalDate.now().plusMonths(1),
-        BigDecimal.valueOf(300), PaymentType.HEALTH_INSURANCE);
-    pensionInsurance = new Payment(-1, LocalDate.now().plusMonths(2),
-        BigDecimal.valueOf(500), PaymentType.PENSION_INSURANCE);
-    incomeTaxAdvance = new Payment(-1, LocalDate.now().plusMonths(3),
-        BigDecimal.valueOf(1000), PaymentType.INCOME_TAX_ADVANCE);
+    healthInsurance = new Payment(-1, LocalDate.now().plusMonths(1), BigDecimal.valueOf(300),
+        PaymentType.HEALTH_INSURANCE);
+    pensionInsurance = new Payment(-1, LocalDate.now().plusMonths(2), BigDecimal.valueOf(500),
+        PaymentType.PENSION_INSURANCE);
+    incomeTaxAdvance = new Payment(-1, LocalDate.now().plusMonths(3), BigDecimal.valueOf(1000),
+        PaymentType.INCOME_TAX_ADVANCE);
     paymentService.addPayment(1, healthInsurance);
     paymentService.addPayment(1, pensionInsurance);
     paymentService.addPayment(1, incomeTaxAdvance);
@@ -82,8 +82,8 @@ public class PaymentServiceTest {
   @Test
   public void shouldReturnPaymentsBetweenDates() {
     //when
-    List<Payment> output = paymentService.getPaymentsByDate(1,
-        LocalDate.now(), LocalDate.now().plusDays(70));
+    List<Payment> output = paymentService
+        .getPaymentsByDate(1, LocalDate.now(), LocalDate.now().plusDays(70));
     //then
     assertThat(output, is(Arrays.asList(healthInsurance, pensionInsurance)));
   }
@@ -91,8 +91,9 @@ public class PaymentServiceTest {
   @Test
   public void shouldReturnPaymentsBetweenDatesAndSpecifiedByType() {
     //when
-    List<Payment> output = paymentService.getPaymentsByTypeAndDate(1,
-        LocalDate.now(), LocalDate.now().plusMonths(4), PaymentType.INCOME_TAX_ADVANCE);
+    List<Payment> output = paymentService
+        .getPaymentsByTypeAndDate(1, LocalDate.now(), LocalDate.now().plusMonths(4),
+            PaymentType.INCOME_TAX_ADVANCE);
     //then
     assertThat(output, is(Arrays.asList(incomeTaxAdvance)));
   }
@@ -104,7 +105,8 @@ public class PaymentServiceTest {
     //when
     paymentService.updatePayment(1, updatedPayment);
     //then
-    assertThat(paymentService.getPayments(1).get(2).getAmount(), is(BigDecimal.TEN));
+    assertThat(paymentService.getPayments(1).get(2).getAmount()
+        , is(BigDecimal.TEN.setScale(2)));
   }
 
   @Test

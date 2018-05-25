@@ -1,10 +1,12 @@
 package pl.coderstrust.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import pl.coderstrust.configurations.MoneySerializer;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -19,17 +21,19 @@ public class Payment implements WithValidation {
 
   private long id;
   private LocalDate issueDate;
+  @JsonSerialize(using = MoneySerializer.class)
   private BigDecimal amount;
   @Enumerated(EnumType.STRING)
   private PaymentType type;
 
   public Payment(long id, LocalDate issueDate, BigDecimal amount, PaymentType type) {
-    if (amount != null) {
-      amount.setScale(2);
-    }
     this.id = id;
     this.issueDate = issueDate;
-    this.amount = amount;
+    if (amount != null) {
+      this.amount = amount.setScale(2, BigDecimal.ROUND_HALF_UP);
+    } else {
+      this.amount = null;
+    }
     this.type = type;
   }
 
@@ -73,9 +77,10 @@ public class Payment implements WithValidation {
 
   public void setAmount(BigDecimal amount) {
     if (amount != null) {
-      amount.setScale(2);
+      this.amount = amount.setScale(2, BigDecimal.ROUND_HALF_UP);
+    } else {
+      this.amount = null;
     }
-    this.amount = amount;
   }
 
   public PaymentType getType() {

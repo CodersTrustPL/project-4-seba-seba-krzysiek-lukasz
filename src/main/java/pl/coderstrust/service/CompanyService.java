@@ -13,5 +13,6 @@ public class CompanyService extends AbstractService<Company> {
   public CompanyService(@Qualifier("companiesDatabase") Database<Company> dbCompanies) {
     super.entriesDb = dbCompanies;
   }
+
 }
 

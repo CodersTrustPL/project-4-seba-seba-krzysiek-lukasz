@@ -19,6 +19,7 @@ public abstract class AbstractService<T extends WithNameIdIssueDate> {
   PdfGenerator pdfGenerator;
 
   public long addEntry(T entry) {
+    entry.setId(-1);
     setDefaultEntryNameIfEmpty(entry);
     return entriesDb.addEntry(entry);
   }
@@ -68,7 +69,7 @@ public abstract class AbstractService<T extends WithNameIdIssueDate> {
 
   protected void setDefaultEntryNameIfEmpty(T entry) {
     if (entry.getName() == null || entry.getName().trim().length() == 0) {
-      entry.setName(String.format("%d / %s", entry.getId(), entry.getIssueDate()));
+      entry.setName("N/A");
     }
   }
 
