@@ -12,7 +12,7 @@ public class Application {
 
   //TODO Modify Swagger to show field for token header in SimpleOAuth Profile
 
-  // To run app without need of sending tokens in request, run basicSecurity
+  // To run app without need of sending token in request, run basicSecurity
   // profile both Spring profile and Maven profile
 
   // To run angular frontEnd App run with no security - leave active profile empty in properties

@@ -5,7 +5,6 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
-import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.when;
 
 import com.itextpdf.text.pdf.PdfReader;
@@ -19,10 +18,10 @@ import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import pl.coderstrust.database.Database;
 import pl.coderstrust.model.Invoice;
-import pl.coderstrust.service.pdfservice.PdfDateTimeProvider;
-import pl.coderstrust.service.pdfservice.PdfFontsProvider;
-import pl.coderstrust.service.pdfservice.PdfGenerator;
-import pl.coderstrust.testhelpers.TestCasesGenerator;
+import pl.coderstrust.service.pdf.PdfDateTimeProvider;
+import pl.coderstrust.service.pdf.PdfFontsProvider;
+import pl.coderstrust.service.pdf.PdfGenerator;
+import pl.coderstrust.helpers.TestCasesGenerator;
 
 import java.io.InputStream;
 
@@ -31,7 +30,7 @@ public class InvoiceServiceGetPdfReportTest {
 
 
   private static final String PDF_CREATION_DATE = "2018/05/04 13:21:41";
-  private static final String SAMPLE_PDF_PATH = "src/test/resources/sampleInvoice.pdf";
+  private static final String SAMPLE_PDF_PATH = "src/test/resources/pdf/sampleInvoice.pdf";
   private static final int PDF_PAGES_COUNT = 1;
   private static final int INVOICE_ID = 1;
   private static final int INVOICE_NUMBER = 1;

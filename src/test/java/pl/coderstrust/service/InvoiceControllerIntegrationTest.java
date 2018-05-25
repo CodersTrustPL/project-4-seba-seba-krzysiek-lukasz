@@ -27,8 +27,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import pl.coderstrust.model.Invoice;
 import pl.coderstrust.model.InvoiceEntry;
 import pl.coderstrust.model.Product;
-import pl.coderstrust.testhelpers.InvoicesWithSpecifiedData;
-import pl.coderstrust.testhelpers.TestCasesGenerator;
+import pl.coderstrust.helpers.InvoicesWithSpecifiedData;
+import pl.coderstrust.helpers.TestCasesGenerator;
 
 import java.time.LocalDate;
 import java.util.Arrays;

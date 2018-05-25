@@ -6,7 +6,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import org.junit.Test;
 import pl.coderstrust.model.Invoice;
 import pl.coderstrust.model.InvoiceBuilder;
-import pl.coderstrust.testhelpers.InvoicesWithSpecifiedData;
+import pl.coderstrust.helpers.InvoicesWithSpecifiedData;
 
 public class EmailTemplateTest {
 

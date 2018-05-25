@@ -3,7 +3,7 @@ package pl.coderstrust.service;
 import pl.coderstrust.database.Database;
 import pl.coderstrust.model.Invoice;
 import pl.coderstrust.model.WithNameIdIssueDate;
-import pl.coderstrust.service.pdfservice.PdfGenerator;
+import pl.coderstrust.service.pdf.PdfGenerator;
 
 import java.io.ByteArrayInputStream;
 import java.time.LocalDate;
