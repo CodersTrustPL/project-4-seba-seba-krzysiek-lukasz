@@ -24,7 +24,7 @@ public abstract class AbstractController<T extends WithNameIdIssueDate & WithVal
     List<String> entryState = entry.validate();
 
     if (filterId != null) {
-      if (!filter.hasObjectById(entry, filterId.longValue())) {
+      if (!filter.hasObjectById(entry, filterId)) {
         entryState.add(Messages.COMPANY_ID_NOT_MATCH);
       }
     }

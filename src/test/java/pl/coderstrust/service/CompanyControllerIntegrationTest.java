@@ -142,7 +142,7 @@ public class CompanyControllerIntegrationTest {
 
     //when
     String response = this.mockMvc
-        .perform(get(DEFAULT_PATH + "/term?term=" + elementOfNameOfBuyerCompany))
+        .perform(get(DEFAULT_PATH + "/name?name=" + elementOfNameOfBuyerCompany))
         .andExpect(content().contentType(CONTENT_TYPE)).andExpect(status().isOk()).andReturn()
         .getResponse().getContentAsString();
 

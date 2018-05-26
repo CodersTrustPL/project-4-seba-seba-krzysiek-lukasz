@@ -26,14 +26,18 @@ public class EmailController {
     this.invoiceService = invoiceService;
   }
 
-  @PostMapping(value = "email/{id}")
-  public ResponseEntity<String> send(@PathVariable("id") Long invoiceId,
-      @RequestParam(name = "email") String email) {
-    Invoice invoice = invoiceService.findEntry(invoiceId);
-    EmailTemplate template = new EmailTemplate(invoice);
+  @PostMapping(value = "email/{invoice_id}")
+  public ResponseEntity<String> send(@PathVariable("invoice_id") Long invoiceId,
+      @RequestParam(name = "send email to") String email) {
 
-    String body = templateEngine.process(EmailTemplateNames.TEMPLATE, template.template());
-    emailService.sendEmail(email, EmailTemplateNames.HEADER_INFO, body);
-    return ResponseEntity.ok(body);
+    if (invoiceService.idExist(invoiceId)) {
+      Invoice invoice = invoiceService.findEntry(invoiceId);
+      EmailTemplate template = new EmailTemplate(invoice);
+
+      String body = templateEngine.process(EmailTemplateNames.TEMPLATE, template.template());
+      emailService.sendEmail(email, EmailTemplateNames.HEADER_INFO, body);
+      return ResponseEntity.ok(body);
+    }
+    return ResponseEntity.notFound().build();
   }
 }
