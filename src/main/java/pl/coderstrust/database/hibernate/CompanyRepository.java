@@ -12,5 +12,5 @@ import java.util.List;
 @Repository
 public interface CompanyRepository extends JpaRepository<Company, Long> {
 
-  Company findByNip(String nip);
+  Company getByNip(String nip);
 }

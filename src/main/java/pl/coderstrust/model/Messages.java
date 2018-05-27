@@ -13,6 +13,7 @@ public class Messages {
   public static final String COMPANY_NO_ZIPCODE = "Company zip code is empty.";
   public static final String COMPANY_NO_BACC = "Company bank account number is empty.";
   public static final String COMPANY_NO_NIP = "Company NIP number is empty.";
+  public static final String COMPANY_NIP_EXIST = "Company NIP exist in database.";
 
   public static final String DATE_EMPTY = "Date is empty.";
   public static final String DATE_TOO_EARLY = "Date is earlier then actual date.";

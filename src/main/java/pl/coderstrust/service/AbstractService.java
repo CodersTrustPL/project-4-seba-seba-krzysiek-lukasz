@@ -1,6 +1,7 @@
 package pl.coderstrust.service;
 
 import pl.coderstrust.database.Database;
+import pl.coderstrust.model.Company;
 import pl.coderstrust.model.Invoice;
 import pl.coderstrust.model.WithNameIdIssueDate;
 import pl.coderstrust.service.pdfservice.PdfGenerator;
@@ -9,6 +10,7 @@ import java.io.ByteArrayInputStream;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public abstract class AbstractService<T extends WithNameIdIssueDate> {
 
@@ -43,6 +45,14 @@ public abstract class AbstractService<T extends WithNameIdIssueDate> {
   public void updateEntry(T entry) {
     setDefaultEntryNameIfEmpty(entry);
     entriesDb.updateEntry(entry);
+  }
+
+  public boolean nipExist(String nip) {
+    return false;
+  }
+
+  public Optional<T> getEntryByNip(String nip) {
+    return null;
   }
 
   public List<T> getEntryByDate(LocalDate beginDate, LocalDate endDate) {

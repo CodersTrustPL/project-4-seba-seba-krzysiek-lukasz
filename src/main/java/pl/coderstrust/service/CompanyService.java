@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import pl.coderstrust.database.Database;
 import pl.coderstrust.model.Company;
 
+import java.util.Optional;
+
 @Service
 public class CompanyService extends AbstractService<Company> {
 
@@ -14,5 +16,17 @@ public class CompanyService extends AbstractService<Company> {
     super.entriesDb = dbCompanies;
   }
 
+  @Override
+  public boolean nipExist(String nip) {
+    return entriesDb.getEntries().stream()
+        .anyMatch(company -> company.getNip().equals(nip));
+  }
+
+  @Override
+  public Optional<Company> getEntryByNip(String nip) {
+    return entriesDb.getEntries().stream()
+        .filter(company -> company.getNip().equals(nip))
+        .findAny();
+  }
 }
 

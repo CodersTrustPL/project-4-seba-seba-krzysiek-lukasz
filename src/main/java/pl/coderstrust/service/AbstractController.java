@@ -21,13 +21,6 @@ public abstract class AbstractController<T extends WithNameIdIssueDate & WithVal
 
 
   public ResponseEntity addEntry(T entry, Long filterId) {
-    //TODO discuss how it should work?
-    // if we recieve entry with id which already exist in DB,what to do?
-    // 1) should we add next entry with new id?
-    // 2) should we update existing entry?
-    // 3) should we return error that entry with this id already exist? Now i set everything to work
-    // like was before so to add next one
-
     List<String> entryState = entry.validate();
 
     if (filterId != null) {

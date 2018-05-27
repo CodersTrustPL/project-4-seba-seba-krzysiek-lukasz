@@ -11,12 +11,12 @@ import pl.coderstrust.service.pdfservice.PdfGenerator;
 @Service
 public class InvoiceService extends AbstractService<Invoice> {
 
-  Database<Company> companyDatabase;
+  private CompanyService companyService;
 
   @Autowired
-  public InvoiceService(@Qualifier("companiesDatabase") Database<Company> dbCompany,
+  public InvoiceService(CompanyService companyService,
       @Qualifier("invoicesDatabase") Database<Invoice> dbInvoices, PdfGenerator pdfGenerator) {
-    this.companyDatabase = dbCompany;
+    this.companyService = companyService;
     super.entriesDb = dbInvoices;
     super.pdfGenerator = pdfGenerator;
   }
@@ -31,23 +31,22 @@ public class InvoiceService extends AbstractService<Invoice> {
 
   @Override
   public void updateEntry(Invoice entry) {
-    checkIfCompaniesExistInDbAndAddIfNot(entry);
     super.setDefaultEntryNameIfEmpty(entry);
     super.updateEntry(entry);
   }
 
   private void checkIfCompaniesExistInDbAndAddIfNot(Invoice invoice) {
-    if (companyDatabase.idExist(invoice.getBuyer().getId())) {
-      invoice.setBuyer(companyDatabase.getEntryById(invoice.getBuyer().getId()));
+    if (companyService.nipExist(invoice.getBuyer().getNip())) {
+      invoice.setBuyer(companyService.getEntryByNip(invoice.getBuyer().getNip()).get());
     } else {
-      long buyerId = companyDatabase.addEntry(invoice.getBuyer());
-      invoice.setBuyer(companyDatabase.getEntryById(buyerId));
+      long buyerId = companyService.addEntry(invoice.getBuyer());
+      invoice.setBuyer(companyService.findEntry(buyerId));
     }
-    if (companyDatabase.idExist(invoice.getSeller().getId())) {
-      invoice.setSeller(companyDatabase.getEntryById(invoice.getSeller().getId()));
+    if (companyService.nipExist(invoice.getSeller().getNip())) {
+      invoice.setSeller(companyService.getEntryByNip(invoice.getSeller().getNip()).get());
     } else {
-      long sellerId = companyDatabase.addEntry(invoice.getSeller());
-      invoice.setSeller(companyDatabase.getEntryById(sellerId));
+      long buyerId = companyService.addEntry(invoice.getSeller());
+      invoice.setSeller(companyService.findEntry(buyerId));
     }
   }
 }

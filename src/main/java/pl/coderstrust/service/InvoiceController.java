@@ -1,6 +1,7 @@
 package pl.coderstrust.service;
 
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -28,15 +29,13 @@ public class InvoiceController extends AbstractController<Invoice> {
 
   @RequestMapping(value = "", method = RequestMethod.POST)
   @ApiOperation(value = "Adds the invoice and returning id")
-  public synchronized ResponseEntity addInvoice(
-      @RequestBody Invoice invoice) {
+  public synchronized ResponseEntity addInvoice(@RequestBody Invoice invoice) {
     return super.addEntry(invoice, null);
   }
 
   @RequestMapping(value = "/{id}", method = RequestMethod.GET)
   @ApiOperation(value = "Returns the invoice by id")
-  public synchronized ResponseEntity getInvoiceById(
-      @PathVariable("id") Long invoiceId) {
+  public synchronized ResponseEntity getInvoiceById(@PathVariable("id") Long invoiceId) {
     return super.getEntryById(invoiceId, null);
   }
 
@@ -50,26 +49,21 @@ public class InvoiceController extends AbstractController<Invoice> {
 
   @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
   @ApiOperation(value = "Updates the invoices by id")
-  public synchronized ResponseEntity updateInvoice(
-      @PathVariable("id") Long id,
+  public synchronized ResponseEntity updateInvoice(@PathVariable("id") Long id,
       @RequestBody Invoice invoice) {
     return super.updateEntry(id, invoice, null);
   }
 
   @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
   @ApiOperation(value = "Deletes the invoices by id")
-  public synchronized ResponseEntity removeInvoice(
-      @PathVariable("id") Long id) {
+  public synchronized ResponseEntity removeInvoice(@PathVariable("id") Long id) {
     return removeEntry(id, null);
   }
 
 
-  @RequestMapping(value = "{id}/pdf", method = RequestMethod.GET,
-      produces = MediaType.APPLICATION_PDF_VALUE)
+  @RequestMapping(value = "{id}/pdf", method = RequestMethod.GET, produces = MediaType.APPLICATION_PDF_VALUE)
   @ApiOperation(value = "Returns invoice in pdf format")
-  public ResponseEntity<InputStreamResource> invoiceToPdf(
-      @PathVariable("id") Long id) {
-
+  public ResponseEntity<InputStreamResource> invoiceToPdf(@PathVariable("id") Long id) {
     return super.getPdfFromEntry(id, null);
   }
 
