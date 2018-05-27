@@ -37,11 +37,21 @@ public class TaxCalculatorController {
       @RequestParam(value = "startDate", required = false) LocalDate startDate,
       @RequestParam(value = "endDate", required = false) LocalDate endDate
   ) {
-    if (endDate.isAfter(startDate) || endDate.isEqual(startDate)) {
-      return ResponseEntity.ok(taxService.calculateIncome(companyId, startDate, endDate)
-          .setScale(2, RoundingMode.HALF_UP));
+    if (companyService.idExist(companyId)) {
+      if (startDate == null) {
+        startDate = LocalDate.MIN;
+      }
+      if (endDate == null) {
+        endDate = LocalDate.MAX;
+      }
+      if (endDate.isAfter(startDate) || endDate.isEqual(startDate)) {
+        return ResponseEntity.ok(taxService.calculateIncome(companyId, startDate, endDate)
+            .setScale(2, RoundingMode.HALF_UP));
+      }
+      return ResponseEntity.badRequest().body(Messages.END_BEFORE_START);
+    } else {
+      return ResponseEntity.notFound().build();
     }
-    return ResponseEntity.badRequest().body(Messages.END_BEFORE_START);
   }
 
   @RequestMapping(value = "cost/{companyId}", method = RequestMethod.GET)
@@ -51,11 +61,22 @@ public class TaxCalculatorController {
       @RequestParam(value = "startDate", required = false) LocalDate startDate,
       @RequestParam(value = "endDate", required = false) LocalDate endDate
   ) {
-    if (endDate.isAfter(startDate) || endDate.isEqual(startDate)) {
-      return ResponseEntity.ok(taxService.calculateCost(companyId, startDate, endDate)
-          .setScale(2, RoundingMode.HALF_UP));
+    if (companyService.idExist(companyId)) {
+      if (startDate == null) {
+        startDate = LocalDate.MIN;
+      }
+      if (endDate == null) {
+        endDate = LocalDate.MAX;
+      }
+
+      if (endDate.isAfter(startDate) || endDate.isEqual(startDate)) {
+        return ResponseEntity.ok(taxService.calculateCost(companyId, startDate, endDate)
+            .setScale(2, RoundingMode.HALF_UP));
+      }
+      return ResponseEntity.badRequest().body(Messages.END_BEFORE_START);
+    } else {
+      return ResponseEntity.notFound().build();
     }
-    return ResponseEntity.badRequest().body(Messages.END_BEFORE_START);
   }
 
   @RequestMapping(value = "incomeTax/{companyId}", method = RequestMethod.GET)
@@ -65,12 +86,23 @@ public class TaxCalculatorController {
       @RequestParam(value = "startDate", required = false) LocalDate startDate,
       @RequestParam(value = "endDate", required = false) LocalDate endDate
   ) {
-    if (endDate.isAfter(startDate) || endDate.isEqual(startDate)) {
-      BigDecimal income = taxService.calculateIncome(companyId, startDate, endDate);
-      BigDecimal cost = taxService.calculateCost(companyId, startDate, endDate);
-      return ResponseEntity.ok(income.subtract(cost).setScale(2, RoundingMode.HALF_UP));
+    if (companyService.idExist(companyId)) {
+      if (startDate == null) {
+        startDate = LocalDate.MIN;
+      }
+      if (endDate == null) {
+        endDate = LocalDate.MAX;
+      }
+
+      if (endDate.isAfter(startDate) || endDate.isEqual(startDate)) {
+        BigDecimal income = taxService.calculateIncome(companyId, startDate, endDate);
+        BigDecimal cost = taxService.calculateCost(companyId, startDate, endDate);
+        return ResponseEntity.ok(income.subtract(cost).setScale(2, RoundingMode.HALF_UP));
+      }
+      return ResponseEntity.badRequest().body(Messages.END_BEFORE_START);
+    } else {
+      return ResponseEntity.notFound().build();
     }
-    return ResponseEntity.badRequest().body(Messages.END_BEFORE_START);
   }
 
   @RequestMapping(value = "incVat/{companyId}", method = RequestMethod.GET)
@@ -80,11 +112,21 @@ public class TaxCalculatorController {
       @RequestParam(value = "startDate", required = false) LocalDate startDate,
       @RequestParam(value = "endDate", required = false) LocalDate endDate
   ) {
-    if (endDate.isAfter(startDate) || endDate.isEqual(startDate)) {
-      return ResponseEntity.ok(taxService.calculateIncomeVat(companyId, startDate, endDate)
-          .setScale(2, RoundingMode.HALF_UP));
+    if (companyService.idExist(companyId)) {
+      if (startDate == null) {
+        startDate = LocalDate.MIN;
+      }
+      if (endDate == null) {
+        endDate = LocalDate.MAX;
+      }
+      if (endDate.isAfter(startDate) || endDate.isEqual(startDate)) {
+        return ResponseEntity.ok(taxService.calculateIncomeVat(companyId, startDate, endDate)
+            .setScale(2, RoundingMode.HALF_UP));
+      }
+      return ResponseEntity.badRequest().body(Messages.END_BEFORE_START);
+    } else {
+      return ResponseEntity.notFound().build();
     }
-    return ResponseEntity.badRequest().body(Messages.END_BEFORE_START);
   }
 
   @RequestMapping(value = "outVat/{companyId}", method = RequestMethod.GET)
@@ -94,11 +136,21 @@ public class TaxCalculatorController {
       @RequestParam(value = "startDate", required = false) LocalDate startDate,
       @RequestParam(value = "endDate", required = false) LocalDate endDate
   ) {
-    if (endDate.isAfter(startDate) || endDate.isEqual(startDate)) {
-      return ResponseEntity.ok(taxService.calculateOutcomeVat(companyId, startDate, endDate)
-          .setScale(2, RoundingMode.HALF_UP));
+    if (companyService.idExist(companyId)) {
+      if (startDate == null) {
+        startDate = LocalDate.MIN;
+      }
+      if (endDate == null) {
+        endDate = LocalDate.MAX;
+      }
+      if (endDate.isAfter(startDate) || endDate.isEqual(startDate)) {
+        return ResponseEntity.ok(taxService.calculateOutcomeVat(companyId, startDate, endDate)
+            .setScale(2, RoundingMode.HALF_UP));
+      }
+      return ResponseEntity.badRequest().body(Messages.END_BEFORE_START);
+    } else {
+      return ResponseEntity.notFound().build();
     }
-    return ResponseEntity.badRequest().body(Messages.END_BEFORE_START);
   }
 
   @RequestMapping(value = "diffVat/{companyId}", method = RequestMethod.GET)
@@ -108,12 +160,22 @@ public class TaxCalculatorController {
       @RequestParam(value = "startDate", required = false) LocalDate startDate,
       @RequestParam(value = "endDate", required = false) LocalDate endDate
   ) {
-    if (endDate.isAfter(startDate) || endDate.isEqual(startDate)) {
-      BigDecimal outVat = taxService.calculateOutcomeVat(companyId, startDate, endDate);
-      BigDecimal incVat = taxService.calculateIncomeVat(companyId, startDate, endDate);
-      return ResponseEntity.ok(outVat.subtract(incVat).setScale(2, RoundingMode.HALF_UP));
+    if (companyService.idExist(companyId)) {
+      if (startDate == null) {
+        startDate = LocalDate.MIN;
+      }
+      if (endDate == null) {
+        endDate = LocalDate.MAX;
+      }
+      if (endDate.isAfter(startDate) || endDate.isEqual(startDate)) {
+        BigDecimal outVat = taxService.calculateOutcomeVat(companyId, startDate, endDate);
+        BigDecimal incVat = taxService.calculateIncomeVat(companyId, startDate, endDate);
+        return ResponseEntity.ok(outVat.subtract(incVat).setScale(2, RoundingMode.HALF_UP));
+      }
+      return ResponseEntity.badRequest().body(Messages.END_BEFORE_START);
+    } else {
+      return ResponseEntity.notFound().build();
     }
-    return ResponseEntity.badRequest().body(Messages.END_BEFORE_START);
   }
 
   @RequestMapping(value = "taxSummary/{companyId}/{year}", method = RequestMethod.GET)
@@ -121,26 +183,32 @@ public class TaxCalculatorController {
   public ResponseEntity calculateTaxSummary(
       @PathVariable("companyId") long companyId,
       @PathVariable("year") int year) {
-    if (year > LocalDate.now().getYear() + 50 || year < LocalDate.now().getYear() - 200) {
-      return ResponseEntity.badRequest().body(Messages.INCORRECT_YEAR);
+    if (companyService.idExist(companyId)) {
+      if (year > LocalDate.now().getYear() + 50 || year < LocalDate.now().getYear() - 200) {
+        return ResponseEntity.badRequest().body(Messages.INCORRECT_YEAR);
+      }
+      return ResponseEntity.ok(taxService.taxSummary(companyId, year));
+    } else {
+      return ResponseEntity.notFound().build();
     }
-
-    return ResponseEntity.ok(taxService.taxSummary(companyId, year));
   }
 
   @RequestMapping(value = "incomeTaxAdvance/{companyId}", method = RequestMethod.GET)
   @ApiOperation(value = "Returns value of income tax advance in specific date range")
   public ResponseEntity calculateIncomeTaxAdvance(
       @PathVariable("companyId") long companyId,
-      @RequestParam(value = "startDate", required = false) LocalDate startDate,
-      @RequestParam(value = "endDate", required = false) LocalDate endDate
+      @RequestParam(value = "startDate") LocalDate startDate,
+      @RequestParam(value = "endDate") LocalDate endDate
   ) {
-    if ((startDate.isAfter(endDate)) || (endDate.getYear() != startDate.getYear())) {
-      return ResponseEntity.badRequest().body(Messages.END_BEFORE_START);
+    if (companyService.idExist(companyId)) {
+      if ((startDate.isAfter(endDate)) || (endDate.getYear() != startDate.getYear())) {
+        return ResponseEntity.badRequest().body(Messages.END_BEFORE_START);
+      }
+      return ResponseEntity.ok(
+          taxService.calculateIncomeTaxAdvance(companyId, startDate, endDate)
+              .setScale(2, RoundingMode.HALF_UP));
+    } else {
+      return ResponseEntity.notFound().build();
     }
-    return ResponseEntity.ok(
-        taxService.calculateIncomeTaxAdvance(companyId, startDate, endDate)
-            .setScale(2, RoundingMode.HALF_UP));
   }
-
 }

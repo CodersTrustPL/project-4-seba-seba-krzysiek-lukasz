@@ -333,7 +333,7 @@ public class TaxCalculatorControllerTest {
   public void shouldReturnErrorCausedByWrongYear() throws Exception {
     this.mockMvc
         .perform(
-            get("/taxSummary/2/" + String.valueOf("-1")))
+            get("/taxSummary/1/" + String.valueOf("-1")))
         .andExpect(status().isBadRequest())
         .andExpect(content().string(Messages.INCORRECT_YEAR));
   }
