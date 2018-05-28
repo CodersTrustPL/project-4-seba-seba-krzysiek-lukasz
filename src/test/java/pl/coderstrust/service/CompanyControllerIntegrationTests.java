@@ -30,8 +30,6 @@ import pl.coderstrust.testhelpers.TestCasesGenerator;
 
 import java.util.List;
 
-//TODO It is possible to write this test better by creating sth like test companies generator
-
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc

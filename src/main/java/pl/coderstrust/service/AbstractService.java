@@ -51,7 +51,7 @@ public abstract class AbstractService<T extends WithNameIdIssueDate> {
     return false;
   }
 
-  public Optional<T> getEntryByNip(String nip) {
+  public T getEntryByNip(String nip) {
     return null;
   }
 

@@ -18,15 +18,14 @@ public class CompanyService extends AbstractService<Company> {
 
   @Override
   public boolean nipExist(String nip) {
-    return entriesDb.getEntries().stream()
-        .anyMatch(company -> company.getNip().equals(nip));
+    return entriesDb.getEntries().stream().anyMatch(company -> company.getNip().equals(nip));
   }
 
   @Override
-  public Optional<Company> getEntryByNip(String nip) {
-    return entriesDb.getEntries().stream()
-        .filter(company -> company.getNip().equals(nip))
-        .findAny();
+  public Company getEntryByNip(String nip) {
+    Optional<Company> companyWithProvidedNip = entriesDb.getEntries().stream()
+        .filter(company -> company.getNip().equals(nip)).findAny();
+    return companyWithProvidedNip.orElse(null);
   }
 }
 

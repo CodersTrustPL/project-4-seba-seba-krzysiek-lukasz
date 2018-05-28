@@ -41,4 +41,5 @@ public class HibernateCompanyDatabase implements Database<Company> {
   public boolean idExist(long id) {
     return companyRepository.exists(id);
   }
+
 }

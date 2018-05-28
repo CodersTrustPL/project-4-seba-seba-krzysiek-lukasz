@@ -62,9 +62,8 @@ public class CompanyController extends AbstractController<Company> {
   @RequestMapping(value = "/nip/{nip}", method = RequestMethod.GET)
   @ApiOperation(value = "Returns company by nip.")
   public synchronized ResponseEntity getCompanyByNip(@PathVariable("nip") String nip) {
-    return service.getEntryByNip(nip).isPresent() ?
-        ResponseEntity.ok(service.getEntryByNip(nip).get()) :
-        ResponseEntity.notFound().build();
+    Company company = service.getEntryByNip(nip);
+    return company != null ? ResponseEntity.ok(company) : ResponseEntity.notFound().build();
   }
 
   @RequestMapping(value = "/{id}", method = RequestMethod.PUT)

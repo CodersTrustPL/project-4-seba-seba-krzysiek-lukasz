@@ -39,7 +39,7 @@ public class Invoice implements WithNameIdIssueDate, WithValidation {
   private LocalDate paymentDate;
   @Enumerated(EnumType.STRING)
   private PaymentState paymentState;
-  @ElementCollection(fetch = FetchType.EAGER)
+  @ElementCollection
   private List<InvoiceEntry> products = new ArrayList<>();
 
   public Invoice() {

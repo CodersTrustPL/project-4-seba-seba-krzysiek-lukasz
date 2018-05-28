@@ -50,12 +50,15 @@ public class TaxCalculatorControllerTest {
   private static final MediaType CONTENT_TYPE = MediaType.APPLICATION_JSON_UTF8;
   private static final String DEFAULT_PATH = "/v2/company/1/invoice";
   private static final String MY_COMPANY_ID = "/1?startDate=";
+  private static final String PAYMENT_PATH = "/payment/";
+  private static final String TAX_SUMMARY_PATH = "/taxSummary/";
 
   private LocalDate startDate = LocalDate.now().plusMonths(1);
   private LocalDate endDate = LocalDate.now().plusYears(1).plusMonths(1).minusDays(1);
   private LocalDate endDateInHalf = LocalDate.now().plusMonths(7).minusDays(1);
   private TaxSummaryMapBuilder mapBuilder = new TaxSummaryMapBuilder();
-  private Company testCompany = InvoicesWithSpecifiedData.getPolishCompanySeller();
+  private Company testCompany;
+  private long testCompanyId;
 
   @Autowired
   private TestCasesGenerator generator;
@@ -71,8 +74,8 @@ public class TaxCalculatorControllerTest {
 
   @Before
   public void defaultGiven() {
-    long id = companyService.addEntry(InvoicesWithSpecifiedData.getPolishCompanySeller());
-    testCompany.setId(id);
+    testCompanyId = companyService.addEntry(InvoicesWithSpecifiedData.getPolishCompanySeller());
+    testCompany = companyService.findEntry(testCompanyId);
   }
 
   @Test
@@ -259,7 +262,7 @@ public class TaxCalculatorControllerTest {
 
   @Test
   public void shouldReturnErrorCausedByWrongYear() throws Exception {
-    this.mockMvc.perform(get("/taxSummary/2/" + String.valueOf("-1")))
+    this.mockMvc.perform(get(TAX_SUMMARY_PATH + testCompanyId + "/" + String.valueOf("-1")))
         .andExpect(status().isBadRequest()).andExpect(content().string(Messages.INCORRECT_YEAR));
   }
 
@@ -269,27 +272,20 @@ public class TaxCalculatorControllerTest {
     final LocalDate startDate = LocalDate
         .of(LocalDate.now().getYear(), LocalDate.now().getMonthValue() + 1, 1);
     final LocalDate endDate = startDate.plusMonths(1).minusDays(1);
-    Company company = InvoicesWithSpecifiedData.getPolishCompanySeller();
-    company.setId(1);
-    this.mockMvc.perform(post("/v2/company").content(json(company)).contentType(CONTENT_TYPE))
-        .andExpect(status().isOk());
-
     for (int i = 1; i <= 25; i++) {
       Invoice invoice = generator.getTestInvoice(i, 1);
       invoice.setIssueDate(startDate.plusDays(i));
-      invoice.setSeller(company);
+      invoice.setSeller(testCompany);
       invoice.getProducts().get(0).getProduct().setNetValue(BigDecimal.valueOf(100 * i));
-      this.mockMvc
-          .perform(post("/v2/company/1/invoice").content(json(invoice)).contentType(CONTENT_TYPE))
+      this.mockMvc.perform(post(DEFAULT_PATH).content(json(invoice)).contentType(CONTENT_TYPE))
           .andExpect(status().isOk());
     }
     for (int i = 1; i <= 12; i++) {
       Invoice invoice = generator.getTestInvoice(i, 1);
       invoice.setIssueDate(startDate.plusDays(i));
-      invoice.setBuyer(company);
+      invoice.setBuyer(testCompany);
       invoice.getProducts().get(0).getProduct().setNetValue(BigDecimal.valueOf(50 * i));
-      this.mockMvc
-          .perform(post("/v2/company/1/invoice").content(json(invoice)).contentType(CONTENT_TYPE))
+      this.mockMvc.perform(post(DEFAULT_PATH).content(json(invoice)).contentType(CONTENT_TYPE))
           .andExpect(status().isOk());
     }
 
@@ -339,66 +335,56 @@ public class TaxCalculatorControllerTest {
     LocalDate startDate = LocalDate.of(LocalDate.now().plusYears(1).getYear(), 1, 1);
     LocalDate endDate = LocalDate.of(LocalDate.now().plusYears(1).getYear(), 12, 31);
     //given
-    Company company = InvoicesWithSpecifiedData.getPolishCompanySeller();
-    company.setId(2);
     switch (type) {
       case LINEAR: {
-        company.setTaxType(TaxType.LINEAR);
+        testCompany.setTaxType(TaxType.LINEAR);
         break;
       }
       case PROGRESIVE: {
-        company.setTaxType(TaxType.PROGRESIVE);
+        testCompany.setTaxType(TaxType.PROGRESIVE);
         break;
       }
       default:
         throw new IllegalArgumentException("Wrong argument");
     }
-    this.mockMvc.perform(post("/v2/company").content(json(company)).contentType(CONTENT_TYPE))
-        .andExpect(status().isOk());
-
     for (int i = 1; i <= 25; i++) {
       Invoice invoice = generator.getTestInvoice(i, 1);
       invoice.setIssueDate(startDate.plusDays(i * 14));
-      invoice.setSeller(company);
+      invoice.setSeller(testCompany);
       invoice.getProducts().get(0).getProduct()
           .setNetValue(BigDecimal.valueOf(amountMultiplier * i));
-      this.mockMvc
-          .perform(post("/v2/company/2/invoice").content(json(invoice)).contentType(CONTENT_TYPE))
+      this.mockMvc.perform(post(DEFAULT_PATH).content(json(invoice)).contentType(CONTENT_TYPE))
           .andExpect(status().isOk());
     }
     for (int i = 1; i <= 12; i++) {
       Invoice invoice = generator.getTestInvoice(i, 1);
       invoice.setIssueDate(startDate.plusDays(i * 28));
-      invoice.setBuyer(company);
+      invoice.setBuyer(testCompany);
       invoice.getProducts().get(0).getProduct()
           .setNetValue(BigDecimal.valueOf(amountMultiplier / 2 * i));
-      this.mockMvc
-          .perform(post("/v2/company/2/invoice").content(json(invoice)).contentType(CONTENT_TYPE))
+      this.mockMvc.perform(post(DEFAULT_PATH).content(json(invoice)).contentType(CONTENT_TYPE))
           .andExpect(status().isOk());
     }
     List<Payment> pensionInsurance = generator
         .createPensionInsurancePaymentsForYear(startDate.getYear());
     for (int i = 0; i < 12; i++) {
-      this.mockMvc.perform(
-          post("/payment/2").content(json(pensionInsurance.get(i))).contentType(CONTENT_TYPE))
-          .andExpect(status().isOk());
+      this.mockMvc.perform(post(PAYMENT_PATH + testCompanyId).content(json(pensionInsurance.get(i)))
+          .contentType(CONTENT_TYPE)).andExpect(status().isOk());
     }
     List<Payment> incomeTaxAdvance = generator
         .createIncomeTaxAdvancePaymentsForYear(startDate.getYear());
     for (int i = 0; i < 12; i++) {
-      this.mockMvc.perform(
-          post("/payment/2").content(json(incomeTaxAdvance.get(i))).contentType(CONTENT_TYPE))
-          .andExpect(status().isOk());
+      this.mockMvc.perform(post(PAYMENT_PATH + testCompanyId).content(json(incomeTaxAdvance.get(i)))
+          .contentType(CONTENT_TYPE)).andExpect(status().isOk());
     }
     List<Payment> healthInsruace = generator
         .createHealthInsurancePaymentsForYear(startDate.getYear());
     for (int i = 0; i < 12; i++) {
-      this.mockMvc.perform(
-          post("/payment/2").content(json(healthInsruace.get(i))).contentType(CONTENT_TYPE))
-          .andExpect(status().isOk());
+      this.mockMvc.perform(post(PAYMENT_PATH + testCompanyId).content(json(healthInsruace.get(i)))
+          .contentType(CONTENT_TYPE)).andExpect(status().isOk());
     }
     String response = this.mockMvc
-        .perform(get("/taxSummary/2/" + String.valueOf(startDate.getYear())))
+        .perform(get(TAX_SUMMARY_PATH + testCompanyId + "/" + String.valueOf(startDate.getYear())))
         .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
     Map<String, BigDecimal> output = getMapFromResponse(response);
     assertThat(output, is(equalTo(expected)));

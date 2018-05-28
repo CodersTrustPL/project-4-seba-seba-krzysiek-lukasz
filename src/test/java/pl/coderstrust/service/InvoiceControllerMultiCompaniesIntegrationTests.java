@@ -26,6 +26,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import pl.coderstrust.model.Company;
 import pl.coderstrust.model.Invoice;
+import pl.coderstrust.testhelpers.InvoicesWithSpecifiedData;
 import pl.coderstrust.testhelpers.TestCasesGenerator;
 
 import java.time.LocalDate;
@@ -56,6 +57,8 @@ public class InvoiceControllerMultiCompaniesIntegrationTests {
   private static final int DEFAULT_INVOICE_NUMBER = 1;
   private static final int DEFAULT_UPDATED_INVOICE_NUMBER = 2;
   private static final int DEFAULT_ENTRIES_COUNT = 1;
+
+  private static final String NIP_NOT_USED_BEFORE = "0000000000";
 
   private static String START_DATE = "2020-01-01";
   private static String END_DATE = "2060-01-01";
@@ -89,7 +92,8 @@ public class InvoiceControllerMultiCompaniesIntegrationTests {
     sellerId = registerInvoiceSellerAtCompanyDb(invoice);
     invoiceId = addInvoiceToInvoiceDb(invoice);
 
-    anotherCompanyId = addCompanyToCompanyDb(invoice.getSeller());
+
+    anotherCompanyId = addCompanyToCompanyDb(InvoicesWithSpecifiedData.getPolishCompanySeller());
     updatedInvoice.setId(invoiceId);
     updatedInvoice.setBuyer(invoice.getBuyer());
     updatedInvoice.setSeller(invoice.getSeller());
@@ -149,7 +153,7 @@ public class InvoiceControllerMultiCompaniesIntegrationTests {
   public void shouldGetEntryByIdWhenSellerMatchesCompanyId() throws Exception {
     //then
     this.mockMvc
-        .perform(get(getInvoiceUrl(invoice.getId(), sellerId)))
+        .perform(get(getInvoiceUrl(invoiceId, sellerId)))
         .andExpect(content().contentType(JSON_CONTENT_TYPE))
         .andExpect(handler().methodName(GET_INVOICE_BY_ID_METHOD))
         .andExpect(status().isOk())

@@ -40,17 +40,17 @@ public class InvoiceBookTest {
 
   @Before
   public void setup() {
-//    invoiceBook = new InvoiceService(databaseCompany, database, pdfGenerator);
+    invoiceBook = new InvoiceService(companyService, database, pdfGenerator);
   }
 
   @Test
   public void shouldAddInvoice() {
-//    //given
-//    when(databaseCompany.idExist(invoice.getBuyer().getId())).thenReturn(true);
-//    when(databaseCompany.getEntryById(invoice.getBuyer().getId())).thenReturn(invoice.getBuyer());
-//    when(databaseCompany.idExist(invoice.getSeller().getId())).thenReturn(true);
-//    when(databaseCompany.getEntryById(invoice.getSeller().getId())).thenReturn(invoice.getSeller());
-//    when(database.addEntry(invoice)).thenReturn(1L);
+    //given
+    when(companyService.nipExist(invoice.getBuyer().getNip())).thenReturn(true);
+    when(companyService.getEntryByNip(invoice.getBuyer().getNip())).thenReturn(invoice.getBuyer());
+    when(companyService.nipExist(invoice.getSeller().getNip())).thenReturn(true);
+    when(companyService.getEntryByNip(invoice.getSeller().getNip())).thenReturn(invoice.getSeller());
+    when(database.addEntry(invoice)).thenReturn(1L);
     //when
     invoiceBook.addEntry(invoice);
     //then
