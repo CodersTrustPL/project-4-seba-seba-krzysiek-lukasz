@@ -23,7 +23,6 @@ import java.util.List;
 @Service
 public class TestCasesGenerator {
 
-
   public Invoice getTestInvoice(int invoiceNumber, int entriesCount) {
 
     String idVisible = "idVisible_" + Integer.toString(invoiceNumber);
@@ -42,7 +41,7 @@ public class TestCasesGenerator {
     return builder.build();
   }
 
-  public Company getTestCompany(int invoiceNumber, String prefix) {
+  private Company getTestCompany(int invoiceNumber, String prefix) {
     String name = prefix + "name_" + Integer.toString(invoiceNumber);
     CompanyBuilder builder = new CompanyBuilder(name);
     LocalDate dateIssue = LocalDate.of(2019, 3, 1);
@@ -51,14 +50,12 @@ public class TestCasesGenerator {
     builder.setCity(prefix + "city_" + Integer.toString(invoiceNumber));
     builder.setZipCode(prefix + "zipCode_" + Integer.toString(invoiceNumber));
     builder.setNip(prefix + "nip_" + Integer.toString(invoiceNumber));
-    builder.setBankAccoutNumber(prefix + "bankAccoutNumber_" + Integer.toString(invoiceNumber));
+    builder.setBankAccoutNumber(prefix + "bankAccountNumber_" + Integer.toString(invoiceNumber));
 
     return builder.build();
   }
 
-
-  public List<InvoiceEntry> getTestEntries(int invoiceNumber, int productsCount) {
-
+  private List<InvoiceEntry> getTestEntries(int invoiceNumber, int productsCount) {
     ArrayList<InvoiceEntry> entries = new ArrayList<>(productsCount);
     for (int i = 1; i <= productsCount; i++) {
       entries.add(new InvoiceEntry(getTestProduct(invoiceNumber, i), i));
@@ -66,11 +63,9 @@ public class TestCasesGenerator {
     return entries;
   }
 
-  public Product getTestProduct(int invoiceNumber, int productCount) {
-
+  private Product getTestProduct(int invoiceNumber, int productCount) {
     String name = "name_" + Integer.toString(invoiceNumber) + "_" + Integer.toString(productCount);
-    double netValue = invoiceNumber;
-    ProductBuilder builder = new ProductBuilder(name, netValue);
+    ProductBuilder builder = new ProductBuilder(name, (double) invoiceNumber);
     builder.setDescription(name + "_" + "description_" + Integer.toString(invoiceNumber));
     builder.setVatRate(Vat.VAT_23);
     builder.setProductType(ProductType.OTHER);
@@ -112,5 +107,4 @@ public class TestCasesGenerator {
     }
     return paymentsList;
   }
-
 }

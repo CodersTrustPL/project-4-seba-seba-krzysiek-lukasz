@@ -16,16 +16,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class FileHelper {
+class FileHelper {
 
   private final Logger logger = LoggerFactory.getLogger(FileHelper.class);
   private Configuration dbConfig;
   private File dbFile;
   private File tempFile;
-  private FileStateCheck canWrite = (File file) -> file.canWrite();
+  private FileStateCheck canWrite = File::canWrite;
   private FileStateCheck isDeleted = (File file) -> !file.exists();
 
-  public FileHelper(Configuration dbConfig) {
+  FileHelper(Configuration dbConfig) {
     this.dbConfig = dbConfig;
     dbFile = new File(dbConfig.getDbFilePath());
     tempFile = new File(dbConfig.getDbTempFilePath());
@@ -44,7 +44,7 @@ public class FileHelper {
     }
   }
 
-  public void addLine(String lineContent) {
+  void addLine(String lineContent) {
     lineContent += System.lineSeparator();
     try {
       Files.write(dbFile.toPath(), lineContent.getBytes(), StandardOpenOption.APPEND);
@@ -55,7 +55,7 @@ public class FileHelper {
     }
   }
 
-  public void deleteLine(String lineKey) {
+  void deleteLine(String lineKey) {
     try {
       deleteLineAndSaveToTempFile(lineKey);
       updateDatabaseFromTempFile();
@@ -102,12 +102,11 @@ public class FileHelper {
     }
   }
 
-  public String getLine(String lineKey) {
+  String getLine(String lineKey) {
     try (Stream<String> dbStream = Files.lines(dbFile.toPath())) {
-      String lineFound = dbStream
+      return dbStream
           .filter(line -> line.contains(lineKey))
           .collect(Collectors.joining());
-      return lineFound;
     } catch (IOException ex) {
       logger.warn(" from getLine in FileHelper (File): "
           + ExceptionMsg.IO_ERROR_WHILE_READING, ex);
@@ -115,7 +114,7 @@ public class FileHelper {
     }
   }
 
-  public List<String> getAllLines() {
+  List<String> getAllLines() {
     try (Stream<String> dbStream = Files.lines(dbFile.toPath())) {
       return dbStream.collect(Collectors.toCollection(ArrayList::new));
     } catch (IOException ex) {

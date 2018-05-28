@@ -32,7 +32,6 @@ public class TokenControllerIntegrationTest {
   private static final String GENERATE_TOKEN_PATH = "/token/generate";
   private static final String VALIDATE_TOKEN_PATH = "/token/validate";
   private static final MediaType JSON_CONTENT_TYPE = MediaType.APPLICATION_JSON_UTF8;
-  private final String uuidPattern = "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}";
 
   private User user = new User("username", "userPassword");
 
@@ -61,6 +60,7 @@ public class TokenControllerIntegrationTest {
             .contentType(JSON_CONTENT_TYPE)).andExpect(status().isOk()).andReturn().getResponse()
         .getContentAsString();
 
+    String uuidPattern = "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}";
     assertTrue(generatedToken.matches(uuidPattern));
     assertTrue(Boolean.valueOf(isTokenCorrect));
   }

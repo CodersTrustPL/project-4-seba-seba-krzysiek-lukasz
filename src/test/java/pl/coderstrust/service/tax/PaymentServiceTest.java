@@ -1,6 +1,5 @@
 package pl.coderstrust.service.tax;
 
-
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertFalse;
@@ -22,7 +21,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
-
 
 @RunWith(MockitoJUnitRunner.class)
 public class PaymentServiceTest {
@@ -126,6 +124,4 @@ public class PaymentServiceTest {
     assertTrue(paymentService.idExist(1, 3));
     assertFalse(paymentService.idExist(1, 4));
   }
-
-
 }

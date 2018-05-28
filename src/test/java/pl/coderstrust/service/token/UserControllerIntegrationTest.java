@@ -2,6 +2,7 @@ package pl.coderstrust.service.token;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -62,7 +63,7 @@ public class UserControllerIntegrationTest {
     addUser(krzysiek);
     addUser(piotr);
     //then
-    List<String> usernames = getListWithAllUsernames();
+    List<String> usernames = getListWithAllUsername();
 
     assertThat(usernames.size(), is(4));
     assertTrue(usernames.contains(lukasz.getUsername()));
@@ -106,7 +107,7 @@ public class UserControllerIntegrationTest {
     addUser(krzysiek);
     addUser(piotr);
     //when
-    List<String> usernames = getListWithAllUsernames();
+    List<String> usernames = getListWithAllUsername();
     //then
     assertThat(usernames.size(), is(4));
     assertTrue(usernames.contains(lukasz.getUsername()));
@@ -129,7 +130,7 @@ public class UserControllerIntegrationTest {
         .andExpect(handler().methodName(DELETE_USER))
         .andExpect(status().isOk());
     //then
-    List<String> usernames = getListWithAllUsernames();
+    List<String> usernames = getListWithAllUsername();
 
     assertThat(usernames.size(), is(3));
     assertTrue(usernames.contains(lukasz.getUsername()));
@@ -238,7 +239,7 @@ public class UserControllerIntegrationTest {
         .andExpect(status().isBadRequest())
         .andReturn().getResponse().getContentAsString();
     //then
-    assertTrue(ifRandomUserIsValid.equals(Messages.USER_NOT_EXIST));
+    assertEquals(ifRandomUserIsValid, Messages.USER_NOT_EXIST);
   }
 
   @Test
@@ -268,22 +269,19 @@ public class UserControllerIntegrationTest {
         .andExpect(status().isOk());
   }
 
-  private List<String> getUsernamesFromResponse(String response) throws Exception {
-    ObjectMapper objectMapper = new ObjectMapper();
+  private List<String> getUsernameFromResponse(String response) throws Exception {
     return mapper.readValue(
         response,
         mapper.getTypeFactory().constructCollectionType(List.class, String.class));
   }
 
-  private List<String> getListWithAllUsernames() throws Exception {
+  private List<String> getListWithAllUsername() throws Exception {
     String response = this.mockMvc
         .perform(get(DEFAULT_PATH))
         .andExpect(content().contentType(JSON_CONTENT_TYPE))
         .andExpect(handler().methodName(GET_USER))
         .andExpect(status().isOk())
         .andReturn().getResponse().getContentAsString();
-    return getUsernamesFromResponse(response);
+    return getUsernameFromResponse(response);
   }
 }
-
-

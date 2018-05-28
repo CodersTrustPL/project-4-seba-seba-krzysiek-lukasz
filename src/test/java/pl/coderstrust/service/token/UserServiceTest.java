@@ -9,7 +9,6 @@ import pl.coderstrust.service.users.UserService;
 public class UserServiceTest {
 
   private static UserService userService;
-
   private static User lukasz;
   private static User sebastian;
   private static User krzysiek;

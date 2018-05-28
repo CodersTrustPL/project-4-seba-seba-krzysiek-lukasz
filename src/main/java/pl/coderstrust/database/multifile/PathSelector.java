@@ -4,15 +4,15 @@ import pl.coderstrust.model.WithNameIdIssueDate;
 
 import java.io.File;
 
-public class PathSelector {
+class PathSelector {
 
   private String jsonFilePath;
 
-  public PathSelector(String jsonFilePath) {
+  PathSelector(String jsonFilePath) {
     this.jsonFilePath = jsonFilePath;
   }
 
-  public String getFilePath(WithNameIdIssueDate entry) {
+  String getFilePath(WithNameIdIssueDate entry) {
     StringBuilder stringBuilder = new StringBuilder();
     String invoiceDateYear = String.valueOf(entry.getIssueDate().getYear());
     String invoiceDateMonth = String.valueOf(entry.getIssueDate().getMonth());

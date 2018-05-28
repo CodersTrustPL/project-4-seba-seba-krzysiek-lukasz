@@ -19,9 +19,8 @@ import java.util.List;
 
 public class InvoicesWithSpecifiedData {
 
-
   //Polish
-  public static final Company getPolishCompanyBuyer() {
+  public static Company getPolishCompanyBuyer() {
     return new CompanyBuilder("P.H. Marian Paździoch")
         .setId(2)
         .setAddress("Bazarowa 3/6")
@@ -33,7 +32,7 @@ public class InvoicesWithSpecifiedData {
         .build();
   }
 
-  public static final Company getPolishCompanySeller() {
+  public static Company getPolishCompanySeller() {
     return new CompanyBuilder(
         "Ferdynand Kiepski i Syn Sp.zoo")
         .setId(1)
@@ -48,7 +47,7 @@ public class InvoicesWithSpecifiedData {
 
   }
 
-  public static final Product getPolishProduct() {
+  private static Product getPolishProduct() {
     return new ProductBuilder("Mocny Full", 1.99)
         .setDescription("Piwo Jasne")
         .setVatRate(Vat.VAT_23)
@@ -61,7 +60,7 @@ public class InvoicesWithSpecifiedData {
     return new ArrayList<>(Arrays.asList(invoiceEntry));
   }
 
-  public static final Invoice getInvoiceWithPolishData() {
+  public static Invoice getInvoiceWithPolishData() {
     return new InvoiceBuilder(1, "", "Ferdynand Kiepski i Syn Sp.zoo")
         .setBuyer(getPolishCompanyBuyer())
         .setSeller(getPolishCompanySeller())
@@ -70,6 +69,5 @@ public class InvoicesWithSpecifiedData {
         .setProducts(getPolishProductList())
         .setPaymentState(PaymentState.NOT_PAID)
         .build();
-
   }
 }

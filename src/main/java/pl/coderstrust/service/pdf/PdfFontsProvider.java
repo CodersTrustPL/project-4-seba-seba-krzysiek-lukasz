@@ -13,7 +13,6 @@ import java.io.IOException;
 @Configuration
 public class PdfFontsProvider {
 
-  private final Logger logger = LoggerFactory.getLogger(PdfFontsProvider.class);
   private Font headerPropertyFont;
   private Font headerValueFont;
   private Font propertyFont;
@@ -21,6 +20,7 @@ public class PdfFontsProvider {
 
   public PdfFontsProvider() {
     BaseFont baseFont;
+    Logger logger = LoggerFactory.getLogger(PdfFontsProvider.class);
     try {
       baseFont = BaseFont
           .createFont(PdfConfiguration.BASE_FONT_NAME, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);

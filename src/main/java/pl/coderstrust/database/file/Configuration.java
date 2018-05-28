@@ -17,21 +17,21 @@ public class Configuration {
     this.dbEntryClassName = dbEntryClassName;
   }
 
-  public String getDbFilePath() {
+  String getDbFilePath() {
     return dbFilePath
         + dbNamePrefix + dbEntryClassName + dbFileExtension;
   }
 
-  public String getDbTempFilePath() {
+  String getDbTempFilePath() {
     return dbFilePath
         + dbTempNamePrefix + dbEntryClassName + dbFileExtension;
   }
 
-  public int getFileSystemWaitTimeMs() {
+  int getFileSystemWaitTimeMs() {
     return fileSystemWaitTimeMs;
   }
 
-  public int getUnitSleepTimeMs() {
+  int getUnitSleepTimeMs() {
     return UNIT_SLEEP_TIME_MS;
   }
 }

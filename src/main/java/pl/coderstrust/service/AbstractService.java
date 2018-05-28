@@ -12,8 +12,8 @@ import java.util.List;
 
 public abstract class AbstractService<T extends WithNameIdIssueDate> {
 
-  protected static final LocalDate MIN_DATE = LocalDate.of(1500, 11, 12);
-  protected static final LocalDate MAX_DATE = LocalDate.of(3000, 11, 12);
+  private static final LocalDate MIN_DATE = LocalDate.of(1500, 11, 12);
+  private static final LocalDate MAX_DATE = LocalDate.of(3000, 11, 12);
 
   Database<T> entriesDb;
   PdfGenerator pdfGenerator;
@@ -66,13 +66,13 @@ public abstract class AbstractService<T extends WithNameIdIssueDate> {
     return entriesDb.getEntries();
   }
 
-  protected void setDefaultEntryNameIfEmpty(T entry) {
+  private void setDefaultEntryNameIfEmpty(T entry) {
     if (entry.getName() == null || entry.getName().trim().length() == 0) {
       entry.setName(String.format("%d / %s", entry.getId(), entry.getIssueDate()));
     }
   }
 
-  protected ByteArrayInputStream getPdfReport(long id) {
+  ByteArrayInputStream getPdfReport(long id) {
     return pdfGenerator.invoiceToPdf((Invoice) findEntry(id));
   }
 }

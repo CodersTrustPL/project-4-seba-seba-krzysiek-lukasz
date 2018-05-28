@@ -19,9 +19,9 @@ import java.time.LocalDate;
 @CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("v2/company/{companyId}/invoice")
 @RestController
-public class InvoiceControllerMulticompanies extends AbstractController<Invoice> {
+public class InvoiceControllerMultiCompanies extends AbstractController<Invoice> {
 
-  public InvoiceControllerMulticompanies(InvoiceService invoiceService,
+  public InvoiceControllerMultiCompanies(InvoiceService invoiceService,
       InvoiceByCompanyFilter invoiceByCompanyFilter) {
     super.service = invoiceService;
     super.filter = invoiceByCompanyFilter;

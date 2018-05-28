@@ -6,7 +6,7 @@ public class PdfServiceException extends RuntimeException {
     super(message);
   }
 
-  public PdfServiceException(String message, Exception previousException) {
+  PdfServiceException(String message, Exception previousException) {
     super(message, previousException);
   }
 

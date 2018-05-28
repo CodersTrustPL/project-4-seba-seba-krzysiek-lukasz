@@ -76,7 +76,7 @@ public class CompaniesSqlDb implements Database<Company> {
     Date date = Date.from(entry.getIssueDate().atStartOfDay()
         .atZone(ZoneId.systemDefault()).toInstant());
     return new Object[]{entry.getName(), date, entry.getAddress(), entry.getCity(),
-        entry.getZipCode(), entry.getNip(), entry.getBankAccoutNumber(),
+        entry.getZipCode(), entry.getNip(), entry.getBankAccountNumber(),
         entry.getTaxType().toString(), entry.isPersonalCarUsage()};
   }
 

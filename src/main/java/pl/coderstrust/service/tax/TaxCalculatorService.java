@@ -71,7 +71,7 @@ public class TaxCalculatorService {
   BigDecimal calculateIncomeTaxAdvance(long companyId,
       LocalDate startDate, LocalDate endDate) {
     startDate = LocalDate.of(endDate.getYear(), 1, 1);
-    BigDecimal base = caluclateTaxBase(companyId, startDate, endDate);
+    BigDecimal base = calculateTaxBase(companyId, startDate, endDate);
     BigDecimal sumHealthInsurancePaid = calculateSpecifiedTypeCostsBetweenDates(
         companyId, startDate, endDate.plusDays(20), PaymentType.HEALTH_INSURANCE);
     BigDecimal sumIncomeTaxesAdvancePaid = calculateSpecifiedTypeCostsBetweenDates(
@@ -105,14 +105,14 @@ public class TaxCalculatorService {
     return BigDecimal.valueOf(-1);
   }
 
-  private BigDecimal caluclateTaxBase(long companyId, LocalDate startDate, LocalDate endDate) {
+  private BigDecimal calculateTaxBase(long companyId, LocalDate startDate, LocalDate endDate) {
     BigDecimal base = calculateIncome(companyId, startDate.minusDays(1),
         endDate.plusDays(1)).subtract(calculateCost(companyId, startDate.minusDays(1),
         endDate.plusDays(1)));
-    BigDecimal sumToSubstract = calculateSpecifiedTypeCostsBetweenDates(
+    BigDecimal sumToSubtract = calculateSpecifiedTypeCostsBetweenDates(
         companyId, startDate, endDate.plusDays(20), PaymentType.PENSION_INSURANCE);
 
-    return base.subtract(sumToSubstract).setScale(2, BigDecimal.ROUND_HALF_UP);
+    return base.subtract(sumToSubtract).setScale(2, BigDecimal.ROUND_HALF_UP);
   }
 
   private BigDecimal calculateSpecifiedTypeCostsBetweenDates(long companyId,
@@ -143,7 +143,7 @@ public class TaxCalculatorService {
         calculateSpecifiedTypeCostsBetweenDates(companyId,
             startDate, endDate.plusDays(20), PaymentType.PENSION_INSURANCE)
             .setScale(2, BigDecimal.ROUND_HALF_UP));
-    BigDecimal taxBase = caluclateTaxBase(companyId, startDate, endDate);
+    BigDecimal taxBase = calculateTaxBase(companyId, startDate, endDate);
     taxesSummary.put("Tax calculation base", taxBase.setScale(2, BigDecimal.ROUND_HALF_UP));
     BigDecimal incomeTax;
     switch (companyService.findEntry(companyId).getTaxType()) {
@@ -183,11 +183,11 @@ public class TaxCalculatorService {
     taxesSummary.put("Income tax paid", incomeTaxPaid.setScale(2, BigDecimal.ROUND_HALF_UP));
     taxesSummary
         .put("Health insurance paid", healthInsurancePaid.setScale(2, BigDecimal.ROUND_HALF_UP));
-    taxesSummary.put("Health insurance to substract",
+    taxesSummary.put("Health insurance to subtract",
         healthInsurancePaid.multiply(BigDecimal.valueOf(7.75))
             .divide(BigDecimal.valueOf(9), 2, BigDecimal.ROUND_CEILING)
             .setScale(2, BigDecimal.ROUND_HALF_UP));
-    taxesSummary.put("Income tax - health insurance to substract - income tax paid",
+    taxesSummary.put("Income tax - health insurance to subtract - income tax paid",
         incomeTax.subtract(
             healthInsurancePaid.multiply(BigDecimal.valueOf(7.75))
                 .divide(BigDecimal.valueOf(9), 2, BigDecimal.ROUND_CEILING))

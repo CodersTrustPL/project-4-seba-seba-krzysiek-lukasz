@@ -19,7 +19,7 @@ public class Configuration {
     return (jsonFilePath + dbEntryClassName);
   }
 
-  public String getJsonTempFilePath() {
+  String getJsonTempFilePath() {
     return (jsonFilePath + dbEntryClassName + File.separator + jsonTempFileName);
   }
 }

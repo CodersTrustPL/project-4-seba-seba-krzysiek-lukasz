@@ -27,11 +27,11 @@ public class MultiFileDatabaseTest extends DatabaseTest {
     } catch (IOException ex) {
       ex.printStackTrace();
     }
+    @SuppressWarnings("unchecked")
     ObjectMapperHelper objectMapperHelper = new ObjectMapperHelper(Invoice.class);
     FileCache fileCache = new FileCache(objectMapperHelper, config.getJsonFilePath());
     fileCache.getCache().clear();
 
-    Database database = new MultiFileDatabase<Invoice>(Invoice.class, "\"invoiceId\"");
-    return database;
+    return new MultiFileDatabase<>(Invoice.class, "\"invoiceId\"");
   }
 }

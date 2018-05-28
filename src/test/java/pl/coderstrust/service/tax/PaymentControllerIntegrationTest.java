@@ -25,7 +25,6 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import pl.coderstrust.helpers.InvoicesWithSpecifiedData;
-import pl.coderstrust.helpers.TestCasesGenerator;
 import pl.coderstrust.model.Messages;
 import pl.coderstrust.model.Payment;
 import pl.coderstrust.model.PaymentType;
@@ -64,9 +63,6 @@ public class PaymentControllerIntegrationTest {
 
   @Autowired
   private ObjectMapper mapper;
-
-  @Autowired
-  private TestCasesGenerator generator;
 
   @Before
   public void givenForTest() throws Exception {
@@ -394,8 +390,7 @@ public class PaymentControllerIntegrationTest {
         .perform(delete(DEFAULT_PATH + "/1/-100"))
         .andExpect(status().isBadRequest());
   }
-
-
+  
   private String json(Payment payment) throws Exception {
     return mapper.writeValueAsString(payment);
   }
@@ -418,10 +413,3 @@ public class PaymentControllerIntegrationTest {
     }
   }
 }
-
-
-
-
-
-
-

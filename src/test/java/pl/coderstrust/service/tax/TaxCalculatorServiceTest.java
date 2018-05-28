@@ -329,7 +329,6 @@ public class TaxCalculatorServiceTest {
     //when
     incomeTaxAdvanceCalculatorTestPattern(
         TaxType.LINEAR, 100, BigDecimal.valueOf(4579.17));
-
   }
 
   @Test
@@ -337,7 +336,6 @@ public class TaxCalculatorServiceTest {
     //when
     incomeTaxAdvanceCalculatorTestPattern(
         TaxType.PROGRESIVE, 100, BigDecimal.valueOf(3710.65));
-
   }
 
   @Test
@@ -404,11 +402,9 @@ public class TaxCalculatorServiceTest {
         LocalDate.of(startDate.getYear(), 1, 1),
         endDate.plusDays(20), PaymentType.HEALTH_INSURANCE))
         .thenReturn(Arrays.asList(healthInsurance));
-
     //when
     BigDecimal output = taxCalculatorService.calculateIncomeTaxAdvance(
         1, startDate, endDate);
-
     //then
     assertThat(output, is(expectedValue));
   }
@@ -425,7 +421,7 @@ public class TaxCalculatorServiceTest {
         .setIncomeTax(15128.78)
         .setIncomeTaxPaid(3900)
         .setHealthInsurancePaid(3600)
-        .setHealthInsurancetoSusbstract(3100)
+        .setHealthInsuranceSubtract(3100)
         .setIncomeTaxToPay(8128.78)
         .build();
 
@@ -442,10 +438,10 @@ public class TaxCalculatorServiceTest {
         .setPensionInsurancePaid(6174.84)
         .setTaxCalculationBase(79625.16)
         .setIncomeTax(14332.53)
-        .setDecresingTaxAmount(Rates.DECREASING_TAX_AMOUNT.getValue().doubleValue())
+        .setDecreasingTaxAmount(Rates.DECREASING_TAX_AMOUNT.getValue().doubleValue())
         .setIncomeTaxPaid(3900)
         .setHealthInsurancePaid(3600)
-        .setHealthInsurancetoSusbstract(3100)
+        .setHealthInsuranceSubtract(3100)
         .setIncomeTaxToPay(6776.51)
         .build();
 
@@ -464,7 +460,7 @@ public class TaxCalculatorServiceTest {
         .setIncomeTax(40962.13)
         .setIncomeTaxPaid(3900)
         .setHealthInsurancePaid(3600)
-        .setHealthInsurancetoSusbstract(3100)
+        .setHealthInsuranceSubtract(3100)
         .setIncomeTaxToPay(33962.13)
         .build();
     taxSummaryTestPattern(TaxType.PROGRESIVE, 600, expected);
@@ -527,5 +523,3 @@ public class TaxCalculatorServiceTest {
     assertThat(output, is(equalTo(expected)));
   }
 }
-
-

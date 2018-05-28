@@ -34,7 +34,7 @@ public class CompanyRowMapper implements RowMapper {
       company.setZipCode(resultSet.getString(TableAndColumnsNames.ZIP_CODE));
       company.setNip(resultSet.getString(TableAndColumnsNames.NIP));
       company.setTaxType(TaxType.valueOf(resultSet.getString(TableAndColumnsNames.TAX_TYPE)));
-      company.setBankAccoutNumber(resultSet.getString(TableAndColumnsNames.BANK_ACCOUNT_NUMBER));
+      company.setBankAccountNumber(resultSet.getString(TableAndColumnsNames.BANK_ACCOUNT_NUMBER));
       company.setPersonalCarUsage(resultSet.getBoolean(TableAndColumnsNames.CAR_USER));
       company.setPayments(payments);
     }

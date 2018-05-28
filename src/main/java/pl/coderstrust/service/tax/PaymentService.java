@@ -23,14 +23,14 @@ public class PaymentService {
     this.companyService = companyService;
   }
 
-  public long addPayment(long companyId, Payment payment) {
+  long addPayment(long companyId, Payment payment) {
     long id = getNextId(companyId);
     payment.setId(id);
     addPaymentToList(companyId, payment);
     return id;
   }
 
-  public Payment getPayment(long companyId, long paymentId) {
+  Payment getPayment(long companyId, long paymentId) {
     List<Payment> paymentsToSearch = getPayments(companyId);
     int paymentIndex = getPaymentIndex(paymentId, paymentsToSearch);
     return paymentsToSearch.get(paymentIndex);
@@ -40,7 +40,7 @@ public class PaymentService {
     return companyService.findEntry(companyId).getPayments();
   }
 
-  public List<Payment> getPaymentsByDate(long companyId, LocalDate startDate, LocalDate endDate) {
+  List<Payment> getPaymentsByDate(long companyId, LocalDate startDate, LocalDate endDate) {
     if (startDate == null) {
       startDate = LocalDate.of(1000, 1, 1);
     }
@@ -69,7 +69,7 @@ public class PaymentService {
         .collect(Collectors.toList());
   }
 
-  public void updatePayment(long companyId, Payment payment) {
+  void updatePayment(long companyId, Payment payment) {
     List<Payment> payments = getPayments(companyId);
     for (int i = 0; i < payments.size(); i++) {
       if (payments.get(i).getId() == payment.getId()) {
@@ -82,7 +82,7 @@ public class PaymentService {
     companyService.updateEntry(company);
   }
 
-  public void deletePayment(long companyId, long paymentId) {
+  void deletePayment(long companyId, long paymentId) {
     List<Payment> payments = getPayments(companyId);
     for (int i = 0; i < payments.size(); i++) {
       if (payments.get(i).getId() == paymentId) {

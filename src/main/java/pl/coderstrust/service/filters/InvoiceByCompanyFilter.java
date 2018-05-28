@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 public class InvoiceByCompanyFilter implements EntriesFilter<Invoice> {
 
   @Qualifier("filterWithCompanies")
-  Database<Company> dbCompanies;
+  private Database<Company> dbCompanies;
 
   private InvoiceByCompanyFilter(@Qualifier("companiesDatabase") Database<Company> dbCompanies) {
     this.dbCompanies = dbCompanies;

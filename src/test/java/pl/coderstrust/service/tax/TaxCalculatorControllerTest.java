@@ -281,10 +281,10 @@ public class TaxCalculatorControllerTest {
         .setPensionInsurancePaid(6174.84)
         .setTaxCalculationBase(79625.16)
         .setIncomeTax(14332.53)
-        .setDecresingTaxAmount(Rates.DECREASING_TAX_AMOUNT.getValue().doubleValue())
+        .setDecreasingTaxAmount(Rates.DECREASING_TAX_AMOUNT.getValue().doubleValue())
         .setIncomeTaxPaid(3900)
         .setHealthInsurancePaid(3600)
-        .setHealthInsurancetoSusbstract(3100)
+        .setHealthInsuranceSubtract(3100)
         .setIncomeTaxToPay(6776.51)
         .build();
 
@@ -303,7 +303,7 @@ public class TaxCalculatorControllerTest {
         .setIncomeTax(40962.13)
         .setIncomeTaxPaid(3900)
         .setHealthInsurancePaid(3600)
-        .setHealthInsurancetoSusbstract(3100)
+        .setHealthInsuranceSubtract(3100)
         .setIncomeTaxToPay(33962.13)
         .build();
 
@@ -322,7 +322,7 @@ public class TaxCalculatorControllerTest {
         .setIncomeTax(15128.78)
         .setIncomeTaxPaid(3900)
         .setHealthInsurancePaid(3600)
-        .setHealthInsurancetoSusbstract(3100)
+        .setHealthInsuranceSubtract(3100)
         .setIncomeTaxToPay(8128.78)
         .build();
 

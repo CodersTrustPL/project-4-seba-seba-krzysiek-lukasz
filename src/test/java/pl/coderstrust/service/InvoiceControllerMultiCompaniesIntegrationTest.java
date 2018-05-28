@@ -122,7 +122,6 @@ public class InvoiceControllerMultiCompaniesIntegrationTest {
     return sellerId;
   }
 
-
   @Test
   public void shouldAddInvoiceWhenSellerMatchesCompanyId() throws Exception {
     //then
@@ -374,7 +373,6 @@ public class InvoiceControllerMultiCompaniesIntegrationTest {
     matcher.find();
     return Long.parseLong(matcher.group(0));
   }
-
 
   private List<Invoice> getInvoicesFromResponse(String response) throws Exception {
     return mapper.readValue(

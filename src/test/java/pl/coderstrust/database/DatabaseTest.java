@@ -33,6 +33,7 @@ public abstract class DatabaseTest {
   public abstract Database getCleanDatabase();
 
   @Before
+  @SuppressWarnings("unchecked")
   public void defaultGiven() {
     givenDatabase = getCleanDatabase();
     for (int i = 0; i < INVOICES_COUNT; i++) {
@@ -44,15 +45,14 @@ public abstract class DatabaseTest {
   }
 
   @Test
+  @SuppressWarnings("unchecked")
   public void shouldAddAndGetSingleInvoice() {
     //given
     givenDatabase = getCleanDatabase();
     long invoiceId = givenDatabase.addEntry(givenInvoice);
-
     //when
     String output = mapper.toJson(givenDatabase.getEntryById(invoiceId));
     String expected = mapper.toJson(givenInvoice);
-
     //then
     assertThat(output, is(equalTo(expected)));
   }
@@ -61,11 +61,10 @@ public abstract class DatabaseTest {
   public void shouldDeleteSingleInvoiceById() throws Exception {
     //given
     givenDatabase = getCleanDatabase();
+    @SuppressWarnings("unchecked")
     long invoiceId = givenDatabase.addEntry(givenInvoice);
-
     //when
     givenDatabase.deleteEntry(invoiceId);
-
     //then
     atDeletedInvoiceAccess.expect(DbException.class);
     atDeletedInvoiceAccess.expectMessage(ExceptionMsg.INVOICE_NOT_EXIST);
@@ -73,24 +72,23 @@ public abstract class DatabaseTest {
   }
 
   @Test
+  @SuppressWarnings("unchecked")
   public void shouldUpdateSingleInvoice() {
     //given
     givenDatabase = getCleanDatabase();
     long invoiceId = givenDatabase.addEntry(givenInvoice);
-
     //when
     givenInvoice = generator.getTestInvoice(INVOICE_ENTRIES_COUNT + 1, INVOICE_ENTRIES_COUNT);
     givenInvoice.setId(invoiceId);
     givenDatabase.updateEntry(givenInvoice);
     String expected = mapper.toJson(givenInvoice);
     String output = mapper.toJson(givenDatabase.getEntryById(invoiceId));
-
     //then
     assertThat(output, is(equalTo(expected)));
   }
 
-
   @Test
+  @SuppressWarnings("unchecked")
   public void shouldAddAndGetSeveralInvoices() {
     //when
     for (int i = 0; i < INVOICES_COUNT; i++) {
@@ -106,7 +104,6 @@ public abstract class DatabaseTest {
     for (int i = 0; i < INVOICES_COUNT; i++) {
       givenDatabase.deleteEntry(invoiceIds[i]);
     }
-
     //then
     boolean[] output = new boolean[INVOICES_COUNT];
     boolean[] expected = new boolean[INVOICES_COUNT];
@@ -118,6 +115,7 @@ public abstract class DatabaseTest {
   }
 
   @Test
+  @SuppressWarnings("unchecked")
   public void shouldUpdateSeveralInvoices() {
     //when
     try {
@@ -127,7 +125,6 @@ public abstract class DatabaseTest {
         expected[i] = mapper.toJson(givenInvoice);
         givenDatabase.updateEntry(givenInvoice);
       }
-
       //then
       for (int i = 0; i < INVOICES_COUNT; i++) {
         output[i] = mapper.toJson(givenDatabase.getEntryById(invoiceIds[i]));
@@ -140,15 +137,14 @@ public abstract class DatabaseTest {
   }
 
   @Test
+  @SuppressWarnings("unchecked")
   public void shouldGetAllInvoices() {
     //then
     ArrayList<Invoice> allInvoices = new ArrayList<>(givenDatabase.getEntries());
     String[] output = new String[INVOICES_COUNT];
-
     for (int i = 0; i < INVOICES_COUNT; i++) {
       output[i] = mapper.toJson(allInvoices.get(i));
     }
-
     //expected
     assertThat(output, is(equalTo(expected)));
   }

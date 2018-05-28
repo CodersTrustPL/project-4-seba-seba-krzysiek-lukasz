@@ -10,7 +10,6 @@ import pl.coderstrust.service.pdf.PdfGenerator;
 @Service
 public class InvoiceService extends AbstractService<Invoice> {
 
-
   @Autowired
   public InvoiceService(@Qualifier("invoicesDatabase") Database<Invoice> dbInvoices,
       PdfGenerator pdfGenerator) {

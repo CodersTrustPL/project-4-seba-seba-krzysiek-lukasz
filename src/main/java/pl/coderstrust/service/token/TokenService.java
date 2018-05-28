@@ -12,7 +12,7 @@ public class TokenService {
 
   private HashMap<String, Token> tokens = new HashMap<>();
 
-  public String generateToken() {
+  String generateToken() {
     String number;
     do {
       number = UUID.randomUUID().toString();
@@ -21,7 +21,7 @@ public class TokenService {
     return number;
   }
 
-  public boolean validateToken(String number) {
+  boolean validateToken(String number) {
     Token tokenToValidate = tokens.get(number);
     if (tokenToValidate == null) {
       return false;
@@ -33,7 +33,7 @@ public class TokenService {
     return true;
   }
 
-  public boolean tokenExist(String number) {
+  boolean tokenExist(String number) {
     return tokens.containsKey(number);
   }
 }

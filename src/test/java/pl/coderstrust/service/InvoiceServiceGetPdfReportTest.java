@@ -26,8 +26,7 @@ import java.io.InputStream;
 @RunWith(MockitoJUnitRunner.class)
 public class InvoiceServiceGetPdfReportTest {
 
-
-  private static final String PDF_CREATION_DATE = "2018/05/04 13:21:41";
+  private static final String PDF_CREATION_DATE = "2018/05/28 17:59:42";
   private static final String SAMPLE_PDF_PATH = "src/test/resources/pdf/sampleInvoice.pdf";
   private static final int PDF_PAGES_COUNT = 1;
   private static final int INVOICE_ID = 1;
@@ -38,8 +37,8 @@ public class InvoiceServiceGetPdfReportTest {
   private PdfDateTimeProvider pdfDateTimeProvider;
   private InvoiceService invoiceService;
 
-
   @Before
+  @SuppressWarnings("unchecked")
   public void testSetUp() {
     database = Mockito.mock(Database.class);
     pdfDateTimeProvider = Mockito.mock(PdfDateTimeProvider.class);
@@ -52,7 +51,6 @@ public class InvoiceServiceGetPdfReportTest {
     //given
     TestCasesGenerator generator = new TestCasesGenerator();
     Invoice invoice = generator.getTestInvoice(INVOICE_NUMBER, INVOICE_ENTRIES_COUNT);
-
     when(database.getEntryById(INVOICE_ID)).thenReturn(invoice);
     when(pdfDateTimeProvider.getDateTime()).thenReturn(PDF_CREATION_DATE);
 
@@ -62,15 +60,15 @@ public class InvoiceServiceGetPdfReportTest {
     byte[] pdfContent = new byte[pdfStream.available()];
     pdfStream.read(pdfContent);
 
-    String shouldContent = pdfFileToString(SAMPLE_PDF_PATH);
+    String shouldContent = pdfFileToString();
     String generatedContent = pdfByteArrayToString(pdfContent);
 
     //then
     assertThat(generatedContent, is(equalTo(shouldContent)));
   }
 
-  private String pdfFileToString(String filePath) throws Exception {
-    return pdfReaderToString(new PdfReader(filePath));
+  private String pdfFileToString() throws Exception {
+    return pdfReaderToString(new PdfReader(InvoiceServiceGetPdfReportTest.SAMPLE_PDF_PATH));
   }
 
   private String pdfByteArrayToString(byte[] input) throws Exception {

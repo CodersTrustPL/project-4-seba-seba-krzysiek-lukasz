@@ -18,5 +18,4 @@ public class Application {
   // To run angular frontEnd App run with no security - leave active profile empty in properties
   // and maven profiles.
 
-
 }

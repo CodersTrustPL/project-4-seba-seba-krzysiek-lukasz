@@ -47,7 +47,7 @@ public class CompanyBuilder {
   }
 
   public CompanyBuilder setBankAccoutNumber(String bankAccoutNumber) {
-    company.setBankAccoutNumber(bankAccoutNumber);
+    company.setBankAccountNumber(bankAccoutNumber);
     return this;
   }
 

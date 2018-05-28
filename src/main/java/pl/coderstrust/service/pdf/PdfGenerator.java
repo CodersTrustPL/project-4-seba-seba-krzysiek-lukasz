@@ -118,8 +118,8 @@ public class PdfGenerator {
     addRowsCompanyTable(table, "Company city", seller.getCity(), buyer.getCity());
     addRowsCompanyTable(table, "Company zip code", seller.getZipCode(), buyer.getZipCode());
     addRowsCompanyTable(table, "Company NIP", seller.getNip(), buyer.getNip());
-    addRowsCompanyTable(table, "Company BAC", seller.getBankAccoutNumber(),
-        buyer.getBankAccoutNumber());
+    addRowsCompanyTable(table, "Company BAC", seller.getBankAccountNumber(),
+        buyer.getBankAccountNumber());
 
     return table;
   }

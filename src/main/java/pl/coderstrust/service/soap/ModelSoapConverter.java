@@ -16,9 +16,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ModelSoapConverter {
+class ModelSoapConverter {
 
-  public pl.coderstrust.model.Invoice soapInvoiceToInvoice(Invoice invoice) {
+  pl.coderstrust.model.Invoice soapInvoiceToInvoice(Invoice invoice) {
     pl.coderstrust.model.Company seller = soapCompanyToCompany(invoice.getSeller());
     pl.coderstrust.model.Company buyer = soapCompanyToCompany(invoice.getBuyer());
     InvoiceBuilder builder = new InvoiceBuilder(invoice.getId(), buyer.getName(), seller.getName());
@@ -33,7 +33,7 @@ public class ModelSoapConverter {
     return builder.build();
   }
 
-  public Invoice invoiceToSoapInvoice(pl.coderstrust.model.Invoice invoice) {
+  Invoice invoiceToSoapInvoice(pl.coderstrust.model.Invoice invoice) {
     Invoice soapInvoice = new Invoice();
     soapInvoice.setId(invoice.getId());
     soapInvoice.setName(invoice.getName());
@@ -69,7 +69,7 @@ public class ModelSoapConverter {
   private Company companyToSoapCompany(pl.coderstrust.model.Company company) {
     Company soapCompany = new Company();
     soapCompany.setAddress(company.getAddress());
-    soapCompany.setBankAccoutNumber(company.getBankAccoutNumber());
+    soapCompany.setBankAccountNumber(company.getBankAccountNumber());
     soapCompany.setCity(company.getCity());
     soapCompany.setCustomerIssueDate(company.getIssueDate().toString());
     soapCompany.setId(company.getId());
@@ -88,7 +88,7 @@ public class ModelSoapConverter {
     builder.setCity(company.getCity());
     builder.setZipCode(company.getZipCode());
     builder.setNip(company.getNip());
-    builder.setBankAccoutNumber(company.getBankAccoutNumber());
+    builder.setBankAccoutNumber(company.getBankAccountNumber());
     builder.setTaxType(pl.coderstrust.model.TaxType.valueOf(company.getTaxType().value()));
     builder.setIsCarPersonalUsage(company.isPersonalCarUsage());
     return builder.build();
