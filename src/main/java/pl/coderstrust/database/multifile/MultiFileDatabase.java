@@ -22,10 +22,9 @@ public class MultiFileDatabase<T extends WithNameIdIssueDate> implements Databas
   private FileHelper fileHelper;
   private FileCache<T> fileCache;
   private PathSelector pathSelector;
-  private Configuration config;
 
   public MultiFileDatabase(Class<T> entryClass, String dbKey) {
-    config = new Configuration(entryClass.getSimpleName());
+    Configuration config = new Configuration(entryClass.getSimpleName());
     objectMapper = new ObjectMapperHelper(entryClass);
     fileCache = new FileCache(objectMapper, config.getJsonFilePath());
     pathSelector = new PathSelector(config.getJsonFilePath());

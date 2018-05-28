@@ -39,7 +39,7 @@ public class FileCache<T extends WithNameIdIssueDate> {
     return tempCache;
   }
 
-  public ArrayList<String> getAllFilesEntries() {
+  ArrayList<String> getAllFilesEntries() {
     ArrayList<String> readFiles = new ArrayList<>();
     if (!new File(jsonFilePath).exists()) {
       return readFiles;

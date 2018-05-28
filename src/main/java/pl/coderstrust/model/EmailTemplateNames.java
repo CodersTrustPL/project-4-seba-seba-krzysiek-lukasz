@@ -3,7 +3,6 @@ package pl.coderstrust.model;
 public class EmailTemplateNames {
 
   public static final String TEMPLATE = "template";
-  public static final String INDEX = "index";
   public static final String HEADER = "header";
   public static final String HEADER_INFO = "Invoice from GreenTeam";
   public static final String NAME = "name";

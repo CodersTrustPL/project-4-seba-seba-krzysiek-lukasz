@@ -1,6 +1,7 @@
 package pl.coderstrust.service;
 
 import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
@@ -24,11 +25,11 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import pl.coderstrust.helpers.InvoicesWithSpecifiedData;
+import pl.coderstrust.helpers.TestCasesGenerator;
 import pl.coderstrust.model.Invoice;
 import pl.coderstrust.model.InvoiceEntry;
 import pl.coderstrust.model.Product;
-import pl.coderstrust.testhelpers.InvoicesWithSpecifiedData;
-import pl.coderstrust.testhelpers.TestCasesGenerator;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -67,19 +68,16 @@ public class InvoiceControllerIntegrationTest {
         .perform(post(DEFAULT_PATH)
             .content(json(generator.getTestInvoice(1, 1)))
             .contentType(CONTENT_TYPE_JSON))
-        // .andExpect(handler().methodName(ADD_INVOICE_METHOD))
         .andExpect(status().isOk());
     this.mockMvc
         .perform(post(DEFAULT_PATH)
             .content(json(InvoicesWithSpecifiedData.getInvoiceWithPolishData()))
             .contentType(CONTENT_TYPE_JSON))
-        //   .andExpect(handler().methodName(ADD_INVOICE_METHOD))
         .andExpect(status().isOk());
     //then
     this.mockMvc
         .perform(get(DEFAULT_PATH))
         .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-        // .andExpect(handler().methodName(GET_INVOICE_BY_DATE_METHOD))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.[0].invoiceId ", is(1)))
         .andExpect(jsonPath("$.[0].name", is("idVisible_1")))
@@ -89,16 +87,16 @@ public class InvoiceControllerIntegrationTest {
         .andExpect(jsonPath("$.[0].buyer.city ", is("buyer_city_1")))
         .andExpect(jsonPath("$.[0].buyer.zipCode ", is("buyer_zipCode_1")))
         .andExpect(jsonPath("$.[0].buyer.nip ", is("buyer_nip_1")))
-        .andExpect(jsonPath("$.[0].buyer.bankAccoutNumber ",
-            is("buyer_bankAccoutNumber_1")))
+        .andExpect(jsonPath("$.[0].buyer.bankAccountNumber ",
+            is("buyer_bankAccountNumber_1")))
         .andExpect(jsonPath("$.[0].seller.companyId", is(0)))
         .andExpect(jsonPath("$.[0].seller.name", is("seller_name_1")))
         .andExpect(jsonPath("$.[0].seller.address", is("seller_address_1")))
         .andExpect(jsonPath("$.[0].seller.city ", is("seller_city_1")))
         .andExpect(jsonPath("$.[0].seller.zipCode ", is("seller_zipCode_1")))
         .andExpect(jsonPath("$.[0].seller.nip ", is("seller_nip_1")))
-        .andExpect(jsonPath("$.[0].seller.bankAccoutNumber ",
-            is("seller_bankAccoutNumber_1")))
+        .andExpect(jsonPath("$.[0].seller.bankAccountNumber ",
+            is("seller_bankAccountNumber_1")))
         .andExpect(jsonPath("$.[0].issueDate ", is("2019-03-01")))
         .andExpect(jsonPath("$.[0].paymentDate ", is("2019-03-16")))
         .andExpect(jsonPath("$.[0].products.[0].product.name", is("name_1_1")))
@@ -116,7 +114,7 @@ public class InvoiceControllerIntegrationTest {
         .andExpect(jsonPath("$.[1].buyer.city ", is("Wrocław")))
         .andExpect(jsonPath("$.[1].buyer.zipCode ", is("00-999")))
         .andExpect(jsonPath("$.[1].buyer.nip ", is("123-456-32-18")))
-        .andExpect(jsonPath("$.[1].buyer.bankAccoutNumber ",
+        .andExpect(jsonPath("$.[1].buyer.bankAccountNumber ",
             is("99 1010 2222 3333 4444 5555 6666")))
         .andExpect(jsonPath("$.[1].seller.companyId", is(1)))
         .andExpect(jsonPath("$.[1].seller.name",
@@ -125,7 +123,7 @@ public class InvoiceControllerIntegrationTest {
         .andExpect(jsonPath("$.[1].seller.city ", is("Wrocław")))
         .andExpect(jsonPath("$.[1].seller.zipCode ", is("00-909")))
         .andExpect(jsonPath("$.[1].seller.nip ", is("123-456-32-22")))
-        .andExpect(jsonPath("$.[1].seller.bankAccoutNumber ",
+        .andExpect(jsonPath("$.[1].seller.bankAccountNumber ",
             is("11 1010 2222 3333 4444 5555 6655")))
         .andExpect(jsonPath("$.[1].issueDate ", is("2025-12-24")))
         .andExpect(jsonPath("$.[1].paymentDate ", is("2025-12-31")))
@@ -290,7 +288,7 @@ public class InvoiceControllerIntegrationTest {
         .getContentAsString();
     //then
     Invoice returnedInvoice = jsonToInvoice(response);
-    assertTrue(returnedInvoice.equals(testInvoice2));
+    assertEquals(returnedInvoice, testInvoice2);
   }
 
   @Test
@@ -371,7 +369,7 @@ public class InvoiceControllerIntegrationTest {
         .getContentAsString();
     invoiceToUpdate.setName("3 / 2025-12-24");
     Invoice returnedInvoice = jsonToInvoice(response);
-    assertTrue(returnedInvoice.equals(invoiceToUpdate));
+    assertEquals(returnedInvoice, invoiceToUpdate);
   }
 
   @Test
@@ -399,7 +397,6 @@ public class InvoiceControllerIntegrationTest {
   }
 
   private List<Invoice> getInvoicesFromResponse(String response) throws Exception {
-    ObjectMapper objectMapper = new ObjectMapper();
     return mapper.readValue(
         response,
         mapper.getTypeFactory().constructCollectionType(List.class, Invoice.class));

@@ -7,6 +7,7 @@ import pl.coderstrust.model.Invoice;
 public class MongoDbTest extends DatabaseTest {
 
   @Override
+  @SuppressWarnings("unchecked")
   public Database getCleanDatabase() {
     return new MongoDatabase(Invoice.class, null, true);
   }

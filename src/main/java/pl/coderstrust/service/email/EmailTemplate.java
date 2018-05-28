@@ -35,14 +35,14 @@ class EmailTemplate {
     context.setVariable(EmailTemplateNames.SELLER_ZIP_CODE, invoice.getSeller().getZipCode());
     context.setVariable(EmailTemplateNames.SELLER_NIP, invoice.getSeller().getNip());
     context.setVariable(EmailTemplateNames.SELLER_BANK_ACCOUNT_NUMBER,
-        invoice.getSeller().getBankAccoutNumber());
+        invoice.getSeller().getBankAccountNumber());
     context.setVariable(EmailTemplateNames.BUYER_NAME, invoice.getBuyer().getName());
     context.setVariable(EmailTemplateNames.BUYER_ADDRESS, invoice.getBuyer().getAddress());
     context.setVariable(EmailTemplateNames.BUYER_CITY, invoice.getBuyer().getCity());
     context.setVariable(EmailTemplateNames.BUYER_ZIP_CODE, invoice.getBuyer().getZipCode());
     context.setVariable(EmailTemplateNames.BUYER_NIP, invoice.getBuyer().getNip());
     context.setVariable(EmailTemplateNames.BUYER_BANK_ACCOUNT_NUMBER,
-        invoice.getBuyer().getBankAccoutNumber());
+        invoice.getBuyer().getBankAccountNumber());
     context.setVariable(EmailTemplateNames.PRODUCTS, pricesList(invoice));
     context.setVariable(EmailTemplateNames.TOTAL_RETAIL_PRICE, totalRetailPrice);
     context.setVariable(EmailTemplateNames.TOTAL_NET_VALUE, totalNetValue);

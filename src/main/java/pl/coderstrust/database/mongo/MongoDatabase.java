@@ -24,17 +24,12 @@ import java.util.List;
 
 public class MongoDatabase<T extends WithNameIdIssueDate> implements Database<T> {
 
-  private final Logger logger = LoggerFactory.getLogger(InFileDatabase.class);
-  private MongoClient mongoClient;
-  private DB database;
   private DBCollection collection;
   private ObjectMapperHelper<T> mapperHelper;
   private long index;
   private Class entryClass;
-  private String keyName;
 
   public MongoDatabase(Class<T> entryClass, String keyName, boolean isEmbeded) {
-    this.keyName = keyName;
     this.entryClass = entryClass;
     mapperHelper = new ObjectMapperHelper(entryClass);
     if (isEmbeded) {
@@ -43,12 +38,13 @@ public class MongoDatabase<T extends WithNameIdIssueDate> implements Database<T>
         MongoTemplate mongoTemplate = mongoConfig.mongoTemplate();
         collection = mongoTemplate.getCollection(entryClass.getSimpleName());
       } catch (IOException ex) {
+        Logger logger = LoggerFactory.getLogger(InFileDatabase.class);
         logger.warn(" From MongoDatabase constructor " + ex);
         throw new DbException(ExceptionMsg.IO_ERROR_WHILE_INITIALIZING, ex);
       }
     } else {
-      mongoClient = new MongoClient(new MongoClientURI("mongodb://localhost:27017"));
-      database = mongoClient.getDB("AccountantApp");
+      MongoClient mongoClient = new MongoClient(new MongoClientURI("mongodb://localhost:27017"));
+      DB database = mongoClient.getDB("AccountantApp");
       collection = database.getCollection(entryClass.getSimpleName());
     }
     index = getCurrentMaxIndex();

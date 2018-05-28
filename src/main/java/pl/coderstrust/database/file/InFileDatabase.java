@@ -98,7 +98,7 @@ public class InFileDatabase<T extends WithNameIdIssueDate> implements Database<T
 
   private HashSet<Long> getIdsFromDbFile() {
     return getEntries().stream()
-        .map(invoice -> invoice.getId())
+        .map(WithNameIdIssueDate::getId)
         .collect(Collectors.toCollection(HashSet::new));
   }
 }

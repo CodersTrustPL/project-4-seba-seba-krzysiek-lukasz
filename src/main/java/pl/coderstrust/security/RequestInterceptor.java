@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 public class RequestInterceptor extends HandlerInterceptorAdapter {
 
   private static final String DEFAULT_URL_TO_VALIDATE_TOKEN =
-      "http://localhost:8080/tokens/validate/";
+      "http://localhost:8080/token/validate/";
   private static final String pattern = "(\\/users.*|\\/tokens.*|\\/swagger.*)";
 
   private final Logger logger = LoggerFactory.getLogger("Security");

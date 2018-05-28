@@ -32,6 +32,7 @@ public class InvoiceBookTest {
   private InvoiceService invoiceBook;
 
   @Test
+  @SuppressWarnings("unchecked")
   public void shouldAddInvoice() {
     //given
     when(database.addEntry(invoice)).thenReturn(1L);
@@ -62,6 +63,7 @@ public class InvoiceBookTest {
   }
 
   @Test
+  @SuppressWarnings("unchecked")
   public void shouldUpdateInvoice() {
     //given
     doNothing().when(database).updateEntry(invoice);
