@@ -26,7 +26,7 @@ public class Company {
   private String city;
   private String zipCode;
   private String nip;
-  private String bankAccoutNumber;
+  private String bankAccountNumber;
   private TaxType taxType;
   private boolean personalCarUsage;
   private List<Payment> payments;

@@ -108,7 +108,7 @@ public abstract class AbstractValidInputTests {
 
           .then()
           .assertThat()
-          .body(containsString("Entry added under id :"));
+          .body(containsString("id:"));
     }
   }
 

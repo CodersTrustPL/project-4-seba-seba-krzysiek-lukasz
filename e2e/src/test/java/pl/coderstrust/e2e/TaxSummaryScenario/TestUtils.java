@@ -55,7 +55,7 @@ public class TestUtils {
         .city("Warszawa")
         .zipCode("00-222")
         .nip("nip")
-        .bankAccoutNumber("bank account")
+        .bankAccountNumber("bank account")
         .taxType(TaxType.LINEAR)
         .personalCarUsage(false)
         .payments(new ArrayList<Payment>())
