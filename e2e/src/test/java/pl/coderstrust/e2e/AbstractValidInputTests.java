@@ -91,7 +91,9 @@ public abstract class AbstractValidInputTests {
 
           .when().post(getInvoicePath())
 
-          .then().assertThat().body(containsString("Entry added under id :"));
+          .then()
+          .assertThat()
+          .body(containsString("id:"));
     }
   }
 

@@ -59,13 +59,13 @@ public class TaxSummaryMapBuilder {
   }
 
   public TaxSummaryMapBuilder setHealthInsurancetoSusbstract(double healthInsurancetoSusbstract) {
-    map.put("Health insurance to substract",
+    map.put("Health insurance to subtract",
         BigDecimal.valueOf(healthInsurancetoSusbstract).setScale(2));
     return this;
   }
 
   public TaxSummaryMapBuilder setIncomeTaxToPay(double incomeTaxToPay) {
-    map.put("Income tax - health insurance to substract - income tax paid",
+    map.put("Income tax - health insurance to subtract - income tax paid",
         BigDecimal.valueOf(incomeTaxToPay).setScale(2));
     return this;
   }

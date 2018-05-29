@@ -237,7 +237,7 @@ public abstract class AbstractPerformanceTests {
         newFixedThreadPool.shutdown();
 
         for (String s : responseList) {
-            assertThat(s, containsString("id: "));
+            assertThat(s, containsString("id:"));
         }
     }
 
