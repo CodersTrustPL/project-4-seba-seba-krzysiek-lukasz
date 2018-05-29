@@ -1,18 +1,21 @@
 package pl.coderstrust.database;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import pl.coderstrust.database.file.InFileDatabase;
+import pl.coderstrust.database.hibernate.CompanyRepository;
 import pl.coderstrust.database.hibernate.HibernateCompanyDatabase;
 import pl.coderstrust.database.hibernate.HibernateInvoiceDatabase;
+import pl.coderstrust.database.hibernate.InvoiceRepository;
 import pl.coderstrust.database.memory.InMemoryDatabase;
+//import pl.coderstrust.database.mongo.MongoDatabase;
 import pl.coderstrust.database.mongo.MongoDatabase;
 import pl.coderstrust.database.multifile.MultiFileDatabase;
 import pl.coderstrust.database.sql.CompaniesSqlDb;
 import pl.coderstrust.model.Company;
 import pl.coderstrust.model.Invoice;
-
 
 @Configuration
 public class DatabaseProvider {
@@ -36,6 +39,11 @@ public class DatabaseProvider {
   @Value("${pl.coderstrust.database.FilterDatabase.key}")
   private String filterDbKey;
 
+  @Autowired
+  CompanyRepository companyRepository;
+
+  @Autowired
+  InvoiceRepository invoiceRepository;
 
   @Bean
   public Database<Invoice> invoicesDatabase() {
@@ -49,7 +57,7 @@ public class DatabaseProvider {
       case MONGO_EMB:
         return new MongoDatabase<>(Invoice.class, masterDbKey, true);
       case HIBERNATE:
-        return new HibernateInvoiceDatabase();
+        return new HibernateInvoiceDatabase(invoiceRepository,companyRepository);
       //TODO SQL db for Invoices
       // case SQL_DB:
       // return new CompaniesSqlDb<>(Invoice.class);
@@ -70,7 +78,7 @@ public class DatabaseProvider {
       case MONGO_EMB:
         return new MongoDatabase<>(Company.class, filterDbKey, true);
       case HIBERNATE:
-        return new HibernateCompanyDatabase();
+        return new HibernateCompanyDatabase(companyRepository);
       case SQL_DB:
         return new CompaniesSqlDb();
       default:

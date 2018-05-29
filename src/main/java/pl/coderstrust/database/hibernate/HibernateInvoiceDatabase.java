@@ -9,11 +9,16 @@ import java.util.List;
 
 public class HibernateInvoiceDatabase implements Database<Invoice> {
 
-  @Autowired
-  InvoiceRepository invoiceRepository;
+  private InvoiceRepository invoiceRepository;
+
+  private CompanyRepository companyRepository;
 
   @Autowired
-  CompanyRepository companyRepository;
+  public HibernateInvoiceDatabase(InvoiceRepository invoiceRepository,
+      CompanyRepository companyRepository) {
+    this.invoiceRepository = invoiceRepository;
+    this.companyRepository = companyRepository;
+  }
 
   @Override
   public long addEntry(Invoice invoice) {

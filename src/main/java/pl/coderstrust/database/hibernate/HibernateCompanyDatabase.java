@@ -9,8 +9,12 @@ import java.util.List;
 
 public class HibernateCompanyDatabase implements Database<Company> {
 
+  private CompanyRepository companyRepository;
+
   @Autowired
-  CompanyRepository companyRepository;
+  public HibernateCompanyDatabase(CompanyRepository companyRepository) {
+    this.companyRepository = companyRepository;
+  }
 
   @Override
   public long addEntry(Company company) {

@@ -22,7 +22,7 @@ import java.time.LocalDate;
 import java.util.Collections;
 
 @RunWith(MockitoJUnitRunner.class)
-public class InvoiceBookTest {
+public class InvoiceServiceTest {
 
   @Mock
   private CompanyService companyService;

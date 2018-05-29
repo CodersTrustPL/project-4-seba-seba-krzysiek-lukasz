@@ -58,7 +58,6 @@ public class TaxCalculatorServiceTest {
     testCompany.setId(1);
   }
 
-
   @Test
   public void shouldCalculateIncomeWholeInvoicesInDataRange() {
     //given
