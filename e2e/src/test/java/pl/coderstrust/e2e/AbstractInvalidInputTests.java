@@ -126,7 +126,7 @@ public abstract class AbstractInvalidInputTests {
   private Invoice getInvoiceCompanyNoBac() {
     Invoice testInvoice = getDefaultTestInvoice();
     Company seller = getDefaultTestCompany();
-    seller.setBankAccoutNumber("");
+    seller.setBankAccountNumber("");
     testInvoice.setSeller(seller);
     return testInvoice;
 

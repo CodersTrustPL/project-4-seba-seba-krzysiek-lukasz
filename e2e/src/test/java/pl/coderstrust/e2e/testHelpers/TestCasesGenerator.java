@@ -46,7 +46,7 @@ public class TestCasesGenerator {
         .city(prefix + "city_" + Integer.toString(invoiceNumber))
         .zipCode(prefix + "zipCode_" + Integer.toString(invoiceNumber))
         .nip(prefix + "nip_" + Integer.toString(invoiceNumber))
-        .bankAccoutNumber(prefix + "bankAccoutNumber_" + Integer.toString(invoiceNumber))
+        .bankAccountNumber(prefix + "bankAccountNumber_" + Integer.toString(invoiceNumber))
         .taxType(TaxType.LINEAR)
         .personalCarUsage(false)
         .payments(getTestPayments(5))
