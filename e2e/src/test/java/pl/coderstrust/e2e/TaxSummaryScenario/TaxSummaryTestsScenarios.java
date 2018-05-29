@@ -30,6 +30,7 @@ public class TaxSummaryTestsScenarios {
   private TaxSummaryMapBuilder mapBuilder = new TaxSummaryMapBuilder();
   private LocalDate startDate;
 
+
   @BeforeClass
   public void setup() {
     startDate = LocalDate.of(LocalDate.now().getYear() + 1, 1, 1);

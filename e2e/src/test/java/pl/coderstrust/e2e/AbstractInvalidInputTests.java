@@ -2,6 +2,7 @@ package pl.coderstrust.e2e;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.instanceOf;
 
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -10,6 +11,7 @@ import pl.coderstrust.e2e.model.Invoice;
 import pl.coderstrust.e2e.model.InvoiceEntry;
 import pl.coderstrust.e2e.model.Messages;
 import pl.coderstrust.e2e.model.Product;
+import pl.coderstrust.e2e.performanceTests.TestUtils;
 import pl.coderstrust.e2e.testHelpers.TestCasesGenerator;
 
 import java.time.LocalDate;
@@ -27,6 +29,9 @@ public abstract class AbstractInvalidInputTests {
 
   @Test(dataProvider = "invalidInvoices")
   public void shouldReturnCorrectMessageWhenAddingInvalidInvoice(Invoice invoice, String message) {
+    invoice.getSeller().setNip(TestUtils.getUnusedNip());
+    invoice.getSeller().setNip(TestUtils.getUnusedNip());
+
     given()
         .contentType("application/json")
         .body(invoice)
@@ -126,7 +131,7 @@ public abstract class AbstractInvalidInputTests {
   private Invoice getInvoiceCompanyNoBac() {
     Invoice testInvoice = getDefaultTestInvoice();
     Company seller = getDefaultTestCompany();
-    seller.setBankAccoutNumber("");
+    seller.setBankAccountNumber("");
     testInvoice.setSeller(seller);
     return testInvoice;
 

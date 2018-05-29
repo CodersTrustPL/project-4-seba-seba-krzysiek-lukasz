@@ -2,6 +2,7 @@ package pl.coderstrust.e2e.V1Tests;
 
 import pl.coderstrust.e2e.TestsConfiguration;
 
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,5 +25,9 @@ class TestUtils {
     return getV1InvoicePath() + String.valueOf(invoiceId);
   }
 
+  public static String getUnusedNip() {
+    Random random = new Random();
+    return String.valueOf(random.nextLong());
+  }
 
 }
