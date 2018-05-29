@@ -54,7 +54,7 @@ public class TaxCalculatorServiceTest {
   private TaxCalculatorService taxCalculatorService;
 
   @Before
-  public void setup(){
+  public void setup() {
     testCompany.setId(1);
   }
 

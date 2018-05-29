@@ -298,17 +298,18 @@ public class InvoiceControllerIntegrationTest {
     invoiceToUpdate.setId(3);
     //when
     this.mockMvc.perform(
-        put(DEFAULT_PATH + "/3").content(json(InvoicesWithSpecifiedData.getInvoiceWithPolishData()))
+        put(DEFAULT_PATH + "/3")
+            .content(json(InvoicesWithSpecifiedData.getInvoiceWithPolishData()))
             .contentType(CONTENT_TYPE_JSON)).andExpect(status().isOk());
     //then
     String response = this.mockMvc.perform(get(DEFAULT_PATH + "/3"))
         .andExpect(content().contentType(CONTENT_TYPE_JSON))
         .andExpect(handler().methodName(GET_INVOICE_BY_ID_METHOD)).andExpect(status().isOk())
         .andReturn().getResponse().getContentAsString();
+    final Invoice returnedInvoice = jsonToInvoice(response);
     invoiceToUpdate.setName("N/A");
     invoiceToUpdate.getBuyer().setId(11);
     invoiceToUpdate.getSeller().setId(12);
-    Invoice returnedInvoice = jsonToInvoice(response);
     assertThat(returnedInvoice, is(equalTo(invoiceToUpdate)));
   }
 

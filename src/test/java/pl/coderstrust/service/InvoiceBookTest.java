@@ -48,7 +48,8 @@ public class InvoiceBookTest {
     when(companyService.nipExist(invoice.getBuyer().getNip())).thenReturn(true);
     when(companyService.getEntryByNip(invoice.getBuyer().getNip())).thenReturn(invoice.getBuyer());
     when(companyService.nipExist(invoice.getSeller().getNip())).thenReturn(true);
-    when(companyService.getEntryByNip(invoice.getSeller().getNip())).thenReturn(invoice.getSeller());
+    when(companyService.getEntryByNip(invoice.getSeller().getNip()))
+        .thenReturn(invoice.getSeller());
     when(database.addEntry(invoice)).thenReturn(1L);
     //when
     invoiceBook.addEntry(invoice);

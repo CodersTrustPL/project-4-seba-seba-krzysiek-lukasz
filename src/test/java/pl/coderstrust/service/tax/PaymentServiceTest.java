@@ -103,8 +103,8 @@ public class PaymentServiceTest {
     //when
     paymentService.updatePayment(1, updatedPayment);
     //then
-    assertThat(paymentService.getPayments(1).get(2).getAmount()
-        , is(BigDecimal.TEN.setScale(2)));
+    assertThat(paymentService.getPayments(1).get(2).getAmount(),
+        is(BigDecimal.TEN.setScale(2)));
   }
 
   @Test
