@@ -46,10 +46,7 @@ public class TestUtils {
   }
 
   public static long registerCompany(Company testCompany) {
-    Response ServiceResponse = given()
-        .contentType("application/json")
-        .body(testCompany)
-        .when()
+    Response ServiceResponse = given().contentType("application/json").body(testCompany).when()
         .post(getV2CompanyPath());
     return getInvoiceIdFromServiceResponse(ServiceResponse.print());
   }
@@ -60,7 +57,8 @@ public class TestUtils {
     testInvoice = new TestCasesGenerator()
         .getTestInvoice(testsConfiguration.getDefaultTestInvoiceNumber(),
             testsConfiguration.getDefaultEntriesCount());
-
+    testInvoice.getSeller().setNip(TestUtils.getUnusedNip());
+    testInvoice.getBuyer().setNip(TestUtils.getUnusedNip());
     long sellerId = registerCompany(testInvoice.getSeller());
     long buyerId = registerCompany(testInvoice.getBuyer());
 

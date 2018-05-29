@@ -60,7 +60,6 @@ public class InvoiceController extends AbstractController<Invoice> {
     return removeEntry(id, null);
   }
 
-
   @RequestMapping(value = "{id}/pdf", method = RequestMethod.GET,
       produces = MediaType.APPLICATION_PDF_VALUE)
   @ApiOperation(value = "Returns invoice in pdf format")

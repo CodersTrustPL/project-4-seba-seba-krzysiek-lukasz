@@ -27,6 +27,8 @@ public abstract class AbstractValidInputTests {
   protected Invoice testInvoice;
   protected ArrayList<Invoice> testInvoices = new ArrayList<>();
 
+  private TestCasesGenerator testCasesGenerator = new TestCasesGenerator();
+
   @Test
   public void shouldReturnCorrectStatusCodeWhenServiceIsUp() {
     given().when().get(getInvoicePath())
@@ -38,16 +40,23 @@ public abstract class AbstractValidInputTests {
 
   @Test
   public void shouldCorrectlyAddAndGetInvoiceById() {
-    // long buyerId = TestUtils.registerCompany(testInvoice.getBuyer());
-    // long sellerId = TestUtils.registerCompany(testInvoice.getSeller());
-    // testInvoice.getBuyer().setId(buyerId);
-    //  testInvoice.getSeller().setId(sellerId);
-    System.out.println("@@@@@@ - " + testInvoice);
+
+    Company company = testCasesGenerator.getTestCompany(1, "prefix");
+    Company company2 = testCasesGenerator.getTestCompany(2, "prefix2");
+    company.setNip(TestUtils.getUnusedNip());
+    company2.setNip(TestUtils.getUnusedNip());
+    long sellerId = TestUtils.registerCompany(company);
+    long buyerId = TestUtils.registerCompany(company2);
+    company.setId(sellerId);
+    company2.setId(buyerId);
+
+    testInvoice.setSeller(company);
+    testInvoice.setBuyer(company2);
+
     long invoiceId = addInvoice(testInvoice);
 
     testInvoice.setId(invoiceId);
     given().when().get(getInvoicePathWithInvoiceId(invoiceId)).
-
         then().assertThat().body(jsonEquals(mapper.toJson(testInvoice)));
 
   }
@@ -58,13 +67,25 @@ public abstract class AbstractValidInputTests {
 
   @Test
   public void shouldCorrectlyUpdateInvoice() {
+    Company company = testCasesGenerator.getTestCompany(1, "prefix");
+    Company company2 = testCasesGenerator.getTestCompany(2, "prefix2");
+    company.setNip(TestUtils.getUnusedNip());
+    company2.setNip(TestUtils.getUnusedNip());
+    long sellerId = TestUtils.registerCompany(company);
+    long buyerId = TestUtils.registerCompany(company2);
+    company.setId(sellerId);
+    company2.setId(buyerId);
+
+    testInvoice.setBuyer(company);
+    testInvoice.setSeller(company2);
     long invoiceId = addInvoice(testInvoice);
     Invoice updatedInvoice = generator
         .getTestInvoice(TestsConfiguration.DEFAULT_TEST_INVOICE_NUMBER + 1,
             TestsConfiguration.DEFAULT_ENTRIES_COUNT);
     updatedInvoice.setId(invoiceId);
-    updatedInvoice.setBuyer(testInvoice.getBuyer());
-    updatedInvoice.setSeller(testInvoice.getSeller());
+    updatedInvoice.setSeller(company2);
+    updatedInvoice.setBuyer(company);
+
     given().contentType("application/json").body(updatedInvoice).when()
         .put(getInvoicePathWithInvoiceId(invoiceId));
 
@@ -76,12 +97,11 @@ public abstract class AbstractValidInputTests {
   @Test
   public void shouldCorrectlyDeleteInvoiceById() {
     long invoiceId = addInvoice(testInvoice);
-    given().contentType("application/json").body(testInvoice).when()
-        .delete(getInvoicePathWithInvoiceId(invoiceId));
 
-    given().when().get(getInvoicePathWithInvoiceId(invoiceId))
+    given().when().delete(getInvoicePathWithInvoiceId(invoiceId));
 
-        .then().assertThat().body(equalTo(""));
+    given().when().get(getInvoicePathWithInvoiceId(invoiceId)).then().assertThat()
+        .body(equalTo(""));
   }
 
   @Test
@@ -91,9 +111,7 @@ public abstract class AbstractValidInputTests {
 
           .when().post(getInvoicePath())
 
-          .then()
-          .assertThat()
-          .body(containsString("id:"));
+          .then().assertThat().body(containsString("id:"));
     }
   }
 

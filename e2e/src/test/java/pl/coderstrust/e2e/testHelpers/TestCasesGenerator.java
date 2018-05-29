@@ -23,34 +23,24 @@ public class TestCasesGenerator {
 
   public Invoice getTestInvoice(int invoiceNumber, int entriesCount) {
     LocalDate dateIssue = LocalDate.of(2018, 10, 1);
-
-    return Invoice.builder()
-        .id(invoiceNumber)
-        .name("idVisible_" + Integer.toString(invoiceNumber))
+    return Invoice.builder().id(invoiceNumber).name("idVisible_" + Integer.toString(invoiceNumber))
         .buyer(getTestCompany(invoiceNumber, "buyer_"))
-        .seller(getTestCompany(invoiceNumber, "seller_"))
-        .issueDate(dateIssue)
-        .paymentDate(dateIssue.plusDays(15))
-        .products(getTestEntries(invoiceNumber, entriesCount))
-        .paymentState(PaymentState.NOT_PAID)
-        .build();
+        .seller(getTestCompany(invoiceNumber, "seller_")).issueDate(dateIssue)
+        .paymentDate(dateIssue.plusDays(15)).products(getTestEntries(invoiceNumber, entriesCount))
+        .paymentState(PaymentState.NOT_PAID).build();
   }
 
   public Company getTestCompany(int invoiceNumber, String prefix) {
     LocalDate dateIssue = LocalDate.of(2018, 10, 1);
-    return Company.builder()
-        .id(invoiceNumber)
-        .issueDate(dateIssue)
+    return Company.builder().id(invoiceNumber).issueDate(dateIssue)
         .name(prefix + "name_" + Integer.toString(invoiceNumber))
         .address(prefix + "address_" + Integer.toString(invoiceNumber))
         .city(prefix + "city_" + Integer.toString(invoiceNumber))
         .zipCode(prefix + "zipCode_" + Integer.toString(invoiceNumber))
         .nip(prefix + "nip_" + Integer.toString(invoiceNumber))
         .bankAccountNumber(prefix + "bankAccountNumber_" + Integer.toString(invoiceNumber))
-        .taxType(TaxType.LINEAR)
-        .personalCarUsage(false)
-        .payments(getTestPayments(5))
-        .build();
+        .taxType(TaxType.LINEAR).personalCarUsage(false)
+        .payments(getTestPayments(5)).build();
   }
 
 
@@ -63,12 +53,8 @@ public class TestCasesGenerator {
   }
 
   public Payment getTestPayment(long id, int count) {
-    return Payment.builder()
-        .id(id)
-        .issueDate(LocalDate.now().plusYears(id))
-        .amount(BigDecimal.valueOf(count))
-        .type(PaymentType.HEALTH_INSURANCE)
-        .build();
+    return Payment.builder().id(id).issueDate(LocalDate.now().plusYears(id))
+        .amount(BigDecimal.valueOf(count)).type(PaymentType.HEALTH_INSURANCE).build();
   }
 
   public List<InvoiceEntry> getTestEntries(int invoiceNumber, int productsCount) {
@@ -82,13 +68,10 @@ public class TestCasesGenerator {
 
   public Product getTestProduct(int invoiceNumber, int productCount) {
     String name = "name_" + Integer.toString(invoiceNumber) + "_" + Integer.toString(productCount);
-    return Product.builder()
-        .name(name)
-        .netValue(BigDecimal.valueOf(invoiceNumber))
+    return Product.builder().name(name).netValue(BigDecimal.valueOf(invoiceNumber))
         .vatRate(Vat.VAT_23)
         .description(name + "_" + "description_" + Integer.toString(invoiceNumber))
-        .productType(ProductType.ELECTRIONICS)
-        .build();
+        .productType(ProductType.ELECTRIONICS).build();
   }
 
   public List<Payment> createPensionInsurancePaymentsForYear(int year) {
@@ -126,7 +109,6 @@ public class TestCasesGenerator {
     }
     return paymentsList;
   }
-
 
 
 }

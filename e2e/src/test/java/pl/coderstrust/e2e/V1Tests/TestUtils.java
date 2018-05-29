@@ -18,7 +18,7 @@ class TestUtils {
   }
 
   public static String getV1InvoicePath() {
-    return "/v1/invoice/";
+    return "v1/invoice/";
   }
 
   public static String getV1InvoicePathWithInvoiceId(long invoiceId) {

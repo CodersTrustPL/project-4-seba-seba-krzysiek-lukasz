@@ -29,8 +29,6 @@ public abstract class AbstractInvalidInputTests {
 
   @Test(dataProvider = "invalidInvoices")
   public void shouldReturnCorrectMessageWhenAddingInvalidInvoice(Invoice invoice, String message) {
-    invoice.getSeller().setNip(TestUtils.getUnusedNip());
-    invoice.getSeller().setNip(TestUtils.getUnusedNip());
 
     given()
         .contentType("application/json")
