@@ -23,6 +23,4 @@ public class SmokeTest {
   public void contextLoads() {
     assertThat(invoiceBookController, is(not(nullValue())));
   }
-
-
 }

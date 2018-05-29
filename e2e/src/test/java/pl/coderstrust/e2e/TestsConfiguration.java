@@ -74,7 +74,7 @@ public class TestsConfiguration {
         .body(objectMapperHelper.toJson(tomek)).post("/users");
 
     Response serviceRespone = given().contentType("application/json")
-        .body(objectMapperHelper.toJson(tomek)).post("/tokens/generate");
+        .body(objectMapperHelper.toJson(tomek)).post("/token/generate");
 
     RestAssured.requestSpecification = new RequestSpecBuilder()
         .addHeader("Token", serviceRespone.body().print()).build();

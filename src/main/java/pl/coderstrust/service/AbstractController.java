@@ -24,7 +24,7 @@ public abstract class AbstractController<T extends WithNameIdIssueDate & WithVal
     List<String> entryState = entry.validate();
 
     if (filterId != null) {
-      if (!filter.hasObjectById(entry, filterId.longValue())) {
+      if (!filter.hasObjectById(entry, filterId)) {
         entryState.add(Messages.COMPANY_ID_NOT_MATCH);
       }
     }
@@ -86,7 +86,7 @@ public abstract class AbstractController<T extends WithNameIdIssueDate & WithVal
     return ResponseEntity.ok().build();
   }
 
-  public ResponseEntity removeEntry(Long entryId, Long filterKey) {
+  ResponseEntity removeEntry(Long entryId, Long filterKey) {
 
     List<String> entryState = new ArrayList<>();
     if (!service.idExist(entryId)) {
@@ -103,7 +103,7 @@ public abstract class AbstractController<T extends WithNameIdIssueDate & WithVal
     return ResponseEntity.ok().build();
   }
 
-  public ResponseEntity getPdfFromEntry(Long entryId, Long filterKey) {
+  ResponseEntity getPdfFromEntry(Long entryId, Long filterKey) {
 
     if (!service.idExist(entryId)) {
       return ResponseEntity.notFound().build();

@@ -5,7 +5,7 @@
     <gs:name>UpdatedInvoiceName</gs:name>
     <gs:buyer>
       <gs:address>buyer_address_1</gs:address>
-      <gs:bankAccoutNumber>buyer_bankAccoutNumber_1</gs:bankAccoutNumber>
+      <gs:bankAccountNumber>buyer_bankAccoutNumber_1</gs:bankAccountNumber>
       <gs:city>buyer_city_1</gs:city>
       <gs:id>0</gs:id>
       <gs:customerIssueDate>2019-03-01</gs:customerIssueDate>
@@ -17,7 +17,7 @@
     </gs:buyer>
     <gs:seller>
       <gs:address>seller_address_1</gs:address>
-      <gs:bankAccoutNumber>seller_bankAccoutNumber_1</gs:bankAccoutNumber>
+      <gs:bankAccountNumber>seller_bankAccoutNumber_1</gs:bankAccountNumber>
       <gs:city>seller_city_1</gs:city>
       <gs:id>0</gs:id>
       <gs:customerIssueDate>2019-03-01</gs:customerIssueDate>

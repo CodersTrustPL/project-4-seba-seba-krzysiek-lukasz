@@ -11,14 +11,12 @@ import static org.mockito.Mockito.when;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import pl.coderstrust.database.Database;
-import pl.coderstrust.model.Company;
+import pl.coderstrust.helpers.InvoicesWithSpecifiedData;
 import pl.coderstrust.model.Invoice;
-import pl.coderstrust.service.pdfservice.PdfGenerator;
-import pl.coderstrust.testhelpers.InvoicesWithSpecifiedData;
+import pl.coderstrust.service.pdf.PdfGenerator;
 
 import java.time.LocalDate;
 import java.util.Collections;
@@ -44,6 +42,7 @@ public class InvoiceBookTest {
   }
 
   @Test
+  @SuppressWarnings("unchecked")
   public void shouldAddInvoice() {
     //given
     when(companyService.nipExist(invoice.getBuyer().getNip())).thenReturn(true);
@@ -78,6 +77,7 @@ public class InvoiceBookTest {
   }
 
   @Test
+  @SuppressWarnings("unchecked")
   public void shouldUpdateInvoice() {
     //given
     doNothing().when(database).updateEntry(invoice);

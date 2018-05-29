@@ -36,6 +36,7 @@ import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import javax.transaction.Transactional;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.soap.MessageFactory;
@@ -78,8 +79,8 @@ public class InvoiceEndpointTest {
   }
 
   @Test
+  @Transactional
   public void shouldGeInvoiceById() throws IOException {
-
     Source requestPayload = getRequest("invoiceAddRequest.xml");
 
     mockClient
@@ -95,6 +96,7 @@ public class InvoiceEndpointTest {
   }
 
   @Test
+  @Transactional
   public void shouldGetInvoicesByDate() throws Exception {
     Source requestPayload = getRequest("invoiceAddRequestDateChanged.xml");
 
@@ -116,6 +118,7 @@ public class InvoiceEndpointTest {
   }
 
   @Test
+  @Transactional
   public void shouldUpdateInvoice() throws Exception {
     Source requestPayload = getRequest("invoiceAddRequest.xml");
 
@@ -140,6 +143,7 @@ public class InvoiceEndpointTest {
   }
 
   @Test
+  @Transactional
   public void shouldRemoveInvoice() throws Exception {
     Source requestPayload = getRequest("invoiceAddRequest.xml");
 

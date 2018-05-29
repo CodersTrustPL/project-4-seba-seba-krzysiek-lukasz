@@ -2,7 +2,7 @@ package pl.coderstrust.model;
 
 public class Messages {
 
-  public static final String CONTROLLER_ENTRY_ADDED = "Entry added under id : ";
+  public static final String CONTROLLER_ENTRY_ADDED = "id: ";
 
   public static final String PRODUCTS_LIST_EMPTY = "Products list is empty.";
   public static final String PAYMENT_STATE_EMPTY = "Payment state is undefined.";

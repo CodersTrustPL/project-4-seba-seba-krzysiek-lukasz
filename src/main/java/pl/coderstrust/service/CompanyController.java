@@ -44,11 +44,15 @@ public class CompanyController extends AbstractController<Company> {
     return super.getEntryById(companyId, null);
   }
 
-  @RequestMapping(value = "/term", method = RequestMethod.GET)
-  public List<Company> getCompanyByTerm(@RequestParam("term") String term) {
+  @RequestMapping(value = "/name", method = RequestMethod.GET)
+  public ResponseEntity getCompanyByName(@RequestParam("name") String name) {
     List<Company> selectedCompanies = service.getEntry().stream()
-        .filter(company -> company.getName().contains(term)).collect(Collectors.toList());
-    return selectedCompanies;
+        .filter(company -> company.getName().contains(name)).collect(Collectors.toList());
+    if (selectedCompanies.isEmpty()) {
+      return ResponseEntity.notFound().build();
+    } else {
+      return ResponseEntity.ok(selectedCompanies);
+    }
   }
 
   @RequestMapping(value = "", method = RequestMethod.GET)

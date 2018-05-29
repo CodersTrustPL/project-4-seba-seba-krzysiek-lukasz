@@ -6,7 +6,7 @@ export class Company {
     city: string;
     zipCode: string;
     nip: string;
-    bankAccoutNumber: string;
+    bankAccountNumber: string;
     taxType: string;
     personalCarUsage: boolean;
 }

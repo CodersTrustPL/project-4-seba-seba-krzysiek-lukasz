@@ -35,7 +35,7 @@ public class Company implements WithNameIdIssueDate, WithValidation {
   private String city;
   private String zipCode;
   private String nip;
-  private String bankAccoutNumber;
+  private String bankAccountNumber;
   @Enumerated(EnumType.STRING)
   private TaxType taxType;
   private boolean personalCarUsage;
@@ -119,12 +119,12 @@ public class Company implements WithNameIdIssueDate, WithValidation {
   }
 
   @ApiModelProperty(example = "bank account number of your company")
-  public String getBankAccoutNumber() {
-    return bankAccoutNumber;
+  public String getBankAccountNumber() {
+    return bankAccountNumber;
   }
 
-  public void setBankAccoutNumber(String bankAccoutNumber) {
-    this.bankAccoutNumber = bankAccoutNumber;
+  public void setBankAccountNumber(String bankAccountNumber) {
+    this.bankAccountNumber = bankAccountNumber;
   }
 
   public TaxType getTaxType() {
@@ -184,7 +184,7 @@ public class Company implements WithNameIdIssueDate, WithValidation {
     if (checkInputString(this.getZipCode())) {
       errors.add(Messages.COMPANY_NO_ZIPCODE);
     }
-    if (checkInputString(this.getBankAccoutNumber())) {
+    if (checkInputString(this.getBankAccountNumber())) {
       errors.add(Messages.COMPANY_NO_BACC);
     }
 

@@ -17,7 +17,7 @@ import java.nio.file.Files;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class FileHelper {
+class FileHelper {
 
   private final Logger logger = LoggerFactory.getLogger(FileHelper.class);
   private FileCache fileCache;
@@ -25,7 +25,7 @@ public class FileHelper {
   private String jsonTempFilePath;
   private String dbKey;
 
-  public FileHelper(FileCache fileCache, PathSelector pathSelector, String jsonTempFilePath,
+  FileHelper(FileCache fileCache, PathSelector pathSelector, String jsonTempFilePath,
       String dbKey) {
     this.dbKey = dbKey;
     this.fileCache = fileCache;
@@ -33,14 +33,13 @@ public class FileHelper {
     this.jsonTempFilePath = jsonTempFilePath;
   }
 
-  public void addLine(String lineContent, WithNameIdIssueDate invoice) {
+  void addLine(String lineContent, WithNameIdIssueDate invoice) {
     String dataPath = pathSelector.getFilePath(invoice);
     lineContent += System.lineSeparator();
     File file = new File(dataPath);
     file.getParentFile().mkdirs();
     try (FileWriter fw = new FileWriter(file, true)) {
       fw.append(lineContent);
-      fw.close();
     } catch (IOException ex) {
       logger.warn(" from addLine in FileHelper (MultiFile): "
           + ExceptionMsg.IO_ERROR_WHILE_ADDING, ex);
@@ -48,9 +47,9 @@ public class FileHelper {
     }
   }
 
-  public String getLine(long id) {
+  String getLine(long id) {
     String pathFile = fileCache.getCache().get(id).toString();
-    String json = null;
+    String json;
     try (Stream<String> stream = Files.lines(new File(pathFile).toPath())) {
       json = stream.filter(line -> line.contains(idToLineKey(id)))
           .collect(Collectors.joining());
@@ -66,7 +65,7 @@ public class FileHelper {
     return dbKey + ":" + String.valueOf(systemId);
   }
 
-  public void deleteLine(long id) {
+  void deleteLine(long id) {
     File inputFile = new File(fileCache.getCache().get(id).toString());
     File tempFile = new File(jsonTempFilePath);
     try (BufferedReader reader = new BufferedReader(new FileReader(inputFile));

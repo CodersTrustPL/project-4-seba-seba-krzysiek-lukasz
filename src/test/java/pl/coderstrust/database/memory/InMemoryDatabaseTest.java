@@ -7,6 +7,7 @@ import pl.coderstrust.model.Invoice;
 public class InMemoryDatabaseTest extends DatabaseTest {
 
   @Override
+  @SuppressWarnings("unchecked")
   public Database getCleanDatabase() {
     return new InMemoryDatabase(Invoice.class);
   }

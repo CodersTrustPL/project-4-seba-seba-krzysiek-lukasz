@@ -37,14 +37,11 @@ public class InFileDatabaseTest extends DatabaseTest {
           checkNumber++;
         }
         Files.createFile(dbFile.toPath());
-      } catch (IOException ex) {
-        ex.printStackTrace();
-      } catch (InterruptedException ex) {
+      } catch (IOException | InterruptedException ex) {
         ex.printStackTrace();
       }
     }
-    Database database = new InFileDatabase<Invoice>(Invoice.class, "\"invoiceId\"");
-    return database;
+    return new InFileDatabase<>(Invoice.class, "\"invoiceId\"");
   }
 
   @Test
@@ -62,6 +59,7 @@ public class InFileDatabaseTest extends DatabaseTest {
   }
 
   @Test
+  @SuppressWarnings("unchecked")
   public void shouldStoreDatabaseInCorrectLocation() {
     //when
     givenDatabase.addEntry(givenInvoice);
@@ -71,7 +69,6 @@ public class InFileDatabaseTest extends DatabaseTest {
     } catch (InterruptedException ex) {
       ex.printStackTrace();
     }
-
     //then
     assertThat(dataFile.exists(), is(true));
   }
@@ -83,7 +80,6 @@ public class InFileDatabaseTest extends DatabaseTest {
     //when
     fileHelper.addLine("test line1");
     fileHelper.addLine("test line2");
-
     //then
     ArrayList<String> fileContent = getFileContent(dataFile);
     assertThat(String.join("", fileContent), is(equalTo("test line1test line2")));
@@ -97,7 +93,6 @@ public class InFileDatabaseTest extends DatabaseTest {
     fileHelper.addLine("test line1");
     fileHelper.addLine("test line2");
     fileHelper.deleteLine("test line2");
-
     //then
     ArrayList<String> fileContent = getFileContent(dataFile);
     assertThat(String.join("", fileContent), is(equalTo("test line1")));
@@ -110,7 +105,6 @@ public class InFileDatabaseTest extends DatabaseTest {
     fileHelper.addLine("test line1");
     fileHelper.addLine("test line2");
     String output = fileHelper.getLine("test line2");
-
     //then
     assertThat(output, is(equalTo("test line2")));
   }
@@ -119,12 +113,11 @@ public class InFileDatabaseTest extends DatabaseTest {
   public void shouldReturnAllLinesAtDbFile() {
     //given
     getCleanDatabase();
-
     //when
     fileHelper.addLine("test line1");
     fileHelper.addLine("test line2");
+    @SuppressWarnings("unchecked")
     ArrayList<String> output = new ArrayList(fileHelper.getAllLines());
-
     //then
     ArrayList<String> fileContent = getFileContent(dataFile);
     assertThat(output.toArray(), is(equalTo(fileContent.toArray())));
@@ -134,18 +127,15 @@ public class InFileDatabaseTest extends DatabaseTest {
   public void shouldNotDestroyDbFileContentAtNewFileHelperCreation() {
     //given
     getCleanDatabase();
-
     //when
     fileHelper.addLine("test line1");
     FileHelper newFileHelper = new FileHelper(config);
     String output = newFileHelper.getLine("test line1");
-
     //then
     assertThat(output, is(equalTo("test line1")));
-
   }
 
-  ArrayList<String> getFileContent(File file) {
+  private ArrayList<String> getFileContent(File file) {
     try (Stream<String> dbStream = Files.lines(file.toPath())) {
       return dbStream
           .collect(Collectors.toCollection(ArrayList::new));
@@ -159,13 +149,11 @@ public class InFileDatabaseTest extends DatabaseTest {
   public void shouldAddInvoiceCorrectlyAfterDbReinitialization() {
     //given
     long lastId = invoiceIds[INVOICES_COUNT - 1];
-
     //when
     Database dbInstance = new InFileDatabase<Invoice>(Invoice.class, "\"invoiceId\"");
-
     //then
+    @SuppressWarnings("unchecked")
     long nextId = dbInstance.addEntry(generator.getTestInvoice(1, 1));
     assertThat(nextId > lastId, is(true));
   }
-
 }

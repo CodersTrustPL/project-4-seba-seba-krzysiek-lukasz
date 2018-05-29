@@ -32,6 +32,7 @@ public class CompanyServiceTest {
   private CompanyService companySerivce;
 
   @Test
+  @SuppressWarnings("unchecked")
   public void shouldAddCompany() {
     //given
     when(database.addEntry(company)).thenReturn(1L);
@@ -62,6 +63,7 @@ public class CompanyServiceTest {
   }
 
   @Test
+  @SuppressWarnings("unchecked")
   public void shouldUpdateCompany() {
     //given
     doNothing().when(database).updateEntry(company);
@@ -104,4 +106,3 @@ public class CompanyServiceTest {
     assertThat(companySerivce.getEntries().iterator().next().getIssueDate(), is(equalTo(date)));
   }
 }
-
