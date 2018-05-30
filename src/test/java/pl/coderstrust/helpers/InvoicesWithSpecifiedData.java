@@ -22,7 +22,7 @@ public class InvoicesWithSpecifiedData {
   //Polish
   public static Company getPolishCompanyBuyer() {
     return new CompanyBuilder("P.H. Marian Paździoch")
-        .setId(2)
+        .setId(-1)
         .setAddress("Bazarowa 3/6")
         .setCity("Wrocław")
         .setBankAccoutNumber("99 1010 2222 3333 4444 5555 6666")
@@ -35,7 +35,7 @@ public class InvoicesWithSpecifiedData {
   public static Company getPolishCompanySeller() {
     return new CompanyBuilder(
         "Ferdynand Kiepski i Syn Sp.zoo")
-        .setId(1)
+        .setId(-1)
         .setAddress("ćwiartki 3/4")
         .setCity("Wrocław")
         .setBankAccoutNumber("11 1010 2222 3333 4444 5555 6655")

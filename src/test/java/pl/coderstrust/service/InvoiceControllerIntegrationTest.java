@@ -1,5 +1,6 @@
 package pl.coderstrust.service;
 
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -51,7 +52,6 @@ public class InvoiceControllerIntegrationTest {
   private static final MediaType CONTENT_TYPE_JSON = MediaType.APPLICATION_JSON_UTF8;
   private static final MediaType CONTENT_TYPE_PDF = MediaType.APPLICATION_PDF;
 
-
   @Autowired
   private MockMvc mockMvc;
 
@@ -69,19 +69,17 @@ public class InvoiceControllerIntegrationTest {
             .content(json(generator.getTestInvoice(1, 1)))
             .contentType(CONTENT_TYPE_JSON))
         .andExpect(status().isOk());
-    this.mockMvc
-        .perform(post(DEFAULT_PATH)
-            .content(json(InvoicesWithSpecifiedData.getInvoiceWithPolishData()))
+    this.mockMvc.perform(
+        post(DEFAULT_PATH).content(json(InvoicesWithSpecifiedData.getInvoiceWithPolishData()))
             .contentType(CONTENT_TYPE_JSON))
         .andExpect(status().isOk());
     //then
-    this.mockMvc
-        .perform(get(DEFAULT_PATH))
+    this.mockMvc.perform(get(DEFAULT_PATH))
         .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.[0].invoiceId ", is(1)))
         .andExpect(jsonPath("$.[0].name", is("idVisible_1")))
-        .andExpect(jsonPath("$.[0].buyer.companyId", is(0)))
+        .andExpect(jsonPath("$.[0].buyer.companyId", is(1)))
         .andExpect(jsonPath("$.[0].buyer.name", is("buyer_name_1")))
         .andExpect(jsonPath("$.[0].buyer.address", is("buyer_address_1")))
         .andExpect(jsonPath("$.[0].buyer.city ", is("buyer_city_1")))
@@ -89,7 +87,7 @@ public class InvoiceControllerIntegrationTest {
         .andExpect(jsonPath("$.[0].buyer.nip ", is("buyer_nip_1")))
         .andExpect(jsonPath("$.[0].buyer.bankAccountNumber ",
             is("buyer_bankAccountNumber_1")))
-        .andExpect(jsonPath("$.[0].seller.companyId", is(0)))
+        .andExpect(jsonPath("$.[0].seller.companyId", is(2)))
         .andExpect(jsonPath("$.[0].seller.name", is("seller_name_1")))
         .andExpect(jsonPath("$.[0].seller.address", is("seller_address_1")))
         .andExpect(jsonPath("$.[0].seller.city ", is("seller_city_1")))
@@ -100,15 +98,14 @@ public class InvoiceControllerIntegrationTest {
         .andExpect(jsonPath("$.[0].issueDate ", is("2019-03-01")))
         .andExpect(jsonPath("$.[0].paymentDate ", is("2019-03-16")))
         .andExpect(jsonPath("$.[0].products.[0].product.name", is("name_1_1")))
-        .andExpect(jsonPath("$.[0].products.[0].product.description",
-            is("name_1_1_description_1")))
-        .andExpect(jsonPath("$.[0].products.[0].product.netValue", is(1.0)))
+        .andExpect(jsonPath("$.[0].products.[0].product.description", is("name_1_1_description_1")))
+        .andExpect(jsonPath("$.[0].products.[0].product.netValue", is("1.00")))
         .andExpect(jsonPath("$.[0].products.[0].product.vatRate", is("VAT_23")))
         .andExpect(jsonPath("$.[0].products.[0].amount", is(1)))
         .andExpect(jsonPath("$.[0].paymentState", is("NOT_PAID")))
         .andExpect(jsonPath("$.[1].invoiceId ", is(2)))
-        .andExpect(jsonPath("$.[1].name", is("1 / 2025-12-24")))
-        .andExpect(jsonPath("$.[0].buyer.companyId", is(0)))
+        .andExpect(jsonPath("$.[1].name", is("N/A")))
+        .andExpect(jsonPath("$.[1].buyer.companyId", is(3)))
         .andExpect(jsonPath("$.[1].buyer.name", is("P.H. Marian Paździoch")))
         .andExpect(jsonPath("$.[1].buyer.address", is("Bazarowa 3/6")))
         .andExpect(jsonPath("$.[1].buyer.city ", is("Wrocław")))
@@ -116,7 +113,7 @@ public class InvoiceControllerIntegrationTest {
         .andExpect(jsonPath("$.[1].buyer.nip ", is("123-456-32-18")))
         .andExpect(jsonPath("$.[1].buyer.bankAccountNumber ",
             is("99 1010 2222 3333 4444 5555 6666")))
-        .andExpect(jsonPath("$.[1].seller.companyId", is(1)))
+        .andExpect(jsonPath("$.[1].seller.companyId", is(4)))
         .andExpect(jsonPath("$.[1].seller.name",
             is("Ferdynand Kiepski i Syn Sp.zoo")))
         .andExpect(jsonPath("$.[1].seller.address", is("ćwiartki 3/4")))
@@ -127,11 +124,9 @@ public class InvoiceControllerIntegrationTest {
             is("11 1010 2222 3333 4444 5555 6655")))
         .andExpect(jsonPath("$.[1].issueDate ", is("2025-12-24")))
         .andExpect(jsonPath("$.[1].paymentDate ", is("2025-12-31")))
-        .andExpect(jsonPath("$.[1].products.[0].product.name",
-            is("Mocny Full")))
-        .andExpect(jsonPath("$.[1].products.[0].product.description",
-            is("Piwo Jasne")))
-        .andExpect(jsonPath("$.[1].products.[0].product.netValue", is(1.99)))
+        .andExpect(jsonPath("$.[1].products.[0].product.name", is("Mocny Full")))
+        .andExpect(jsonPath("$.[1].products.[0].product.description", is("Piwo Jasne")))
+        .andExpect(jsonPath("$.[1].products.[0].product.netValue", is("1.99")))
         .andExpect(jsonPath("$.[1].products.[0].product.vatRate", is("VAT_23")))
         .andExpect(jsonPath("$.[1].products.[0].amount", is(100)))
         .andExpect(jsonPath("$.[1].paymentState", is("NOT_PAID")));
@@ -140,11 +135,8 @@ public class InvoiceControllerIntegrationTest {
   @Test
   public void shouldReturnErrorCausedByEmptyProductsField() throws Exception {
     //then
-    this.mockMvc
-        .perform(post(DEFAULT_PATH)
-            .content(json(generator.getTestInvoice(2, 0)))
-            .contentType(CONTENT_TYPE_JSON))
-        .andExpect(handler().methodName(ADD_INVOICE_METHOD))
+    this.mockMvc.perform(post(DEFAULT_PATH).content(json(generator.getTestInvoice(2, 0)))
+        .contentType(CONTENT_TYPE_JSON)).andExpect(handler().methodName(ADD_INVOICE_METHOD))
         .andExpect(content().string("[\"Products list is empty.\"]"));
   }
 
@@ -157,13 +149,10 @@ public class InvoiceControllerIntegrationTest {
     invoiceEntry.setProduct(product);
     givenInvoice.setProducts(Arrays.asList(invoiceEntry));
     //then
-    this.mockMvc
-        .perform(post(DEFAULT_PATH)
-            .content(json(givenInvoice))
-            .contentType(CONTENT_TYPE_JSON))
-        .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-        .andExpect(handler().methodName(ADD_INVOICE_METHOD))
-        .andExpect(content().string("[\"Product amount is negative or zero.\""
+    this.mockMvc.perform(
+        post(DEFAULT_PATH).content(json(givenInvoice)).contentType(MediaType.APPLICATION_JSON_UTF8))
+        .andExpect(content().string(
+        "[\"Product amount is negative or zero.\""
             + ",\"Product name is empty.\",\"Product description is empty.\","
             + "\"Product vat rate is empty\",\"Product net value is empty.\"]"));
   }
@@ -174,28 +163,19 @@ public class InvoiceControllerIntegrationTest {
     for (int i = 1; i <= 50; i++) {
       Invoice invoice = generator.getTestInvoice(i, 5);
       invoice.setIssueDate(LocalDate.of(2020, 1, 1).plusMonths(i));
-      this.mockMvc
-          .perform(post(DEFAULT_PATH)
-              .content(json(invoice))
-              .contentType(CONTENT_TYPE_JSON))
-
+      this.mockMvc.perform(post(DEFAULT_PATH).content(json(invoice)).contentType(CONTENT_TYPE_JSON))
           .andExpect(status().isOk());
     }
     //when
-    String response = this.mockMvc
-        .perform(get(DEFAULT_PATH + "?startDate=2021-01-01"))
+    String response = this.mockMvc.perform(get(DEFAULT_PATH + "?startDate=2021-01-01"))
         .andExpect(content().contentType(CONTENT_TYPE_JSON))
-        .andExpect(handler().methodName(GET_INVOICE_BY_DATE_METHOD))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath(("$.[0].issueDate"), is("2021-01-01")))
-        .andReturn()
-        .getResponse()
+        .andExpect(handler().methodName(GET_INVOICE_BY_DATE_METHOD)).andExpect(status().isOk())
+        .andExpect(jsonPath(("$.[0].issueDate"), is("2021-01-01"))).andReturn().getResponse()
         .getContentAsString();
     List<Invoice> invoiceList = getInvoicesFromResponse(response);
     //then
     for (Invoice invoice : invoiceList) {
-      assertTrue(invoice.getIssueDate().isAfter(
-          LocalDate.of(2020, 12, 31)));
+      assertTrue(invoice.getIssueDate().isAfter(LocalDate.of(2020, 12, 31)));
     }
   }
 
@@ -205,22 +185,15 @@ public class InvoiceControllerIntegrationTest {
     for (int i = 1; i <= 50; i++) {
       Invoice invoice = generator.getTestInvoice(i, 5);
       invoice.setIssueDate(LocalDate.of(2020, 1, 1).plusMonths(i));
-      this.mockMvc
-          .perform(post(DEFAULT_PATH)
-              .content(json(invoice))
-              .contentType(CONTENT_TYPE_JSON))
+      this.mockMvc.perform(post(DEFAULT_PATH).content(json(invoice)).contentType(CONTENT_TYPE_JSON))
 
           .andExpect(status().isOk());
     }
     //when
-    String response = this.mockMvc
-        .perform(get(DEFAULT_PATH + "?endDate=2023-01-02"))
+    String response = this.mockMvc.perform(get(DEFAULT_PATH + "?endDate=2023-01-02"))
         .andExpect(content().contentType(CONTENT_TYPE_JSON))
-        .andExpect(handler().methodName(GET_INVOICE_BY_DATE_METHOD))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath(("$.[0].issueDate"), is("2020-02-01")))
-        .andReturn()
-        .getResponse()
+        .andExpect(handler().methodName(GET_INVOICE_BY_DATE_METHOD)).andExpect(status().isOk())
+        .andExpect(jsonPath(("$.[0].issueDate"), is("2020-02-01"))).andReturn().getResponse()
         .getContentAsString();
     List<Invoice> invoiceList = getInvoicesFromResponse(response);
     //then
@@ -235,10 +208,7 @@ public class InvoiceControllerIntegrationTest {
     for (int i = 1; i <= 50; i++) {
       Invoice invoice = generator.getTestInvoice(i, 5);
       invoice.setIssueDate(LocalDate.of(2020, 1, 1).plusMonths(i));
-      this.mockMvc
-          .perform(post(DEFAULT_PATH)
-              .content(json(invoice))
-              .contentType(CONTENT_TYPE_JSON))
+      this.mockMvc.perform(post(DEFAULT_PATH).content(json(invoice)).contentType(CONTENT_TYPE_JSON))
 
           .andExpect(status().isOk());
     }
@@ -246,19 +216,15 @@ public class InvoiceControllerIntegrationTest {
     String response = this.mockMvc
         .perform(get(DEFAULT_PATH + "?startDate=2021-01-01&endDate=2023-01-02"))
         .andExpect(content().contentType(CONTENT_TYPE_JSON))
-        .andExpect(handler().methodName(GET_INVOICE_BY_DATE_METHOD))
-        .andExpect(status().isOk())
-        .andExpect(jsonPath(("$.[0].issueDate"), is("2021-01-01")))
-        .andReturn()
-        .getResponse()
+        .andExpect(handler().methodName(GET_INVOICE_BY_DATE_METHOD)).andExpect(status().isOk())
+        .andExpect(jsonPath(("$.[0].issueDate"), is("2021-01-01"))).andReturn().getResponse()
         .getContentAsString();
     List<Invoice> invoiceList = getInvoicesFromResponse(response);
     //then
     for (Invoice invoice : invoiceList) {
-      assertTrue((invoice.getIssueDate().isBefore(
-          LocalDate.of(2023, 1, 2))
-          && (invoice.getIssueDate().isAfter(
-          LocalDate.of(2020, 12, 31)))));
+      assertTrue(
+          (invoice.getIssueDate().isBefore(LocalDate.of(2023, 1, 2)) && (invoice.getIssueDate()
+              .isAfter(LocalDate.of(2020, 12, 31)))));
     }
   }
 
@@ -267,25 +233,21 @@ public class InvoiceControllerIntegrationTest {
     //given
     Invoice testInvoice = generator.getTestInvoice(1, 3);
     Invoice testInvoice2 = generator.getTestInvoice(2, 5);
+
     this.mockMvc
-        .perform(post(DEFAULT_PATH)
-            .content(json(testInvoice))
-            .contentType(CONTENT_TYPE_JSON))
-        .andExpect(handler().methodName(ADD_INVOICE_METHOD))
-        .andExpect(status().isOk());
+        .perform(post(DEFAULT_PATH).content(json(testInvoice)).contentType(CONTENT_TYPE_JSON))
+        .andExpect(handler().methodName(ADD_INVOICE_METHOD)).andExpect(status().isOk());
+    testInvoice.getBuyer().setId(1L);
+    testInvoice.getSeller().setId(2L);
     this.mockMvc
-        .perform(post(DEFAULT_PATH)
-            .content(json(testInvoice2))
-            .contentType(CONTENT_TYPE_JSON))
+        .perform(post(DEFAULT_PATH).content(json(testInvoice2)).contentType(CONTENT_TYPE_JSON))
         .andExpect(status().isOk());
+    testInvoice2.getBuyer().setId(3L);
+    testInvoice2.getSeller().setId(4L);
     //when
-    String response = this.mockMvc
-        .perform(get(DEFAULT_PATH + "/2"))
-        .andExpect(handler().methodName(GET_INVOICE_BY_ID_METHOD))
-        .andExpect(status().isOk())
-        .andReturn()
-        .getResponse()
-        .getContentAsString();
+    String response = this.mockMvc.perform(get(DEFAULT_PATH + "/2"))
+        .andExpect(handler().methodName(GET_INVOICE_BY_ID_METHOD)).andExpect(status().isOk())
+        .andReturn().getResponse().getContentAsString();
     //then
     Invoice returnedInvoice = jsonToInvoice(response);
     assertEquals(returnedInvoice, testInvoice2);
@@ -294,14 +256,10 @@ public class InvoiceControllerIntegrationTest {
   @Test
   public void shouldReturnNotFoundError() throws Exception {
     //when
-    this.mockMvc
-        .perform(get(DEFAULT_PATH + "/4"))
-        .andExpect(handler().methodName(GET_INVOICE_BY_ID_METHOD))
-        .andExpect(status().isNotFound());
-    this.mockMvc
-        .perform(delete(DEFAULT_PATH + "/4"))
-        .andExpect(handler().methodName(REMOVE_INVOICE_METHOD))
-        .andExpect(status().isNotFound());
+    this.mockMvc.perform(get(DEFAULT_PATH + "/4"))
+        .andExpect(handler().methodName(GET_INVOICE_BY_ID_METHOD)).andExpect(status().isNotFound());
+    this.mockMvc.perform(delete(DEFAULT_PATH + "/4"))
+        .andExpect(handler().methodName(REMOVE_INVOICE_METHOD)).andExpect(status().isNotFound());
   }
 
   @Test
@@ -309,30 +267,19 @@ public class InvoiceControllerIntegrationTest {
     //given
     for (int i = 1; i <= 50; i++) {
       Invoice invoice = generator.getTestInvoice(i, 5);
-      this.mockMvc
-          .perform(post(DEFAULT_PATH)
-              .content(json(invoice))
-              .contentType(CONTENT_TYPE_JSON))
+      this.mockMvc.perform(post(DEFAULT_PATH).content(json(invoice)).contentType(CONTENT_TYPE_JSON))
           .andExpect(status().isOk());
     }
     //when
-    this.mockMvc
-        .perform(delete(DEFAULT_PATH + "/10"))
-        .andExpect(handler().methodName(REMOVE_INVOICE_METHOD))
-        .andExpect(status().isOk());
-    this.mockMvc
-        .perform(delete(DEFAULT_PATH + "/25"))
-        .andExpect(handler().methodName(REMOVE_INVOICE_METHOD))
-        .andExpect(status().isOk());
+    this.mockMvc.perform(delete(DEFAULT_PATH + "/10"))
+        .andExpect(handler().methodName(REMOVE_INVOICE_METHOD)).andExpect(status().isOk());
+    this.mockMvc.perform(delete(DEFAULT_PATH + "/25"))
+        .andExpect(handler().methodName(REMOVE_INVOICE_METHOD)).andExpect(status().isOk());
     //then
-    String response = this.mockMvc
-        .perform(get(DEFAULT_PATH))
+    String response = this.mockMvc.perform(get(DEFAULT_PATH))
         .andExpect(content().contentType(CONTENT_TYPE_JSON))
-        .andExpect(handler().methodName(GET_INVOICE_BY_DATE_METHOD))
-        .andExpect(status().isOk())
-        .andReturn()
-        .getResponse()
-        .getContentAsString();
+        .andExpect(handler().methodName(GET_INVOICE_BY_DATE_METHOD)).andExpect(status().isOk())
+        .andReturn().getResponse().getContentAsString();
     List<Invoice> invoiceList = getInvoicesFromResponse(response);
     assertThat(invoiceList.size(), is(48));
     assertFalse(invoiceList.contains(generator.getTestInvoice(10, 5)));
@@ -344,48 +291,37 @@ public class InvoiceControllerIntegrationTest {
     //given
     for (int i = 1; i <= 5; i++) {
       Invoice invoice = generator.getTestInvoice(i, 5);
-      this.mockMvc
-          .perform(post(DEFAULT_PATH)
-              .content(json(invoice))
-              .contentType(CONTENT_TYPE_JSON))
+      this.mockMvc.perform(post(DEFAULT_PATH).content(json(invoice)).contentType(CONTENT_TYPE_JSON))
           .andExpect(status().isOk());
     }
     Invoice invoiceToUpdate = InvoicesWithSpecifiedData.getInvoiceWithPolishData();
     invoiceToUpdate.setId(3);
     //when
-    this.mockMvc
-        .perform(put(DEFAULT_PATH + "/3")
+    this.mockMvc.perform(
+        put(DEFAULT_PATH + "/3")
             .content(json(InvoicesWithSpecifiedData.getInvoiceWithPolishData()))
-            .contentType(CONTENT_TYPE_JSON))
-        .andExpect(status().isOk());
+            .contentType(CONTENT_TYPE_JSON)).andExpect(status().isOk());
     //then
-    String response = this.mockMvc
-        .perform(get(DEFAULT_PATH + "/3"))
+    String response = this.mockMvc.perform(get(DEFAULT_PATH + "/3"))
         .andExpect(content().contentType(CONTENT_TYPE_JSON))
-        .andExpect(handler().methodName(GET_INVOICE_BY_ID_METHOD))
-        .andExpect(status().isOk())
-        .andReturn()
-        .getResponse()
-        .getContentAsString();
-    invoiceToUpdate.setName("3 / 2025-12-24");
-    Invoice returnedInvoice = jsonToInvoice(response);
-    assertEquals(returnedInvoice, invoiceToUpdate);
+        .andExpect(handler().methodName(GET_INVOICE_BY_ID_METHOD)).andExpect(status().isOk())
+        .andReturn().getResponse().getContentAsString();
+    final Invoice returnedInvoice = jsonToInvoice(response);
+    invoiceToUpdate.setName("N/A");
+    invoiceToUpdate.getBuyer().setId(11);
+    invoiceToUpdate.getSeller().setId(12);
+    assertThat(returnedInvoice, is(equalTo(invoiceToUpdate)));
   }
 
   @Test
   public void shouldReturnPdfForExistingInvoice() throws Exception {
     Invoice invoice = generator.getTestInvoice(1, 5);
-    this.mockMvc
-        .perform(post(DEFAULT_PATH)
-            .content(json(invoice))
-            .contentType(CONTENT_TYPE_JSON))
+    this.mockMvc.perform(post(DEFAULT_PATH).content(json(invoice)).contentType(CONTENT_TYPE_JSON))
         .andExpect(status().isOk());
 
-    this.mockMvc
-        .perform(get(DEFAULT_PATH + "/1/pdf"))
+    this.mockMvc.perform(get(DEFAULT_PATH + "/1/pdf"))
         .andExpect(content().contentType(CONTENT_TYPE_PDF))
-        .andExpect(handler().methodName(GET_PDF_METHOD))
-        .andExpect(status().isOk());
+        .andExpect(handler().methodName(GET_PDF_METHOD)).andExpect(status().isOk());
   }
 
   private String json(Invoice invoice) throws Exception {

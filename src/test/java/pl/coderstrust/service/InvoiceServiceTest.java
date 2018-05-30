@@ -8,33 +8,48 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import pl.coderstrust.database.Database;
+import pl.coderstrust.helpers.InvoicesWithSpecifiedData;
 import pl.coderstrust.model.Invoice;
+import pl.coderstrust.service.pdf.PdfGenerator;
 
 import java.time.LocalDate;
 import java.util.Collections;
 
 @RunWith(MockitoJUnitRunner.class)
-public class InvoiceBookTest {
+public class InvoiceServiceTest {
 
   @Mock
-  private Database database;
+  private CompanyService companyService;
 
   @Mock
-  private Invoice invoice;
+  private Database<Invoice> database;
 
-  @InjectMocks
+  @Mock
+  private PdfGenerator pdfGenerator;
+
+  private Invoice invoice = InvoicesWithSpecifiedData.getInvoiceWithPolishData();
   private InvoiceService invoiceBook;
+
+  @Before
+  public void setup() {
+    invoiceBook = new InvoiceService(companyService, database, pdfGenerator);
+  }
 
   @Test
   @SuppressWarnings("unchecked")
   public void shouldAddInvoice() {
     //given
+    when(companyService.nipExist(invoice.getBuyer().getNip())).thenReturn(true);
+    when(companyService.getEntryByNip(invoice.getBuyer().getNip())).thenReturn(invoice.getBuyer());
+    when(companyService.nipExist(invoice.getSeller().getNip())).thenReturn(true);
+    when(companyService.getEntryByNip(invoice.getSeller().getNip()))
+        .thenReturn(invoice.getSeller());
     when(database.addEntry(invoice)).thenReturn(1L);
     //when
     invoiceBook.addEntry(invoice);

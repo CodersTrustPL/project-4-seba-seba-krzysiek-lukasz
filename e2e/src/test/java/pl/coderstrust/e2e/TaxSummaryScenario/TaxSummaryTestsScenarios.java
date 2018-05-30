@@ -30,6 +30,7 @@ public class TaxSummaryTestsScenarios {
   private TaxSummaryMapBuilder mapBuilder = new TaxSummaryMapBuilder();
   private LocalDate startDate;
 
+
   @BeforeClass
   public void setup() {
     startDate = LocalDate.of(LocalDate.now().getYear() + 1, 1, 1);
@@ -40,6 +41,7 @@ public class TaxSummaryTestsScenarios {
     //given
     Company company = TestUtils.getTestCompany();
     company.setIssueDate(startDate);
+    company.setNip(TestUtils.getUnusedNip());
     long companyId = addCompany(company);
     company.setId(companyId);
     addInvoices(company, 300);
@@ -66,6 +68,7 @@ public class TaxSummaryTestsScenarios {
     Company company = TestUtils.getTestCompany();
     company.setTaxType(TaxType.PROGRESIVE);
     company.setIssueDate(startDate);
+    company.setNip(TestUtils.getUnusedNip());
     long companyId = addCompany(company);
     company.setId(companyId);
     addInvoices(company, 300);
@@ -90,6 +93,7 @@ public class TaxSummaryTestsScenarios {
     Company company = TestUtils.getTestCompany();
     company.setTaxType(TaxType.PROGRESIVE);
     company.setIssueDate(startDate);
+    company.setNip(TestUtils.getUnusedNip());
     long companyId = addCompany(company);
     company.setId(companyId);
     addInvoices(company, 600);

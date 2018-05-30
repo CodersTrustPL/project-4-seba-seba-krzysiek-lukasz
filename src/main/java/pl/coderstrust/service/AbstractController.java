@@ -52,19 +52,17 @@ public abstract class AbstractController<T extends WithNameIdIssueDate & WithVal
   public ResponseEntity getEntryByDate(LocalDate startDate, LocalDate endDate, Long filterKey) {
     if (startDate == null && endDate == null) {
       if (filterKey != null) {
-        return ResponseEntity
-            .ok(filter.filterByField(service.getEntry(), filterKey));
+        return ResponseEntity.ok(filter.filterByField(service.getEntry(), filterKey));
       }
       return ResponseEntity.ok(service.getEntry());
     }
 
     if (filterKey != null) {
-      return ResponseEntity.ok(filter.filterByField(service.getEntryByDate(startDate,
-          endDate), filterKey));
+      return ResponseEntity
+          .ok(filter.filterByField(service.getEntryByDate(startDate, endDate), filterKey));
     }
 
-    return ResponseEntity.ok(service.getEntryByDate(startDate,
-        endDate));
+    return ResponseEntity.ok(service.getEntryByDate(startDate, endDate));
   }
 
 
@@ -79,6 +77,9 @@ public abstract class AbstractController<T extends WithNameIdIssueDate & WithVal
 
     if (!entryState.isEmpty()) {
       return ResponseEntity.badRequest().body(entryState);
+    }
+    if (!service.idExist(entryId)) {
+      return ResponseEntity.badRequest().body(Messages.ENTRY_NOT_EXIST);
     }
     entry.setId(entryId);
     service.updateEntry(entry);
@@ -118,10 +119,7 @@ public abstract class AbstractController<T extends WithNameIdIssueDate & WithVal
     HttpHeaders headers = new HttpHeaders();
     String fileName = "invoice_" + Long.toString(entryId) + ".pdf";
     headers.add("Content-Disposition", "inline; filename=" + fileName);
-    return ResponseEntity
-        .ok()
-        .headers(headers)
-        .contentType(MediaType.APPLICATION_PDF)
+    return ResponseEntity.ok().headers(headers).contentType(MediaType.APPLICATION_PDF)
         .body(new InputStreamResource(pdfContent));
 
   }

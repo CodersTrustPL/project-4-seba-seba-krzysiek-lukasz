@@ -18,6 +18,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.ws.WebServiceMessage;
 import org.springframework.ws.test.server.MockWebServiceClient;
@@ -35,6 +36,7 @@ import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import javax.transaction.Transactional;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.soap.MessageFactory;
@@ -50,6 +52,7 @@ import javax.xml.transform.stream.StreamResult;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class InvoiceEndpointTest {
 
   private static final int INVOICES_COUNT = 10;
@@ -76,8 +79,8 @@ public class InvoiceEndpointTest {
   }
 
   @Test
+  @Transactional
   public void shouldGeInvoiceById() throws IOException {
-
     Source requestPayload = getRequest("invoiceAddRequest.xml");
 
     mockClient
@@ -93,6 +96,7 @@ public class InvoiceEndpointTest {
   }
 
   @Test
+  @Transactional
   public void shouldGetInvoicesByDate() throws Exception {
     Source requestPayload = getRequest("invoiceAddRequestDateChanged.xml");
 
@@ -114,6 +118,7 @@ public class InvoiceEndpointTest {
   }
 
   @Test
+  @Transactional
   public void shouldUpdateInvoice() throws Exception {
     Source requestPayload = getRequest("invoiceAddRequest.xml");
 
@@ -138,6 +143,7 @@ public class InvoiceEndpointTest {
   }
 
   @Test
+  @Transactional
   public void shouldRemoveInvoice() throws Exception {
     Source requestPayload = getRequest("invoiceAddRequest.xml");
 

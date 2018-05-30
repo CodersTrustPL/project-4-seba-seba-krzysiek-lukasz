@@ -11,9 +11,8 @@ import com.itextpdf.text.pdf.parser.SimpleTextExtractionStrategy;
 import com.itextpdf.text.pdf.parser.TextExtractionStrategy;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.boot.test.context.SpringBootTest;
 import pl.coderstrust.database.Database;
 import pl.coderstrust.helpers.TestCasesGenerator;
 import pl.coderstrust.model.Invoice;
@@ -23,7 +22,7 @@ import pl.coderstrust.service.pdf.PdfGenerator;
 
 import java.io.InputStream;
 
-@RunWith(MockitoJUnitRunner.class)
+@SpringBootTest
 public class InvoiceServiceGetPdfReportTest {
 
   private static final String PDF_CREATION_DATE = "2018/05/28 17:59:42";
@@ -35,15 +34,17 @@ public class InvoiceServiceGetPdfReportTest {
 
   private Database database;
   private PdfDateTimeProvider pdfDateTimeProvider;
+
+  private CompanyService companyService;
   private InvoiceService invoiceService;
 
   @Before
-  @SuppressWarnings("unchecked")
   public void testSetUp() {
     database = Mockito.mock(Database.class);
+    companyService = Mockito.mock(CompanyService.class);
     pdfDateTimeProvider = Mockito.mock(PdfDateTimeProvider.class);
     PdfGenerator pdfGenerator = new PdfGenerator(pdfDateTimeProvider, new PdfFontsProvider());
-    invoiceService = new InvoiceService(database, pdfGenerator);
+    invoiceService = new InvoiceService(companyService, database, pdfGenerator);
   }
 
   @Test

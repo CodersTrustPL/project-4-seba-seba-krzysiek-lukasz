@@ -11,10 +11,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pl.coderstrust.model.Company;
+import pl.coderstrust.model.Messages;
 import pl.coderstrust.service.filters.CompanyDummyFilter;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "http://localhost:4200")
@@ -30,6 +32,9 @@ public class CompanyController extends AbstractController<Company> {
   @RequestMapping(value = "", method = RequestMethod.POST)
   @ApiOperation(value = "Adds the company and returning id")
   public synchronized ResponseEntity addCompany(@RequestBody Company company) {
+    if (service.nipExist(company.getNip())) {
+      return ResponseEntity.badRequest().body(Messages.COMPANY_NIP_EXIST);
+    }
     return super.addEntry(company, null);
   }
 
@@ -56,6 +61,13 @@ public class CompanyController extends AbstractController<Company> {
       @RequestParam(name = "startDate", required = false) LocalDate startDate,
       @RequestParam(name = "endDate", required = false) LocalDate endDate) {
     return super.getEntryByDate(startDate, endDate, null);
+  }
+
+  @RequestMapping(value = "/nip/{nip}", method = RequestMethod.GET)
+  @ApiOperation(value = "Returns company by nip.")
+  public synchronized ResponseEntity getCompanyByNip(@PathVariable("nip") String nip) {
+    Company company = service.getEntryByNip(nip);
+    return company != null ? ResponseEntity.ok(company) : ResponseEntity.notFound().build();
   }
 
   @RequestMapping(value = "/{id}", method = RequestMethod.PUT)

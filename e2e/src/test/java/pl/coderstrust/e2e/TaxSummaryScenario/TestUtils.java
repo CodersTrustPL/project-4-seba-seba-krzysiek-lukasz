@@ -9,6 +9,7 @@ import pl.coderstrust.e2e.model.Payment;
 import pl.coderstrust.e2e.model.TaxType;
 
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -60,5 +61,10 @@ public class TestUtils {
         .personalCarUsage(false)
         .payments(new ArrayList<Payment>())
         .build();
+  }
+
+  public static String getUnusedNip() {
+    Random random = new Random();
+    return String.valueOf(random.nextLong());
   }
 }

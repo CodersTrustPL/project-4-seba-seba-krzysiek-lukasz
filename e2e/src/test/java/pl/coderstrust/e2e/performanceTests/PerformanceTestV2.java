@@ -21,6 +21,8 @@ public class PerformanceTestV2 extends AbstractPerformanceTests {
     for (int i = 0; i < config.getTestInvoicesCount(); i++) {
       testInvoices.add(generator.getTestInvoice(i + 1,
           config.getDefaultEntriesCount()));
+      testInvoices.get(i).getSeller().setNip(TestUtils.getUnusedNip());
+      testInvoices.get(i).getBuyer().setNip(TestUtils.getUnusedNip());
       testInvoices.get(i).setIssueDate(currentDate.plusYears(i));
       testInvoices.get(i).setPaymentDate(currentDate.plusYears(i).plusDays(15));
       testInvoices.get(i).getSeller()

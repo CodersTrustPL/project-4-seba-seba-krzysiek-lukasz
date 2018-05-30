@@ -6,23 +6,40 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import pl.coderstrust.database.hibernate.LocalDateAttributeConverter;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.Convert;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "comapnies")
 public class Company implements WithNameIdIssueDate, WithValidation {
 
+  @Id
+  @GeneratedValue(strategy = GenerationType.TABLE)
   private long id;
   private String name;
+  @Convert(converter = LocalDateAttributeConverter.class)
   private LocalDate issueDate;
   private String address;
   private String city;
   private String zipCode;
   private String nip;
   private String bankAccountNumber;
+  @Enumerated(EnumType.STRING)
   private TaxType taxType;
   private boolean personalCarUsage;
+  @ElementCollection
   private List<Payment> payments = new ArrayList<>();
 
   public Company() {

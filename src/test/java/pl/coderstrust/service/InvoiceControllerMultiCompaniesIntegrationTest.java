@@ -24,6 +24,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import pl.coderstrust.helpers.InvoicesWithSpecifiedData;
 import pl.coderstrust.helpers.TestCasesGenerator;
 import pl.coderstrust.model.Company;
 import pl.coderstrust.model.Invoice;
@@ -57,6 +58,8 @@ public class InvoiceControllerMultiCompaniesIntegrationTest {
   private static final int DEFAULT_UPDATED_INVOICE_NUMBER = 2;
   private static final int DEFAULT_ENTRIES_COUNT = 1;
 
+  private static final String NIP_NOT_USED_BEFORE = "0000000000";
+
   private static String START_DATE = "2020-01-01";
   private static String END_DATE = "2060-01-01";
   private LocalDate startDate = LocalDate.parse(START_DATE);
@@ -89,7 +92,7 @@ public class InvoiceControllerMultiCompaniesIntegrationTest {
     sellerId = registerInvoiceSellerAtCompanyDb(invoice);
     invoiceId = addInvoiceToInvoiceDb(invoice);
 
-    anotherCompanyId = addCompanyToCompanyDb(invoice.getSeller());
+    anotherCompanyId = addCompanyToCompanyDb(InvoicesWithSpecifiedData.getPolishCompanyBuyer());
     updatedInvoice.setId(invoiceId);
     updatedInvoice.setBuyer(invoice.getBuyer());
     updatedInvoice.setSeller(invoice.getSeller());
@@ -148,7 +151,7 @@ public class InvoiceControllerMultiCompaniesIntegrationTest {
   public void shouldGetEntryByIdWhenSellerMatchesCompanyId() throws Exception {
     //then
     this.mockMvc
-        .perform(get(getInvoiceUrl(invoice.getId(), sellerId)))
+        .perform(get(getInvoiceUrl(invoiceId, sellerId)))
         .andExpect(content().contentType(JSON_CONTENT_TYPE))
         .andExpect(handler().methodName(GET_INVOICE_BY_ID_METHOD))
         .andExpect(status().isOk())
@@ -292,6 +295,7 @@ public class InvoiceControllerMultiCompaniesIntegrationTest {
   @Test
   public void shouldNotUpdateInvoiceWhenSellerBuyerNotMatchId() throws Exception {
     //then
+    System.out.println("@@@@-" + anotherCompanyId);
     this.mockMvc
         .perform(put(getInvoiceUpdateUrl(invoiceId, anotherCompanyId))
             .content(mapper.writeValueAsString(updatedInvoice))

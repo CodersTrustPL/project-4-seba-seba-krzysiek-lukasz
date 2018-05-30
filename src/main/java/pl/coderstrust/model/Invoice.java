@@ -10,18 +10,37 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
+@Entity
+@Table(name = "invoices")
 public class Invoice implements WithNameIdIssueDate, WithValidation {
 
-  private List<InvoiceEntry> products = new ArrayList<>();
+  @Id
+  @GeneratedValue(strategy = GenerationType.TABLE)
   private long id;
   private String name;
+  @ManyToOne(cascade = CascadeType.ALL)
   private Company buyer;
+  @ManyToOne(cascade = CascadeType.ALL)
   private Company seller;
   private LocalDate issueDate;
   private LocalDate paymentDate;
+  @Enumerated(EnumType.STRING)
   private PaymentState paymentState;
-
+  @ElementCollection
+  private List<InvoiceEntry> products = new ArrayList<>();
 
   public Invoice() {
   }

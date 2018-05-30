@@ -3,7 +3,6 @@ package pl.coderstrust.service;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -29,8 +28,8 @@ import pl.coderstrust.model.Company;
 import pl.coderstrust.model.CompanyBuilder;
 
 import java.util.List;
-
-//TODO It is possible to write this test better by creating sth like test companies generator
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -45,6 +44,10 @@ public class CompanyControllerIntegrationTest {
   private static final String ADD_COMPANY_METHOD = "addCompany";
   private static final String DEFAULT_PATH = "/v2/company";
   private static final MediaType CONTENT_TYPE = MediaType.APPLICATION_JSON_UTF8;
+  private static final String INT_FROM_STRING_REGEX_PATTERN = "([0-9])+";
+
+  private Pattern extractIntFromString = Pattern.compile(INT_FROM_STRING_REGEX_PATTERN);
+
   private Company testCompany = InvoicesWithSpecifiedData.getPolishCompanySeller();
 
   @Autowired
@@ -55,10 +58,16 @@ public class CompanyControllerIntegrationTest {
 
   @Test
   public void shouldAddCompany() throws Exception {
+    //given
+    Company expectedCompany = testCompany;
     //when
-    this.mockMvc.perform(post(DEFAULT_PATH).content(json(testCompany)).contentType(CONTENT_TYPE))
-        .andExpect(handler().methodName(ADD_COMPANY_METHOD)).andExpect(status().isOk());
+    String respone = this.mockMvc
+        .perform(post(DEFAULT_PATH).content(json(testCompany)).contentType(CONTENT_TYPE))
+        .andExpect(handler().methodName(ADD_COMPANY_METHOD)).andExpect(status().isOk()).andReturn()
+        .getResponse().getContentAsString();
     //then
+    expectedCompany.setId(getEntryIdFromServiceResponse(respone));
+
     String response = this.mockMvc.perform(get(DEFAULT_PATH))
         .andExpect(content().contentType(CONTENT_TYPE))
         .andExpect(handler().methodName(GET_COMPANIES_BY_DATE)).andExpect(status().isOk())
@@ -85,11 +94,15 @@ public class CompanyControllerIntegrationTest {
 
   @Test
   public void shouldReturnCompanyById() throws Exception {
+    //given
+    Company expectedCompany = testCompany;
     //when
-    this.mockMvc.perform(post(DEFAULT_PATH).content(json(testCompany)).contentType(CONTENT_TYPE))
-        .andExpect(handler().methodName(ADD_COMPANY_METHOD)).andExpect(status().isOk());
+    String response = this.mockMvc
+        .perform(post(DEFAULT_PATH).content(json(testCompany)).contentType(CONTENT_TYPE))
+        .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
     //then
-    String response = this.mockMvc.perform(get(DEFAULT_PATH + "/1"))
+    expectedCompany.setId(getEntryIdFromServiceResponse(response));
+    response = this.mockMvc.perform(get(DEFAULT_PATH + "/1"))
         .andExpect(content().contentType(CONTENT_TYPE))
         .andExpect(handler().methodName(GET_COMPANY_BY_ID_METHOD)).andExpect(status().isOk())
         .andReturn().getResponse().getContentAsString();
@@ -101,23 +114,25 @@ public class CompanyControllerIntegrationTest {
   @Test
   public void shouldUpdateCompany() throws Exception {
     //given
-    this.mockMvc.perform(post(DEFAULT_PATH).content(json(testCompany)).contentType(CONTENT_TYPE))
-        .andExpect(status().isOk());
+    String response = this.mockMvc
+        .perform(post(DEFAULT_PATH).content(json(testCompany)).contentType(CONTENT_TYPE))
+        .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
 
     Company companyToUpdate = testCompany;
+    companyToUpdate.setId(getEntryIdFromServiceResponse(response));
     companyToUpdate.setName("Szpital dla roślin");
     //when
     this.mockMvc
         .perform(put(DEFAULT_PATH + "/1").content(json(companyToUpdate)).contentType(CONTENT_TYPE))
         .andExpect(status().isOk());
     //then
-    String response = this.mockMvc.perform(get(DEFAULT_PATH + "/1"))
+    response = this.mockMvc.perform(get(DEFAULT_PATH + "/1"))
         .andExpect(content().contentType(CONTENT_TYPE))
         .andExpect(handler().methodName(GET_COMPANY_BY_ID_METHOD)).andExpect(status().isOk())
         .andReturn().getResponse().getContentAsString();
 
     Company returnedCompany = jsonToCompany(response);
-    assertEquals(returnedCompany, companyToUpdate);
+    assertThat(returnedCompany, is(equalTo(companyToUpdate)));
   }
 
   @Test
@@ -174,5 +189,11 @@ public class CompanyControllerIntegrationTest {
   private List<Company> getCompaniesFromResponse(String response) throws Exception {
     return mapper.readValue(response,
         mapper.getTypeFactory().constructCollectionType(List.class, Company.class));
+  }
+
+  private long getEntryIdFromServiceResponse(String response) {
+    Matcher matcher = extractIntFromString.matcher(response);
+    matcher.find();
+    return Long.parseLong(matcher.group(0));
   }
 }

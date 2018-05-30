@@ -8,6 +8,7 @@ import pl.coderstrust.e2e.model.Company;
 import pl.coderstrust.e2e.model.Invoice;
 import pl.coderstrust.e2e.testHelpers.TestCasesGenerator;
 
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -45,10 +46,7 @@ public class TestUtils {
   }
 
   public static long registerCompany(Company testCompany) {
-    Response ServiceResponse = given()
-        .contentType("application/json")
-        .body(testCompany)
-        .when()
+    Response ServiceResponse = given().contentType("application/json").body(testCompany).when()
         .post(getV2CompanyPath());
     return getInvoiceIdFromServiceResponse(ServiceResponse.print());
   }
@@ -59,7 +57,8 @@ public class TestUtils {
     testInvoice = new TestCasesGenerator()
         .getTestInvoice(testsConfiguration.getDefaultTestInvoiceNumber(),
             testsConfiguration.getDefaultEntriesCount());
-
+    testInvoice.getSeller().setNip(TestUtils.getUnusedNip());
+    testInvoice.getBuyer().setNip(TestUtils.getUnusedNip());
     long sellerId = registerCompany(testInvoice.getSeller());
     long buyerId = registerCompany(testInvoice.getBuyer());
 
@@ -67,7 +66,11 @@ public class TestUtils {
     testInvoice.getBuyer().setId(buyerId);
 
     return testInvoice;
+  }
 
+  public static String getUnusedNip() {
+    Random random = new Random();
+    return String.valueOf(random.nextLong());
   }
 
 }

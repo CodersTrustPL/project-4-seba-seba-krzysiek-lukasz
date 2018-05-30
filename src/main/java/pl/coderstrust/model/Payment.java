@@ -1,27 +1,39 @@
 package pl.coderstrust.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import io.swagger.annotations.ApiModelProperty;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import pl.coderstrust.configurations.MoneySerializer;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.Embeddable;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 
+@Embeddable
 public class Payment implements WithValidation {
 
   private long id;
   private LocalDate issueDate;
+  @JsonSerialize(using = MoneySerializer.class)
   private BigDecimal amount;
+  @Enumerated(EnumType.STRING)
   private PaymentType type;
 
-  public Payment(long id, LocalDate issueDate, BigDecimal amount,
-      PaymentType type) {
+  public Payment(long id, LocalDate issueDate, BigDecimal amount, PaymentType type) {
     this.id = id;
     this.issueDate = issueDate;
-    this.amount = amount;
+    if (amount != null) {
+      this.amount = amount.setScale(2, BigDecimal.ROUND_HALF_UP);
+    } else {
+      this.amount = null;
+    }
     this.type = type;
   }
 
@@ -64,7 +76,11 @@ public class Payment implements WithValidation {
   }
 
   public void setAmount(BigDecimal amount) {
-    this.amount = amount;
+    if (amount != null) {
+      this.amount = amount.setScale(2, BigDecimal.ROUND_HALF_UP);
+    } else {
+      this.amount = null;
+    }
   }
 
   public PaymentType getType() {

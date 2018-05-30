@@ -1,16 +1,21 @@
 package pl.coderstrust.database;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import pl.coderstrust.database.file.InFileDatabase;
+import pl.coderstrust.database.hibernate.CompanyRepository;
+import pl.coderstrust.database.hibernate.HibernateCompanyDatabase;
+import pl.coderstrust.database.hibernate.HibernateInvoiceDatabase;
+import pl.coderstrust.database.hibernate.InvoiceRepository;
 import pl.coderstrust.database.memory.InMemoryDatabase;
+//import pl.coderstrust.database.mongo.MongoDatabase;
 import pl.coderstrust.database.mongo.MongoDatabase;
 import pl.coderstrust.database.multifile.MultiFileDatabase;
 import pl.coderstrust.database.sql.CompaniesSqlDb;
 import pl.coderstrust.model.Company;
 import pl.coderstrust.model.Invoice;
-
 
 @Configuration
 public class DatabaseProvider {
@@ -20,6 +25,7 @@ public class DatabaseProvider {
   private static final String MONGO = "mongo";
   private static final String MONGO_EMB = "mongo_emb";
   private static final String SQL_DB = "sql_db";
+  private static final String HIBERNATE = "hibernate";
 
   @Value("${pl.coderstrust.database.MasterDatabase}")
   private String masterDbType;
@@ -33,6 +39,11 @@ public class DatabaseProvider {
   @Value("${pl.coderstrust.database.FilterDatabase.key}")
   private String filterDbKey;
 
+  @Autowired
+  CompanyRepository companyRepository;
+
+  @Autowired
+  InvoiceRepository invoiceRepository;
 
   @Bean
   public Database<Invoice> invoicesDatabase() {
@@ -45,6 +56,8 @@ public class DatabaseProvider {
         return new MongoDatabase<>(Invoice.class, masterDbKey, false);
       case MONGO_EMB:
         return new MongoDatabase<>(Invoice.class, masterDbKey, true);
+      case HIBERNATE:
+        return new HibernateInvoiceDatabase(invoiceRepository,companyRepository);
       //TODO SQL db for Invoices
       // case SQL_DB:
       // return new CompaniesSqlDb<>(Invoice.class);
@@ -64,6 +77,8 @@ public class DatabaseProvider {
         return new MongoDatabase<>(Company.class, filterDbKey, false);
       case MONGO_EMB:
         return new MongoDatabase<>(Company.class, filterDbKey, true);
+      case HIBERNATE:
+        return new HibernateCompanyDatabase(companyRepository);
       case SQL_DB:
         return new CompaniesSqlDb();
       default:

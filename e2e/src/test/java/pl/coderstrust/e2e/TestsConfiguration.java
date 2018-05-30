@@ -17,6 +17,7 @@ import pl.coderstrust.e2e.model.User;
 import pl.coderstrust.e2e.testHelpers.ObjectMapperHelper;
 
 import java.math.BigDecimal;
+import java.util.Random;
 
 @Getter
 public class TestsConfiguration {
@@ -37,7 +38,6 @@ public class TestsConfiguration {
   public final static BigDecimal WRONG_NET_VALUE = new BigDecimal(-1);
 
   private ObjectMapperHelper objectMapperHelper = new ObjectMapperHelper();
-
 
   public TestsConfiguration() {
     RestAssured.baseURI = BASE_URI;
@@ -123,6 +123,5 @@ public class TestsConfiguration {
   public int getServerEntryNotExistStatusCode() {
     return SERVER_ENTRY_NOT_EXIST_STATUS_CODE;
   }
-
 
 }
