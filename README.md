@@ -33,7 +33,7 @@ The Project contains 8 various REST services, over 295 test cases and over 27618
 - Open project with your IDE eg. IntellJI, Eclipse
 - Set checkstyle to [google-checkstyle](https://github.com/pio-kol/accouting-system/blob/master/checkstyle-config/intellij-java-google-style.xml)
 - [invoice.xsd](https://github.com/pio-kol/accouting-system/blob/master/src/main/resources/invoice.xsd) Generate schema from *`src\main\resources\invoice.xsd`* for SOAP binding classes.
-- You can run Maven-verify to check is everything building correctly.
+- You can run Maven-verify to check, if project builds correctly.
 
 ## Setup Database
 In application you can choose between six databases:
@@ -52,7 +52,7 @@ In application you can choose between six databases:
   private static final String MONGO_EMB = "mongo_emb";
   private static final String SQL_DB = "sql_db";
   ```
- You can change the database in an `application.properties` file
+ You can change the database in 'application.properties` file
  ```
 pl.coderstrust.database.MasterDatabase=mongo_emb
 pl.coderstrust.database.FilterDatabase=mongo_emb
