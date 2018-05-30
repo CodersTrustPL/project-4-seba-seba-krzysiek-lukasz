@@ -1,6 +1,6 @@
 ## Accouting-system
 Accounting system with possibility to add invoices, calculate taxes, generate PDFs and send emails. There are multiple implementations of databases provided to exercise various concepts: sql, no-sql, custom file database.
-The Project contains 8 various REST services, over 285 test cases and over 23 000 lines of code with 80% test coverage.
+The Project contains 8 various REST services, over 295 test cases and over 27618 lines of code with 80% test coverage.
 
 ## Code style
 [![js-standard-style](https://img.shields.io/badge/code%20style-Google_Style-brightgreen.svg?style=flat)](https://github.com/checkstyle/checkstyle)
@@ -66,5 +66,6 @@ We have three different types of tests : JUnit, integrations, and E2E tests.
 To run e2e tests :
 1) Run main application
 2) Build E2E project from gradle build file ( /e2e/build.gradle ) as separate project. 
-3) Enable annotation processing for lombok.
+3) Enable annotation processing for lombok. 
+![Enable annotation](https://github.com/pio-kol/accouting-system/blob/master/readme/annotatnion.png)
 4) Run e2e tests as TestNG.
