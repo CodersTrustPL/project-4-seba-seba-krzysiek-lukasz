@@ -33,7 +33,7 @@ The Project contains 8 various REST services, over 295 test cases and over 27618
 1) Open project with your IDE eg. IntellJI, Eclipse
 2) Set checkstyle to [google-checkstyle](https://github.com/pio-kol/accouting-system/blob/master/checkstyle-config/intellij-java-google-style.xml)
 3) Generate binding classes from `src\main\resources\invoice.xsd`.
- Run Maven-compile or use command 'xjc -d src -p com.example.xjc example.xsd' in terminal 
+ __ Run Maven-compile or use command 'xjc -d src -p com.example.xjc example.xsd' in terminal 
 4) You can run Maven-verify to check, if project builds correctly.
 
 ## Setup Database
