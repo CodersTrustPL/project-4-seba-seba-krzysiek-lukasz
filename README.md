@@ -2,12 +2,8 @@
 Accounting system with possibility to add invoices, calculate taxes, generate PDFs and send emails. There are multiple implementations of databases provided to exercise various concepts: sql, no-sql, custom file database.
 The Project contains 8 various REST services, over 285 test cases and over 23 000 lines of code with 82% test coverage.
 
-
 ## Code style
 [![js-standard-style](https://img.shields.io/badge/code%20style-Google_Style-brightgreen.svg?style=flat)](https://github.com/checkstyle/checkstyle)
- 
-## Screenshots
-![Alt text](https://github.com/pio-kol/accouting-system/blob/master/src/main/resources/readme/swagger-screenshot.png)
 
 ## Tech/framework used
 
@@ -62,7 +58,8 @@ pl.coderstrust.database.FilterDatabase=mongo_emb
 ```
 
 ## API Reference
-Start the application and open the URL for API Documentation http://localhost:8080/swagger-ui.html
+Start the application and open the URL for API Documentation http://localhost:8080/swagger-ui.html\
+![Alt text](https://github.com/pio-kol/accouting-system/readme/swagger-screenshot.png)
 
 ## Tests
 We have three different types of tests,
