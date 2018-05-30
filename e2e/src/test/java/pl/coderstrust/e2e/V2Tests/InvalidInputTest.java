@@ -24,9 +24,12 @@ public class InvalidInputTest extends AbstractInvalidInputTests {
   @Test
   public void shouldNotAddInvoiceWhenCompanyIdNotExist() {
     Invoice testInvoice = getDefaultTestInvoice();
-    given().contentType("application/json").body(testInvoice).when()
-        .post(TestUtils.getV2InvoicePath(otherCompanyId + 1)).then().assertThat()
-        .statusCode(TestsConfiguration.SERVER_ENTRY_NOT_EXIST_STATUS_CODE);
+    given()
+        .contentType("application/json").body(testInvoice)
+        .when()
+        .post(TestUtils.getV2InvoicePath(otherCompanyId + 1))
+        .then()
+        .assertThat().statusCode(TestsConfiguration.SERVER_ENTRY_NOT_EXIST_STATUS_CODE);
   }
 
   @Override
@@ -42,23 +45,29 @@ public class InvalidInputTest extends AbstractInvalidInputTests {
   public void shouldNotAddInvoiceWhenCompanyNotMatch() {
     Invoice testInvoice = getDefaultTestInvoice();
     given().contentType("application/json").body(testInvoice).when()
-        .post(TestUtils.getV2InvoicePath(otherCompanyId)).then().assertThat()
-        .body(containsString(Messages.COMPANY_ID_NOT_MATCH));
+        .post(TestUtils.getV2InvoicePath(otherCompanyId))
+        .then()
+        .assertThat().body(containsString(Messages.COMPANY_ID_NOT_MATCH));
   }
 
   @Test
   public void shouldNotGetInvoiceWhenCompanyIdNotMatch() {
     Invoice testInvoice = getDefaultTestInvoice();
-    given().contentType("application/json").body(testInvoice).when()
-        .get(TestUtils.getV2InvoicePathWithInvoiceId(otherCompanyId, testInvoice.getId())).then()
+    given()
+        .contentType("application/json").body(testInvoice)
+        .when()
+        .get(TestUtils.getV2InvoicePathWithInvoiceId(otherCompanyId, testInvoice.getId()))
+        .then()
         .assertThat().body(containsString(""));
   }
 
   @Test
   public void shouldNotUpdateInvoiceWhenCompanyIdNotMatch() {
     Invoice testInvoice = getDefaultTestInvoice();
-    given().contentType("application/json").body(testInvoice).when()
-        .put(TestUtils.getV2InvoicePathWithInvoiceId(otherCompanyId,otherCompanyId)).then()
+    given().contentType("application/json").body(testInvoice)
+        .when()
+        .put(TestUtils.getV2InvoicePathWithInvoiceId(otherCompanyId,otherCompanyId))
+        .then()
         .assertThat().body(containsString(Messages.COMPANY_ID_NOT_MATCH));
   }
 
@@ -67,7 +76,8 @@ public class InvalidInputTest extends AbstractInvalidInputTests {
     Invoice testInvoice = getDefaultTestInvoice();
     given().
     when()
-        .delete(TestUtils.getV2InvoicePathWithInvoiceId(otherCompanyId, otherCompanyId)).then()
+        .delete(TestUtils.getV2InvoicePathWithInvoiceId(otherCompanyId, otherCompanyId))
+        .then()
         .assertThat().body(containsString(""));
   }
 }

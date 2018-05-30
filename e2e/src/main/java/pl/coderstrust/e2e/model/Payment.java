@@ -20,6 +20,7 @@ public class Payment {
 
   private long id;
   private LocalDate issueDate;
+
   @JsonSerialize(using = MoneySerializer.class)
   private BigDecimal amount;
   private PaymentType type;

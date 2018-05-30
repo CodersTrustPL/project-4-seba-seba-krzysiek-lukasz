@@ -40,17 +40,16 @@ public abstract class AbstractValidInputTests {
 
   @Test
   public void shouldCorrectlyAddAndGetInvoiceById() {
-
-    Company company = testCasesGenerator.getTestCompany(1, "prefix");
+    Company company1 = testCasesGenerator.getTestCompany(1, "prefix");
     Company company2 = testCasesGenerator.getTestCompany(2, "prefix2");
-    company.setNip(TestUtils.getUnusedNip());
+    company1.setNip(TestUtils.getUnusedNip());
     company2.setNip(TestUtils.getUnusedNip());
-    long sellerId = TestUtils.registerCompany(company);
+    long sellerId = TestUtils.registerCompany(company1);
     long buyerId = TestUtils.registerCompany(company2);
-    company.setId(sellerId);
+    company1.setId(sellerId);
     company2.setId(buyerId);
 
-    testInvoice.setSeller(company);
+    testInvoice.setSeller(company1);
     testInvoice.setBuyer(company2);
 
     long invoiceId = addInvoice(testInvoice);
@@ -67,16 +66,16 @@ public abstract class AbstractValidInputTests {
 
   @Test
   public void shouldCorrectlyUpdateInvoice() {
-    Company company = testCasesGenerator.getTestCompany(1, "prefix");
+    Company company1 = testCasesGenerator.getTestCompany(1, "prefix");
     Company company2 = testCasesGenerator.getTestCompany(2, "prefix2");
-    company.setNip(TestUtils.getUnusedNip());
+    company1.setNip(TestUtils.getUnusedNip());
     company2.setNip(TestUtils.getUnusedNip());
-    long sellerId = TestUtils.registerCompany(company);
+    long sellerId = TestUtils.registerCompany(company1);
     long buyerId = TestUtils.registerCompany(company2);
-    company.setId(sellerId);
+    company1.setId(sellerId);
     company2.setId(buyerId);
 
-    testInvoice.setBuyer(company);
+    testInvoice.setBuyer(company1);
     testInvoice.setSeller(company2);
     long invoiceId = addInvoice(testInvoice);
     Invoice updatedInvoice = generator
@@ -84,7 +83,7 @@ public abstract class AbstractValidInputTests {
             TestsConfiguration.DEFAULT_ENTRIES_COUNT);
     updatedInvoice.setId(invoiceId);
     updatedInvoice.setSeller(company2);
-    updatedInvoice.setBuyer(company);
+    updatedInvoice.setBuyer(company1);
 
     given().contentType("application/json").body(updatedInvoice).when()
         .put(getInvoicePathWithInvoiceId(invoiceId));
