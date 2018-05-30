@@ -10,7 +10,7 @@ The Project contains 8 various REST services, over 295 test cases and over 27618
 <b>Built with</b>
 - [Maven](https://maven.apache.org/)
 - [Spring](https://spring.io/)
-- [spring boot](https://projects.spring.io/spring-boot/)
+- [Spring boot](https://projects.spring.io/spring-boot/)
 - [Swagger](https://swagger.io/)
 - [Jacoco](https://www.eclemma.org/jacoco/)
 - [Mockito](http://site.mockito.org/)
