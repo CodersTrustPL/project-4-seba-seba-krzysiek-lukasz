@@ -29,12 +29,12 @@ The Project contains 8 various REST services, over 295 test cases and over 27618
 - [Gradle](https://gradle.org/)
 
 ## Installation
-- Using JDK 1.8 is recomended. Project was test on this JDK version.
-**1)** Open project with your IDE eg. IntellJI, Eclipse
-**2)** Set checkstyle to [google-checkstyle](https://github.com/pio-kol/accouting-system/blob/master/checkstyle-config/intellij-java-google-style.xml)
+- Using JDK 1.8 is recomended. Project was test on this JDK version.<br/>
+**1)** Open project with your IDE eg. IntellJI, Eclipse<br/>
+**2)** Set checkstyle to [google-checkstyle](https://github.com/pio-kol/accouting-system/blob/master/checkstyle-config/intellij-java-google-style.xml)<br/>
 **3)** Generate binding classes from `src\main\resources\invoice.xsd`.<br/>
 Run Maven-compile or use command 'xjc -d src -p com.example.xjc example.xsd' in terminal 
-**4)** You can run Maven-verify to check, if project builds correctly.
+**4)** You can run Maven-verify to check, if project builds correctly.<br/>
 
 ## Setup Database
 In application you can choose between six databases:
@@ -64,10 +64,10 @@ Start the application and open the URL for API Documentation http://localhost:80
 ![Swagger API](https://github.com/pio-kol/accouting-system/blob/master/readme/swagger-screenshot.png)
 
 ## Tests
-We have three different types of tests : JUnit, integrations, and E2E tests.
-To run e2e tests :
-**1)** Run main application
-**2)** Build E2E project from gradle build file ( /e2e/build.gradle ) as separate project. 
-**3)** Enable annotation processing for lombok. 
+We have three different types of tests : JUnit, integrations, and E2E tests.<br/>
+To run e2e tests :<br/>
+**1)** Run main application<br/>
+**2)** Build E2E project from gradle build file ( /e2e/build.gradle ) as separate project. <br/>
+**3)** Enable annotation processing for lombok. <br/>
 ![Enable annotations](https://github.com/pio-kol/accouting-system/blob/master/readme/annotatnion.png)
-**4)** Run e2e tests as TestNG.
+**4)** Run e2e tests as TestNG.<br/>
