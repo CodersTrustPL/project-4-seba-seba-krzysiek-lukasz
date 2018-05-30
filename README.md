@@ -29,7 +29,7 @@ The Project contains 8 various REST services, over 295 test cases and over 27618
 - [Gradle](https://gradle.org/)
 
 ## Installation
-- Using JDK 1.8 is recomended. Project was test on that JDK version
+- Using JDK 1.8 is recomended. Project was test on this JDK version.
 - Open project with your IDE eg. IntellJI, Eclipse
 - Set checkstyle to [google-checkstyle](https://github.com/pio-kol/accouting-system/blob/master/checkstyle-config/intellij-java-google-style.xml)
 - [invoice.xsd](https://github.com/pio-kol/accouting-system/blob/master/src/main/resources/invoice.xsd) Generate schema from *`src\main\resources\invoice.xsd`* for SOAP binding classes.
@@ -37,12 +37,13 @@ The Project contains 8 various REST services, over 295 test cases and over 27618
 
 ## Setup Database
 In application you can choose between six databases:
-- inFile
-- multifile
-- mongo
-- mongoEMB (in memory)
-- SQL
-- and InMemmory database which is set by default.
+- InFile
+- Multifile
+- Mongo
+- Mongo embedded
+- SQL (JDBC)
+- SQL (Hibernate)
+- and InMemmory database (set by default).
 
   ```
   private static final String IN_FILE = "inFile";
@@ -67,5 +68,5 @@ To run e2e tests :
 1) Run main application
 2) Build E2E project from gradle build file ( /e2e/build.gradle ) as separate project. 
 3) Enable annotation processing for lombok. 
-![Enable annotation](https://github.com/pio-kol/accouting-system/blob/master/readme/annotatnion.png)
+![Enable annotations](https://github.com/pio-kol/accouting-system/blob/master/readme/annotatnion.png)
 4) Run e2e tests as TestNG.
